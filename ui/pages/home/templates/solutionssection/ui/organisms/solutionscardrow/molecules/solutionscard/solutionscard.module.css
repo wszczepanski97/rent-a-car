@@ -1,0 +1,8 @@
+.solutionsCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--light-background-color);
+  padding: 30px;
+  width: 240px;
+}

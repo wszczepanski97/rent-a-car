@@ -1,0 +1,6 @@
+.NavbarList {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    z-index: 1;
+}

@@ -1,0 +1,9 @@
+.contactCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--light-background-color);
+  padding: 80px 40px;
+  width: 329px;
+}

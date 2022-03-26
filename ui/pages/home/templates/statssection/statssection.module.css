@@ -1,0 +1,8 @@
+.statsSection {
+  width: 1050px;
+  height: 526px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
