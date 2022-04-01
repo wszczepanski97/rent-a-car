@@ -1,9 +1,9 @@
 import { ContactCard } from "./molecules";
 import { CardRow } from "../../../../../../../common";
-import styles from "./contactcardrow.module.css";
+import { FC } from "react";
 
-const ContactCardRow = () => (
-  <CardRow className={styles.contactCardRow_Container}>
+const ContactCardRow: FC = () => (
+  <CardRow style={{ justifyContent: "center" }}>
     <ContactCard
       photoProps={{
         src: "/images/Phone.svg",

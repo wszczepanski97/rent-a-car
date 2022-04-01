@@ -1,0 +1,8 @@
+@import "mixins";
+
+.contactCard {
+  @include flexColumnHorizontallyCenteredVerticallySpaceBetween;
+  background-color: var(--light-background-color);
+  padding: 80px 40px;
+  width: 329px;
+}

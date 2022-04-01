@@ -1,14 +1,9 @@
-import { ServicesPromoArticle } from "./atoms";
-import ServicesPromoParagraph from "./atoms/servicespromoparagraph/servicespromoparagraph.component";
+import { FC } from "react";
+import { ServicesPromoArticle, ServicesPromoParagraph } from "./atoms";
+import styles from "./servicespromodescription.module.scss";
 
-const ServicesPromoDescription = () => (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-    }}
-  >
+const ServicesPromoDescription: FC = () => (
+  <div className={styles.servicesPromoDescription}>
     <ServicesPromoArticle />
     <ServicesPromoParagraph />
   </div>

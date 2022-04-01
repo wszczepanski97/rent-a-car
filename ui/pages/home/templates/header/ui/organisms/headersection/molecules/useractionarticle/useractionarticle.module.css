@@ -1,8 +1,0 @@
-.userActionArticle {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  height: 788px;
-  z-index: 1;
-  max-width: 50%;
-}

@@ -1,0 +1,8 @@
+@import "mixins";
+
+.solutionsCard {
+  @include flexColumnHorizontallyCentered;
+  background-color: var(--light-background-color);
+  padding: 30px;
+  width: 240px;
+}

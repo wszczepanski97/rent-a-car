@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { Article } from "../../../../../../../../../common";
-import styles from "./useractionarticle.module.css";
+import styles from "./useractionarticle.module.scss";
 
-const UserActionArticle = () => (
+const UserActionArticle: FC = () => (
   <Article
     className={styles.userActionArticle}
     titleProps={{ title: "Make your life easier" }}

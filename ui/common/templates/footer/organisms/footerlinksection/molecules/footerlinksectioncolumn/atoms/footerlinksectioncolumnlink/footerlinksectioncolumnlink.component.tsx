@@ -1,23 +1,18 @@
-import Link from "next/link";
-import Image from "next/image";
-import styles from "./footerlinksectioncolumnlink.module.css";
-const FooterLinkSectionColumnLink = ({
+import { FC } from "react";
+import { Link, Photo } from "../../../../../../../../../../ui/common";
+import styles from "./footerlinksectioncolumnlink.module.scss";
+
+const FooterLinkSectionColumnLink: FC<FooterLinkSectionColumnLinkProps> = ({
   text,
   photoProps,
-}: FooterLinkSectionColumnLinkProps) =>
+}) =>
   photoProps ? (
     <div className={styles.columnLinkWithPhoto}>
-      <Image height="24" width="24" {...photoProps} />
-      <Link href={"#"}>
-        <a style={{ color: "var(--light-text-color)" }}>{text}</a>
-      </Link>
+      <Photo size={{ height: "24", width: "24" }} {...photoProps} />
+      <Link href={"#"} name={text} />
     </div>
   ) : (
-    <Link href={"#"}>
-      <a style={{ color: "var(--light-text-color)", paddingBottom: "10px" }}>
-        {text}
-      </a>
-    </Link>
+    <Link href={"#"} name={text} />
   );
 
 export type FooterLinkSectionColumnLinkProps = {

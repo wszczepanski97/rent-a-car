@@ -1,16 +1,17 @@
+import { FC } from "react";
 import {
   Card,
   CardPhotoProps,
   CardParagraphProps,
   CardTitleProps,
 } from "../../../../../../../../../common";
-import styles from "./statscard.module.css";
+import styles from "./statscard.module.scss";
 
-const StatsCard = ({
+const StatsCard: FC<StatsCardProps> = ({
   photoProps,
   paragraphProps,
   titleProps,
-}: StatsCardProps) => (
+}) => (
   <Card
     className={styles.statsCard}
     photoProps={{

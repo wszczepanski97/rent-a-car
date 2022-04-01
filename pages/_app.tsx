@@ -1,14 +1,16 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Footer, Navbar } from "../ui/common";
+import { PageWrapper, Footer, Navbar } from "../ui";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <Navbar />
-      <Component {...pageProps} />
+    <>
+      <PageWrapper>
+        <Navbar />
+        <Component {...pageProps} />
+      </PageWrapper>
       <Footer />
-    </div>
+    </>
   );
 }
 

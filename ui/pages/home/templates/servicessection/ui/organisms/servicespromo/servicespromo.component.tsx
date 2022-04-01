@@ -1,7 +1,9 @@
+import { FC } from "react";
 import { OfficePhoto, ServicesPromoDescription } from "./molecules";
+import styles from "./servicespromo.module.scss";
 
-const ServicesPromo = () => (
-  <div style={{ display: "flex", justifyContent: "space-between" }}>
+const ServicesPromo: FC = () => (
+  <div className={styles.servicesPromo}>
     <OfficePhoto />
     <ServicesPromoDescription />
   </div>

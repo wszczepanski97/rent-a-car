@@ -1,0 +1,11 @@
+@import "mixins";
+
+.columnLinkWithPhoto {
+  @include flexRow;
+  padding-bottom: 10px;
+  gap: 10px;
+}
+
+.footerLinkSectionColumnLink {
+  color: var(--light-text-color);
+}

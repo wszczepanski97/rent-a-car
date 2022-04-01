@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { Article } from "../../../../../../../common";
-import styles from "./solutionsarticle.module.css";
+import styles from "./solutionsarticle.module.scss";
 
-const SolutionsArticle = () => (
+const SolutionsArticle: FC = () => (
   <Article
     className={styles.solutionsArticle}
     titleProps={{ title: "Practice Advice" }}

@@ -1,21 +1,16 @@
-import { LoginFormButton, LoginFormHeader } from "./atoms";
-import { LoginFormFieldName, LoginFormFieldPassword } from "./molecules";
+import { FC } from "react";
+import {
+  LoginFormButton,
+  LoginFormFieldName,
+  LoginFormFieldPassword,
+  LoginFormHeader,
+} from "./ui";
+import styles from "./loginform.module.scss";
 
-const LoginForm = () => (
-  <form
-    action="#"
-    style={{
-      backgroundColor: "var(--login-background-color)",
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      padding: "40px 50px",
-      gap: "40px",
-      width: "498px",
-    }}
-  >
+const LoginForm: FC = () => (
+  <form action="#" className={styles.loginForm}>
     <LoginFormHeader />
-    <div>
+    <div className={styles.loginFormFieldGroup}>
       <LoginFormFieldName />
       <LoginFormFieldPassword />
     </div>

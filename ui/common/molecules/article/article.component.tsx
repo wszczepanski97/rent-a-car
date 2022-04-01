@@ -1,26 +1,33 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, FC } from "react";
 import {
-    ArticleTitle,
-    ArticleTitleProps,
-    ArticleParagraph,
-    ArticleParagraphProps,
-} from './atoms';
-import { ArticleButtonsContainer, ArticleButtonsContainerProps } from './molecules';
+  ArticleButtonsContainer,
+  ArticleButtonsContainerProps,
+  ArticleParagraph,
+  ArticleParagraphProps,
+  ArticleTitle,
+  ArticleTitleProps,
+} from "./ui";
 
-const Article = ({ className, style, titleProps, paragraphProps, buttonsProps }: ArticleProps) => (
-    <article style={style} className={className}>
-        {titleProps && <ArticleTitle {...titleProps} />}
-        {paragraphProps && <ArticleParagraph {...paragraphProps} />}
-        {buttonsProps && <ArticleButtonsContainer {...buttonsProps} />}
-    </article>
+const Article: FC<ArticleProps> = ({
+  className,
+  style,
+  titleProps,
+  paragraphProps,
+  buttonsProps,
+}) => (
+  <article style={style} className={className}>
+    {titleProps && <ArticleTitle {...titleProps} />}
+    {paragraphProps && <ArticleParagraph {...paragraphProps} />}
+    {buttonsProps && <ArticleButtonsContainer {...buttonsProps} />}
+  </article>
 );
 
 type ArticleProps = {
-    className?: string;
-    style?: CSSProperties;
-    buttonsProps?: ArticleButtonsContainerProps;
-    titleProps?: ArticleTitleProps;
-    paragraphProps?: ArticleParagraphProps;
-}
+  className?: string;
+  style?: CSSProperties;
+  buttonsProps?: ArticleButtonsContainerProps;
+  titleProps?: ArticleTitleProps;
+  paragraphProps?: ArticleParagraphProps;
+};
 
 export default Article;

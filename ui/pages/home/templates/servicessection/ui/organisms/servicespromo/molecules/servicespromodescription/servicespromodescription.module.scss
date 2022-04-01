@@ -1,0 +1,6 @@
+@import "mixins";
+
+.servicesPromoDescription {
+  @include flexColumnVerticallySpaceBetween;
+  width: 333px;
+}

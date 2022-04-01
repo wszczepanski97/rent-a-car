@@ -1,0 +1,22 @@
+@import "mixins";
+
+.navbarList {
+  @include flexRow;
+  list-style-type: none;
+  z-index: 1;
+}
+
+.navbarListContainer {
+  @include flexRow;
+  gap: 32px;
+}
+
+.navbarListItemGroup {
+  @include flexRow;
+  gap: 39px;
+}
+
+.navbarListIconGroup {
+  @include flexRow;
+  gap: 18px;
+}

@@ -1,0 +1,50 @@
+@mixin flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flexColumnVerticallyCentered {
+  @include flexColumn();
+  justify-content: center;
+}
+
+@mixin flexColumnVerticallySpaceBetween {
+  @include flexColumn();
+  justify-content: space-between;
+}
+
+@mixin flexColumnHorizontallyCentered {
+  @include flexColumn();
+  align-items: center;
+}
+
+@mixin flexColumnHorizontallyCenteredVerticallySpaceBetween {
+  @include flexColumnHorizontallyCentered();
+  justify-content: space-between;
+}
+
+@mixin flexColumnDoubleCentered {
+  @include flexColumn();
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexRow {
+  display: flex;
+}
+
+@mixin flexRowVerticallySpaceBetween {
+  @include flexRow();
+  justify-content: space-between;
+}
+
+@mixin flexRowHorizontallyCenteredVerticallySpaceBetween {
+  @include flexRowVerticallySpaceBetween();
+  align-items: center;
+}
+
+@mixin flexRowDoubleCentered {
+  @include flexRow();
+  justify-content: center;
+  align-items: center;
+}

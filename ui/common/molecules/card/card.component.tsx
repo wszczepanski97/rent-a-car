@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, FC } from "react";
 import {
   CardPhoto,
   CardPhotoProps,
@@ -6,19 +6,11 @@ import {
   CardParagraphProps,
   CardTitle,
   CardTitleProps,
-} from "./atoms";
-import CardButton, {
+  CardButton,
   CardButtonProps,
-} from "./atoms/cardbutton/cardbutton.component";
+} from "./ui";
 
-export enum CardType {
-  DEFAULT = "default",
-  PHOTO_LAST = "PHOTO_LAST",
-  PHOTO_SINGLE_COLUMN = "PHOTO_SINGLE_COLUMN",
-  WITH_BUTTON = "withbutton",
-}
-
-const Card = ({
+const Card: FC<CardProps> = ({
   className,
   style,
   photoProps,
@@ -26,7 +18,7 @@ const Card = ({
   paragraphProps,
   buttonProps,
   type = CardType.DEFAULT,
-}: CardProps) =>
+}) =>
   type === CardType.DEFAULT ? (
     <div style={style} className={className}>
       {photoProps && <CardPhoto {...photoProps} />}
@@ -66,5 +58,13 @@ export type CardProps = {
   type?: CardType;
 };
 
-export default Card;
+export enum CardType {
+  DEFAULT = "DEFAULT",
+  PHOTO_LAST = "PHOTO_LAST",
+  PHOTO_SINGLE_COLUMN = "PHOTO_SINGLE_COLUMN",
+  WITH_BUTTON = "WITH_BUTTON",
+}
+
 export { type CardPhotoProps, type CardParagraphProps, type CardTitleProps };
+
+export default Card;

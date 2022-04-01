@@ -1,0 +1,6 @@
+@import "mixins";
+
+.Navbar {
+  @include flexRowHorizontallyCenteredVerticallySpaceBetween;
+  height: 104px;
+}

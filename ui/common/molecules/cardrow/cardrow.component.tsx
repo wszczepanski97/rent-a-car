@@ -1,11 +1,14 @@
-const CardRow: React.FC<CardRowProps> = ({ className, children }) => (
-    <div className={className}>
-        {children}
-    </div>
+import { CSSProperties } from "react";
+import styles from "./cardrow.module.scss";
+
+const CardRow: React.FC<CardRowProps> = ({ children, style }) => (
+  <div className={styles.cardRow} style={style}>
+    {children}
+  </div>
 );
 
 type CardRowProps = {
-    className?: string;
-}
+  style?: CSSProperties;
+};
 
 export default CardRow;

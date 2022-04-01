@@ -1,5 +1,5 @@
 import { Article } from "../../../../../../../common";
-import styles from "./servicesarticle.module.css";
+import styles from "./servicesarticle.module.scss";
 
 const ServicesArticle = () => (
   <Article

@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { Article } from "../../../../../../../common";
-import styles from "./statsarticle.module.css";
+import styles from "./statsarticle.module.scss";
 
-const StatsArticle = () => (
+const StatsArticle: FC = () => (
   <Article
     className={styles.statsArticle}
     titleProps={{ title: "Why choose us" }}

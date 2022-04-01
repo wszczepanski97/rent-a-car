@@ -1,0 +1,7 @@
+@import "mixins";
+
+.loginSection {
+  @include flexRowDoubleCentered;
+  height: 428px;
+  margin: 80px 0;
+}

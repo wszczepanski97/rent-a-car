@@ -1,9 +1,9 @@
 import { AdvertisingCard } from "./molecules";
 import { CardRow } from "../../../../../../../../../common";
-import styles from "./advertisingcardsrow.module.css";
+import { FC } from "react";
 
-const AdvertisingCardsRow = () => (
-  <CardRow className={styles.advertisingCardsRow}>
+const AdvertisingCardsRow: FC = () => (
+  <CardRow style={{ height: "210px", zIndex: 1 }}>
     <AdvertisingCard
       titleProps={{ title: "Best car lender" }}
       paragraphProps={{

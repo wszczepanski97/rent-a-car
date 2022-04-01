@@ -3,42 +3,34 @@ import {
   FooterLinkSectionColumnLink,
   FooterLinkSectionColumnTitle,
 } from "./molecules/footerlinksectioncolumn/atoms";
+import styles from "./footerlinksection.module.scss";
 
 const FooterLinkSection = () => (
-  <section
-    style={{ backgroundColor: "var(--secondary-color-2)", padding: "50px 0 " }}
-  >
-    <div
-      style={{
-        display: "flex",
-        width: "1050px",
-        margin: "0 auto",
-        justifyContent: "space-between",
-      }}
-    >
+  <section className={styles.footerLinkSection}>
+    <div className={styles.footerLinkSectionContainer}>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle title="Company Info" />
+        <FooterLinkSectionColumnTitle text="Company Info" />
         <FooterLinkSectionColumnLink text="About Us" />
         <FooterLinkSectionColumnLink text="Carrier" />
         <FooterLinkSectionColumnLink text="We are hiring" />
         <FooterLinkSectionColumnLink text="Blog" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle title="Features" />
+        <FooterLinkSectionColumnTitle text="Features" />
         <FooterLinkSectionColumnLink text="Business Marketing" />
         <FooterLinkSectionColumnLink text="User Analytic" />
         <FooterLinkSectionColumnLink text="Live Chat" />
         <FooterLinkSectionColumnLink text="Unlimited Support" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle title="Resources" />
+        <FooterLinkSectionColumnTitle text="Resources" />
         <FooterLinkSectionColumnLink text="IOS & Android" />
         <FooterLinkSectionColumnLink text="Watch a Demo" />
         <FooterLinkSectionColumnLink text="Customers" />
         <FooterLinkSectionColumnLink text="API" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle title="Get In Touch" />
+        <FooterLinkSectionColumnTitle text="Get In Touch" />
         <FooterLinkSectionColumnLink
           text="(480) 555-0103"
           photoProps={{ src: "/images/PhoneBlue.svg", alt: "Phone" }}

@@ -1,0 +1,15 @@
+@import "mixins";
+
+.loginForm {
+  @include flexColumn;
+  background-color: var(--login-background-color);
+  height: 100%;
+  padding: 40px 50px;
+  gap: 40px;
+  width: 498px;
+}
+
+.loginFormFieldGroup {
+  @include flexColumn;
+  gap: 20px;
+}

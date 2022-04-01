@@ -1,0 +1,4 @@
+@import "mixins";
+.cardRow {
+  @include flexRowHorizontallyCenteredVerticallySpaceBetween;
+}

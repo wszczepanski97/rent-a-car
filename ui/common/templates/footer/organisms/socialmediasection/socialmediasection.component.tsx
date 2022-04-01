@@ -1,16 +1,9 @@
-import { CopyrightHeader } from "./atoms";
-import { SocialMediaIconsBar } from "./molecules";
+import { FC } from "react";
+import { CopyrightHeader, SocialMediaIconsBar } from "./ui";
+import styles from "./socialmediasection.module.scss";
 
-const SocialMediaSection = () => (
-  <div
-    style={{
-      display: "flex",
-      width: "1050px",
-      margin: "0 auto",
-      justifyContent: "space-between",
-      padding: "25px 0",
-    }}
-  >
+const SocialMediaSection: FC = () => (
+  <div className={styles.socialMediaSection}>
     <CopyrightHeader />
     <SocialMediaIconsBar />
   </div>

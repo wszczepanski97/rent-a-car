@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import LoginSection from "./templates/loginsection/loginsection.component";
+import { LoginSection } from "./templates";
 
 const Login: NextPage = () => <LoginSection />;
 

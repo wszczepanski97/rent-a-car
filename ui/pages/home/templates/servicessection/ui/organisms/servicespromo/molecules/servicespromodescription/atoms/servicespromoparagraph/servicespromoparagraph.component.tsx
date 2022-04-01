@@ -1,7 +1,7 @@
-import { Card } from "../../../../../../../../../../../common";
-import { CardType } from "../../../../../../../../../../../common/molecules/card/card.component";
+import { FC } from "react";
+import { Card, CardType } from "../../../../../../../../../../../common";
 
-const ServicesPromoParagraph = () => (
+const ServicesPromoParagraph: FC = () => (
   <>
     <Card
       photoProps={{

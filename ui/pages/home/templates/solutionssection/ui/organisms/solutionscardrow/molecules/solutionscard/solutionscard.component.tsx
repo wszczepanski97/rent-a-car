@@ -1,3 +1,4 @@
+import { FC } from "react";
 import {
   Card,
   CardPhotoProps,
@@ -5,13 +6,13 @@ import {
   CardTitleProps,
 } from "../../../../../../../../../common";
 import { CardType } from "../../../../../../../../../common/molecules/card/card.component";
-import styles from "./solutionscard.module.css";
+import styles from "./solutionscard.module.scss";
 
-const SolutionsCard = ({
+const SolutionsCard: FC<SolutionsCardProps> = ({
   photoProps,
   paragraphProps,
   titleProps,
-}: SolutionsCardProps) => (
+}) => (
   <Card
     className={styles.solutionsCard}
     photoProps={{

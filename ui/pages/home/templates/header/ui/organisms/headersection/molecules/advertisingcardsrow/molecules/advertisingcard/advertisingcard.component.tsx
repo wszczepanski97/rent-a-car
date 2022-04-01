@@ -1,11 +1,12 @@
-import styles from "./advertisingcard.module.css";
+import { FC } from "react";
 import {
   Card,
   CardParagraphProps,
   CardTitleProps,
 } from "../../../../../../../../../../../common";
+import styles from "./advertisingcard.module.scss";
 
-const AdvertisingCard = ({
+const AdvertisingCard: FC<AdvertisingCardProps> = ({
   blue = false,
   titleProps,
   paragraphProps,

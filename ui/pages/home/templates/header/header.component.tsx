@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { HeaderBackground, HeaderSection } from "./ui";
 
-const Header = () => (
+const Header: FC = () => (
   <>
     <HeaderBackground />
     <HeaderSection />

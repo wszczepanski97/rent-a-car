@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { FooterLinkSection, SocialMediaSection } from "./organisms";
 
-const Footer = () => (
+const Footer: FC = () => (
   <footer>
     <FooterLinkSection />
     <SocialMediaSection />

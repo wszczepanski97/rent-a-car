@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { Article } from "../../../../../../../../../../../common";
 
-const ServicesPromoArticle = () => (
+const ServicesPromoArticle: FC = () => (
   <Article
     titleProps={{
       title: `Most trusted in

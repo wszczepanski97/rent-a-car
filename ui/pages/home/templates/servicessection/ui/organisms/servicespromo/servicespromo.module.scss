@@ -1,0 +1,6 @@
+@import "mixins";
+
+.servicesPromo {
+  @include flexRowVerticallySpaceBetween;
+  width: 100%;
+}

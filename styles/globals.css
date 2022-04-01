@@ -99,3 +99,13 @@ p {
 a {
   text-decoration: none;
 }
+
+.btn-text {
+  color: var(--light-text-color);
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: 0.2px;
+}

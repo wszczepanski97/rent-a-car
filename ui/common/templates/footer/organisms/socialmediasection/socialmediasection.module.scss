@@ -1,0 +1,8 @@
+@import "mixins";
+
+.socialMediaSection {
+  @include flexRowVerticallySpaceBetween;
+  width: 1050px;
+  margin: 0 auto;
+  padding: 25px 0;
+}

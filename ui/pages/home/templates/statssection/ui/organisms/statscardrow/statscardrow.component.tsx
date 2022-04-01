@@ -1,9 +1,9 @@
-import { StatsCard } from "./molecules";
+import { FC } from "react";
 import { CardRow } from "../../../../../../../common";
-import styles from "./statscardrow.module.css";
+import { StatsCard } from "./molecules";
 
-const StatsCardRow = () => (
-  <CardRow className={styles.statsCardRow_Container}>
+const StatsCardRow: FC = () => (
+  <CardRow>
     <StatsCard
       photoProps={{
         src: "/images/People.svg",

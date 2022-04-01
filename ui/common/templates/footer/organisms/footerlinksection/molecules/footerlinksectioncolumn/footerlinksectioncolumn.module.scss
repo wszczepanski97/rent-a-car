@@ -1,0 +1,6 @@
+@import "mixins";
+
+.footerLinkSectionColumn {
+  @include flexColumn;
+  gap: 10px;
+}

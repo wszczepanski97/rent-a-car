@@ -1,13 +1,12 @@
-const FooterLinkSectionColumnTitle = ({
-  title,
-}: FooterLinkSectionColumnTitleProps) => (
-  <h5 style={{ color: "var(--light-text-color)", paddingBottom: "20px" }}>
-    {title}
-  </h5>
-);
+import { FC } from "react";
+import { Heading, HeadingProps } from "../../../../../../../../../../ui/common";
 
-export type FooterLinkSectionColumnTitleProps = {
-  title: string;
-};
+const FooterLinkSectionColumnTitle: FC<HeadingProps> = (props) => (
+  <Heading
+    as="h5"
+    style={{ color: "var(--light-text-color)", paddingBottom: "10px" }}
+    {...props}
+  />
+);
 
 export default FooterLinkSectionColumnTitle;

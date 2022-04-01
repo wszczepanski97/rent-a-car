@@ -1,20 +1,21 @@
+import { FC } from "react";
 import {
   Card,
   CardParagraphProps,
   CardPhotoProps,
   CardTitleProps,
 } from "../../../../../../../../../common";
-import { CardButtonProps } from "../../../../../../../../../common/molecules/card/atoms/cardbutton/cardbutton.component";
+import { CardButtonProps } from "../../../../../../../../../common/molecules/card/ui/atoms/cardbutton/cardbutton.component";
 import { CardType } from "../../../../../../../../../common/molecules/card/card.component";
-import styles from "./contactcard.module.css";
+import styles from "./contactcard.module.scss";
 
-const ContactCard = ({
+const ContactCard: FC<ContactCardProps> = ({
   blue = false,
   photoProps,
   titleProps,
   paragraphProps,
   buttonProps,
-}: ContactCardProps) => {
+}) => {
   const color = blue ? "var(--light-text-color)" : "var(--text-color)";
   const backgroundColor = blue
     ? "var(--secondary-color-1)"

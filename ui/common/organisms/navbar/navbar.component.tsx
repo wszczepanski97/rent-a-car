@@ -1,13 +1,12 @@
-import styles from './navbar.module.css';
-import { PageTitle } from "./atoms";
-import { NavbarList } from './molecules';
+import { FC } from "react";
+import { NavbarList, PageTitle } from "./ui";
+import styles from "./navbar.module.scss";
 
-const Navbar = () => (
-    <nav className={styles.Navbar}>
-        <PageTitle />
-        <NavbarList />
-    </nav>
+const Navbar: FC = () => (
+  <nav className={styles.Navbar}>
+    <PageTitle />
+    <NavbarList />
+  </nav>
 );
-
 
 export default Navbar;
