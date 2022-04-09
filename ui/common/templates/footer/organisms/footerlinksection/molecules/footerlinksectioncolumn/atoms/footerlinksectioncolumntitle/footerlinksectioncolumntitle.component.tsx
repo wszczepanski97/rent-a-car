@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Heading, HeadingProps } from "../../../../../../../../../../ui/common";
+import { Heading, HeadingProps } from "ui";
 
 const FooterLinkSectionColumnTitle: FC<HeadingProps> = (props) => (
   <Heading

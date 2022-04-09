@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link, LinkProps } from "../../../../../../../../../ui/common";
+import { Link, LinkProps } from "ui";
 
 const NavbarListItem: FC<LinkProps> = (props) => (
   <li>

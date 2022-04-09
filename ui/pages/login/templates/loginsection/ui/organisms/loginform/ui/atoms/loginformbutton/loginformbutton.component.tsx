@@ -4,7 +4,9 @@ import classnames from "classnames/bind";
 const cx = classnames.bind(styles);
 
 const LoginFormButton = () => (
-  <button className={cx(styles.loginFormButton, "btn-text")}>Login</button>
+  <button className={cx(styles.loginFormButton, "btn-text")} type="submit">
+    Login
+  </button>
 );
 
 export default LoginFormButton;

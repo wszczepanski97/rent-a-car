@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CardRow } from "../../../../../../../common";
+import { CardRow } from "ui";
 import { StatsCard } from "./molecules";
 
 const StatsCardRow: FC = () => (

@@ -1,4 +1,4 @@
-import { Heading } from "../../../../../../../../../ui/common";
+import { Heading } from "ui";
 
 const CopyrightHeader = () => (
   <Heading

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Photo } from "../../../../../../../../ui/common";
+import { Photo } from "ui";
 
 const LoginCarPhoto: FC = () => (
   <Photo

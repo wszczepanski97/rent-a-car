@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from "react";
+import { PhotoProps } from "ui";
 import {
   CardPhoto,
-  CardPhotoProps,
   CardParagraph,
   CardParagraphProps,
   CardTitle,
@@ -51,7 +51,7 @@ const Card: FC<CardProps> = ({
 export type CardProps = {
   className?: string;
   style?: CSSProperties;
-  photoProps?: CardPhotoProps;
+  photoProps?: PhotoProps;
   titleProps?: CardTitleProps;
   paragraphProps?: CardParagraphProps;
   buttonProps?: CardButtonProps;
@@ -65,6 +65,6 @@ export enum CardType {
   WITH_BUTTON = "WITH_BUTTON",
 }
 
-export { type CardPhotoProps, type CardParagraphProps, type CardTitleProps };
+export { type CardParagraphProps, type CardTitleProps, type CardButtonProps };
 
 export default Card;

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Heading } from "../../../../../../../../../../common";
+import { Heading } from "ui";
 
 const LoginFormHeader: FC = () => (
   <Heading text="Log to Admin Panel" style={{ textAlign: "center" }} />

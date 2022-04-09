@@ -1,11 +1,11 @@
 import { FC } from "react";
 import {
   Card,
-  CardPhotoProps,
   CardParagraphProps,
   CardTitleProps,
-} from "../../../../../../../../../common";
-import { CardType } from "../../../../../../../../../common/molecules/card/card.component";
+  CardType,
+  PhotoProps,
+} from "ui";
 import styles from "./solutionscard.module.scss";
 
 const SolutionsCard: FC<SolutionsCardProps> = ({
@@ -32,7 +32,7 @@ const SolutionsCard: FC<SolutionsCardProps> = ({
 );
 
 type SolutionsCardProps = {
-  photoProps: CardPhotoProps;
+  photoProps: PhotoProps;
   paragraphProps: CardParagraphProps;
   titleProps: CardTitleProps;
 };

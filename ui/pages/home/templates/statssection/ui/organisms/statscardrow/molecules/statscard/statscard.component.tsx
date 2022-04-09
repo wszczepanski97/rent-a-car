@@ -1,10 +1,5 @@
 import { FC } from "react";
-import {
-  Card,
-  CardPhotoProps,
-  CardParagraphProps,
-  CardTitleProps,
-} from "../../../../../../../../../common";
+import { Card, CardParagraphProps, CardTitleProps, PhotoProps } from "ui";
 import styles from "./statscard.module.scss";
 
 const StatsCard: FC<StatsCardProps> = ({
@@ -32,7 +27,7 @@ const StatsCard: FC<StatsCardProps> = ({
 );
 
 type StatsCardProps = {
-  photoProps: CardPhotoProps;
+  photoProps: PhotoProps;
   paragraphProps: CardParagraphProps;
   titleProps: CardTitleProps;
 };

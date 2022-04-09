@@ -1,4 +1,4 @@
-import { Article } from "../../../../../../../common";
+import { Article } from "ui";
 import styles from "./servicesarticle.module.scss";
 
 const ServicesArticle = () => (

@@ -1,7 +1,8 @@
+import { FC } from "react";
+import { CardRow } from "ui";
 import { SolutionsCard } from "./molecules";
-import { CardRow } from "../../../../../../../common";
 
-const SolutionsCardRow = () => (
+const SolutionsCardRow: FC = () => (
   <CardRow>
     <SolutionsCard
       photoProps={{

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link, Photo } from "../../../../../../../../../../ui/common";
+import { Link, Photo } from "ui";
 import styles from "./footerlinksectioncolumnlink.module.scss";
 
 const FooterLinkSectionColumnLink: FC<FooterLinkSectionColumnLinkProps> = ({

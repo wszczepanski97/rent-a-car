@@ -1,5 +1,5 @@
 import { AdvertisingCard } from "./molecules";
-import { CardRow } from "../../../../../../../../../common";
+import { CardRow } from "ui";
 import { FC } from "react";
 
 const AdvertisingCardsRow: FC = () => (

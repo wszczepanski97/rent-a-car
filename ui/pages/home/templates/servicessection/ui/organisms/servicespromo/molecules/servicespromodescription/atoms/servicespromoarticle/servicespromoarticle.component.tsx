@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Article } from "../../../../../../../../../../../common";
+import { Article } from "ui";
 
 const ServicesPromoArticle: FC = () => (
   <Article
@@ -10,8 +10,8 @@ const ServicesPromoArticle: FC = () => (
       as: "h2",
     }}
     paragraphProps={{
-      paragraphText: `Most calendars are designed for teams. Slate 
-        is designed for freelancers who want a 
+      paragraphText: `Most calendars are designed for teams. Slate
+        is designed for freelancers who want a
         simple way to plan their schedule.`,
       as: "p",
     }}

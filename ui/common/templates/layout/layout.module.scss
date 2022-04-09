@@ -1,6 +1,6 @@
 @import "mixins";
 
-.pageWrapper {
+.layout {
   @include flexColumn;
   width: 1050px;
   margin: 0 auto;

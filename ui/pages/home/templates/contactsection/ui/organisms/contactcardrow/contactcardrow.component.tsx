@@ -1,6 +1,6 @@
-import { ContactCard } from "./molecules";
-import { CardRow } from "../../../../../../../common";
 import { FC } from "react";
+import { ContactCard } from "./molecules";
+import { CardRow } from "ui";
 
 const ContactCardRow: FC = () => (
   <CardRow style={{ justifyContent: "center" }}>

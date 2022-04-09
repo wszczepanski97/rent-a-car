@@ -1,17 +1,15 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { PageWrapper, Footer, Navbar } from "../ui";
+import { Footer, Layout, Navbar } from "ui";
+import "../styles/globals.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <PageWrapper>
-        <Navbar />
-        <Component {...pageProps} />
-      </PageWrapper>
-      <Footer />
-    </>
-  );
-}
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <>
+    <Layout>
+      <Navbar />
+      <Component {...pageProps} />
+    </Layout>
+    <Footer />
+  </>
+);
 
 export default MyApp;

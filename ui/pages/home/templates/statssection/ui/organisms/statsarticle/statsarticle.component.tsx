@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Article } from "../../../../../../../common";
+import { Article } from "ui";
 import styles from "./statsarticle.module.scss";
 
 const StatsArticle: FC = () => (

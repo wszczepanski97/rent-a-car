@@ -2,11 +2,11 @@ import { FC } from "react";
 import {
   Card,
   CardParagraphProps,
-  CardPhotoProps,
   CardTitleProps,
-} from "../../../../../../../../../common";
-import { CardButtonProps } from "../../../../../../../../../common/molecules/card/ui/atoms/cardbutton/cardbutton.component";
-import { CardType } from "../../../../../../../../../common/molecules/card/card.component";
+  CardButtonProps,
+  CardType,
+  PhotoProps,
+} from "ui";
 import styles from "./contactcard.module.scss";
 
 const ContactCard: FC<ContactCardProps> = ({
@@ -17,15 +17,17 @@ const ContactCard: FC<ContactCardProps> = ({
   buttonProps,
 }) => {
   const color = blue ? "var(--light-text-color)" : "var(--text-color)";
-  const backgroundColor = blue
-    ? "var(--secondary-color-1)"
-    : "var(--light-background-color)";
-  const height = blue ? "369px" : "309px";
-  const padding = blue ? "80px 40px" : "50px 40px";
+  const cardStyles = {
+    backgroundColor: blue
+      ? "var(--secondary-color-1)"
+      : "var(--light-background-color)",
+    height: blue ? "369px" : "309px",
+    padding: blue ? "80px 40px" : "50px 40px",
+  };
   return (
     <Card
       className={styles.contactCard}
-      style={{ backgroundColor, height, padding }}
+      style={cardStyles}
       photoProps={{ size: { height: "72", width: "72" }, ...photoProps }}
       titleProps={{ ...titleProps, as: "h5", color }}
       paragraphProps={{ ...paragraphProps, as: "h6", color }}
@@ -40,7 +42,7 @@ const ContactCard: FC<ContactCardProps> = ({
 
 type ContactCardProps = {
   blue?: boolean;
-  photoProps: CardPhotoProps;
+  photoProps: PhotoProps;
   titleProps: CardTitleProps;
   paragraphProps: CardParagraphProps;
   buttonProps: CardButtonProps;

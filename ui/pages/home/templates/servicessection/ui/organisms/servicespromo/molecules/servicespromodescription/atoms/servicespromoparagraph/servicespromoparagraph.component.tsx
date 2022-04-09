@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, CardType } from "../../../../../../../../../../../common";
+import { Card, CardType } from "ui";
 
 const ServicesPromoParagraph: FC = () => (
   <>

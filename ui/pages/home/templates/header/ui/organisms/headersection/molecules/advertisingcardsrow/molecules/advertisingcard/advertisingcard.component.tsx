@@ -1,9 +1,5 @@
 import { FC } from "react";
-import {
-  Card,
-  CardParagraphProps,
-  CardTitleProps,
-} from "../../../../../../../../../../../common";
+import { Card, CardParagraphProps, CardTitleProps } from "ui";
 import styles from "./advertisingcard.module.scss";
 
 const AdvertisingCard: FC<AdvertisingCardProps> = ({
@@ -15,10 +11,10 @@ const AdvertisingCard: FC<AdvertisingCardProps> = ({
   const backgroundColor = blue
     ? "var(--secondary-color-1)"
     : "var(--light-background-color)";
+  const paddingRight = blue ? "0" : "40";
   const src = blue
     ? "/images/SettingsIconWhite.svg"
     : "/images/SettingsIconBlue.svg";
-  const paddingRight = blue ? "0" : "40";
   return (
     <Card
       className={styles.advertisingCard}

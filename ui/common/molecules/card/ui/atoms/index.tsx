@@ -1,7 +1,4 @@
-export {
-  default as CardPhoto,
-  type CardPhotoProps,
-} from "./cardphoto/cardphoto.component";
+export { default as CardPhoto } from "./cardphoto/cardphoto.component";
 export {
   default as CardParagraph,
   type CardParagraphProps,

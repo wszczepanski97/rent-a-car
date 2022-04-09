@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Heading } from "../../../../../../../ui/common";
+import { Heading } from "ui";
 import styles from "./cardbutton.module.scss";
 
 const CardButton: FC<CardButtonProps> = ({

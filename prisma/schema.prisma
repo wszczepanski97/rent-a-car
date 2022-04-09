@@ -1,0 +1,312 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model dodatkoweopcje {
+  IdDodatkoweOpcje Int    @id @default(autoincrement())
+  Nazwa            String @db.VarChar(20)
+  KosztNaDzien     Int
+}
+
+model dodatkoweopcje_wypozyczenia {
+  DodatkoweOpcje_Id Int
+  Wypozyczenia_Id   Int
+  wypozyczenia      wypozyczenia @relation(fields: [Wypozyczenia_Id], references: [IdWypozyczenia], onUpdate: Restrict, map: "DodatkoweOpcje_aso_Wypozyczenia")
+
+  @@id([Wypozyczenia_Id, DodatkoweOpcje_Id])
+}
+
+model klienci {
+  IdKlienci       Int            @id
+  Imie            String         @db.VarChar(50)
+  Nazwisko        String         @db.VarChar(50)
+  Pesel           String         @db.VarChar(11)
+  NumerDowodu     String         @db.VarChar(20)
+  NumerPrawaJazdy String         @db.VarChar(20)
+  Email           String         @db.VarChar(30)
+  NumerTelefonu   String         @db.VarChar(20)
+  ProcentRabatu   Int?
+  IdLokalizacje   Int
+  IdUzytkownicy   Int
+  lokalizacje     lokalizacje    @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Klienci_SzczegolyLokalizacji")
+  uzytkownicy     uzytkownicy    @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onUpdate: Restrict, map: "Klienci_Uzytkownik")
+  wypozyczenia    wypozyczenia[]
+
+  @@index([IdLokalizacje], map: "Klienci_SzczegolyLokalizacji")
+  @@index([IdUzytkownicy], map: "Klienci_Uzytkownik")
+}
+
+model lokalizacje {
+  IdLokalizacje                                         Int          @id
+  Kraj                                                  String       @db.VarChar(50)
+  KodPocztowy                                           String       @db.VarChar(10)
+  Miejscowosc                                           String       @db.VarChar(50)
+  Ulica                                                 String       @db.VarChar(50)
+  NumerUlicy                                            String       @db.VarChar(5)
+  DlugoscGeograficzna                                   String       @db.VarChar(10)
+  SzerokoscGeograficzna                                 String       @db.VarChar(10)
+  klienci                                               klienci[]
+  pracownicy                                            pracownicy[]
+  uslugi_lokalizacjeTouslugi_IdLokalizacje_Odbior       uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Odbior")
+  uslugi_lokalizacjeTouslugi_IdLokalizacje_Podstawienie uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Podstawienie")
+}
+
+model mycie {
+  IdMycie       Int         @id
+  DataOd        DateTime    @db.Timestamp(0)
+  DataDo        DateTime    @db.Timestamp(0)
+  Cena          Int?
+  IdUslugi      Int
+  IdMycieStatus Int
+  myciestatus   myciestatus @relation(fields: [IdMycieStatus], references: [IdMycieStatus], onUpdate: Restrict, map: "Mycie_MycieStatus")
+  uslugi        uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Mycie_Usluga")
+
+  @@index([IdMycieStatus], map: "Mycie_MycieStatus")
+  @@index([IdUslugi], map: "Mycie_Usluga")
+}
+
+model myciestatus {
+  IdMycieStatus Int     @id
+  Opis          String  @db.VarChar(150)
+  mycie         mycie[]
+}
+
+model oddzialy {
+  IdOddzialy         Int             @id
+  Nazwa              String          @db.VarChar(30)
+  Kontakt            String          @db.VarChar(15)
+  Miejsce            String          @db.VarChar(30)
+  DataStworzenia     DateTime        @db.Date
+  KosztWynajmuLokalu Int
+  oddzialy_hist      oddzialy_hist[]
+}
+
+model oddzialy_hist {
+  IdOddzialy_hist Int        @id
+  OdKiedy         DateTime   @db.Date
+  DoKiedy         DateTime?  @db.Date
+  IdPracownicy    Int
+  IdOddzialy      Int
+  oddzialy        oddzialy   @relation(fields: [IdOddzialy], references: [IdOddzialy], onUpdate: Restrict, map: "Oddzialy_hist_Oddzialy")
+  pracownicy      pracownicy @relation(fields: [IdPracownicy], references: [IdPracownicy], onUpdate: Restrict, map: "Oddzialy_hist_Pracownicy")
+
+  @@index([IdOddzialy], map: "Oddzialy_hist_Oddzialy")
+  @@index([IdPracownicy], map: "Oddzialy_hist_Pracownicy")
+}
+
+model oplaty {
+  IdOplaty       Int          @id
+  DataOplaty     DateTime     @db.Timestamp(0)
+  KwotaOplacona  Int
+  IdWypozyczenia Int
+  IdOplatyStatus Int
+  oplatystatus   oplatystatus @relation(fields: [IdOplatyStatus], references: [IdOplatyStatus], onUpdate: Restrict, map: "Oplaty_OplatyStatus")
+  wypozyczenia   wypozyczenia @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onUpdate: Restrict, map: "Oplaty_Wypozyczenia")
+
+  @@index([IdOplatyStatus], map: "Oplaty_OplatyStatus")
+  @@index([IdWypozyczenia], map: "Oplaty_Wypozyczenia")
+}
+
+model oplatystatus {
+  IdOplatyStatus Int      @id
+  Opis           String   @db.VarChar(150)
+  oplaty         oplaty[]
+}
+
+model pracownicy {
+  IdPracownicy                                        Int             @id
+  Imie                                                String          @db.VarChar(50)
+  Nazwisko                                            String          @db.VarChar(50)
+  Pesel                                               String          @db.VarChar(11)
+  NumerDowodu                                         String          @db.VarChar(20)
+  NumerPrawaJazdy                                     String          @db.VarChar(20)
+  Email                                               String          @db.VarChar(30)
+  NumerTelefonu                                       String          @db.VarChar(20)
+  IdLokalizacje                                       Int
+  IdStanowiska                                        Int
+  IdUzytkownicy                                       Int
+  lokalizacje                                         lokalizacje     @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Pracownicy_SzczegolyLokalizacji")
+  stanowiska                                          stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
+  uzytkownicy                                         uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
+  oddzialy_hist                                       oddzialy_hist[]
+  uslugi_pracownicyTouslugi_IdPracownicy_Odbior       uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Odbior")
+  uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Podstawienie")
+  uslugi_pracownicyTouslugi_IdPracownicy_Przypisanie  uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Przypisanie")
+  wyplaty                                             wyplaty[]
+
+  @@index([IdStanowiska], map: "Pracownicy_Stanowisko")
+  @@index([IdLokalizacje], map: "Pracownicy_SzczegolyLokalizacji")
+  @@index([IdUzytkownicy], map: "Pracownicy_Uzytkownik")
+}
+
+model role {
+  IdRole          Int               @id
+  Nazwa           String            @db.VarChar(30)
+  role_stanowisko role_stanowisko[]
+}
+
+model role_stanowisko {
+  IdRole       Int
+  IdStanowiska Int
+  role         role       @relation(fields: [IdRole], references: [IdRole], onUpdate: Restrict, map: "Rola_Stanowisko_Rola")
+  stanowiska   stanowiska @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Rola_Stanowisko_Stanowisko")
+
+  @@id([IdRole, IdStanowiska])
+  @@index([IdStanowiska], map: "Rola_Stanowisko_Stanowisko")
+}
+
+model role_uzytkownik {
+  IdUzytkownicy Int
+  IdRole        Int
+  uzytkownicy   uzytkownicy @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onUpdate: Restrict, map: "Rola_Uzytkownik_Uzytkownik")
+
+  @@id([IdUzytkownicy, IdRole])
+  @@index([IdRole], map: "Rola_Uzytkownik_Rola")
+}
+
+model samochody {
+  IdSamochody          Int                @id
+  Marka                String             @db.VarChar(20)
+  Model                String             @db.VarChar(20)
+  NumerRejestracyjny   String             @db.VarChar(20)
+  NumerVIN             String             @db.VarChar(20)
+  CzyDostepny          Boolean            @db.Bit(1)
+  Zdjecia              String?            @db.VarChar(200)
+  IdSamochodySzczegoly Int
+  samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
+  uslugi               uslugi[]
+
+  @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
+}
+
+model samochodyszczegoly {
+  IdSamochodySzczegoly Int         @id
+  RodzajPaliwa         String      @db.VarChar(20)
+  Nadwozie             String      @db.VarChar(20)
+  PojemnoscBagaznika   String      @db.VarChar(20)
+  IloscDrzwi           String      @db.VarChar(20)
+  IloscMiejsc          String      @db.VarChar(20)
+  samochody            samochody[]
+}
+
+model stanowiska {
+  IdStanowiska    Int               @id
+  Nazwa           String            @db.VarChar(100)
+  pracownicy      pracownicy[]
+  role_stanowisko role_stanowisko[]
+}
+
+model ubezpieczenia {
+  IdUbezpieczenia Int            @id
+  Nazwa           String         @db.VarChar(20)
+  OpisOchrony     String         @db.VarChar(150)
+  KosztNaDzien    Int
+  wypozyczenia    wypozyczenia[]
+}
+
+model uslugi {
+  IdUslugi                                                   Int            @id
+  AktualnaDataPodstawienia                                   DateTime?      @db.Timestamp(0)
+  AktualnaDataOdbioru                                        DateTime?      @db.Timestamp(0)
+  AktualnaDataPrzypisania                                    DateTime?      @db.Timestamp(0)
+  Opis                                                       String?        @db.VarChar(150)
+  IdLokalizacje_Podstawienie                                 Int
+  IdLokalizacje_Odbior                                       Int
+  IdPracownicy_Przypisanie                                   Int?
+  IdPracownicy_Podstawienie                                  Int?
+  IdPracownicy_Odbior                                        Int?
+  IdSamochody                                                Int
+  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior       lokalizacje    @relation("lokalizacjeTouslugi_IdLokalizacje_Odbior", fields: [IdLokalizacje_Odbior], references: [IdLokalizacje], onUpdate: Restrict, map: "Uslugi_Lokalizacje")
+  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie lokalizacje    @relation("lokalizacjeTouslugi_IdLokalizacje_Podstawienie", fields: [IdLokalizacje_Podstawienie], references: [IdLokalizacje], onUpdate: Restrict, map: "Usluga_SzczegolyLokalizacji")
+  pracownicy_pracownicyTouslugi_IdPracownicy_Odbior          pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Odbior", fields: [IdPracownicy_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Odbior")
+  pracownicy_pracownicyTouslugi_IdPracownicy_Podstawienie    pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Podstawienie", fields: [IdPracownicy_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Podstawienie")
+  pracownicy_pracownicyTouslugi_IdPracownicy_Przypisanie     pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Przypisanie", fields: [IdPracownicy_Przypisanie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Przypisanie")
+  samochody                                                  samochody      @relation(fields: [IdSamochody], references: [IdSamochody], onUpdate: Restrict, map: "Uslugi_Samochody")
+  mycie                                                      mycie[]
+  uszkodzenia                                                uszkodzenia[]
+  wypozyczenia                                               wypozyczenia[]
+
+  @@index([IdPracownicy_Odbior], map: "Usluga_Pracownicy_Odbior")
+  @@index([IdPracownicy_Podstawienie], map: "Usluga_Pracownicy_Podstawienie")
+  @@index([IdPracownicy_Przypisanie], map: "Usluga_Pracownicy_Przypisanie")
+  @@index([IdLokalizacje_Podstawienie], map: "Usluga_SzczegolyLokalizacji")
+  @@index([IdLokalizacje_Odbior], map: "Uslugi_Lokalizacje")
+  @@index([IdSamochody], map: "Uslugi_Samochody")
+}
+
+model uszkodzenia {
+  IdUszkodzenia       Int               @id
+  DataOd              DateTime          @db.Timestamp(0)
+  DataDo              DateTime          @db.Timestamp(0)
+  Cena                Int?
+  IdUslugi            Int
+  IdUszkodzeniaStatus Int
+  uslugi              uslugi            @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Uszkodzenia_Usluga")
+  uszkodzeniastatus   uszkodzeniastatus @relation(fields: [IdUszkodzeniaStatus], references: [IdUszkodzeniaStatus], onUpdate: Restrict, map: "Uszkodzenia_UszkodzeniaStatus")
+
+  @@index([IdUslugi], map: "Uszkodzenia_Usluga")
+  @@index([IdUszkodzeniaStatus], map: "Uszkodzenia_UszkodzeniaStatus")
+}
+
+model uszkodzeniastatus {
+  IdUszkodzeniaStatus Int           @id
+  Opis                String        @db.VarChar(150)
+  uszkodzenia         uszkodzenia[]
+}
+
+model uzytkownicy {
+  IdUzytkownicy   Int               @id
+  Imie            String            @db.VarChar(50)
+  Nazwisko        String            @db.VarChar(50)
+  Login           String            @map("login") @db.VarChar(50)
+  Haslo           String            @map("password") @db.VarChar(50)
+  Salt            String            @db.VarChar(100)
+  klienci         klienci[]
+  pracownicy      pracownicy[]
+  role_uzytkownik role_uzytkownik[]
+}
+
+model wyplaty {
+  IdWyplaty    Int        @id
+  Kwota        Int
+  OdKiedy      DateTime   @db.Date
+  DoKiedy      DateTime?  @db.Date
+  IdPracownicy Int
+  pracownicy   pracownicy @relation(fields: [IdPracownicy], references: [IdPracownicy], onUpdate: Restrict, map: "Wyplata_Pracownicy")
+
+  @@index([IdPracownicy], map: "Wyplata_Pracownicy")
+}
+
+model wypozyczenia {
+  IdWypozyczenia              Int                           @id
+  DataOd                      DateTime                      @db.Timestamp(0)
+  DataDo                      DateTime                      @db.Timestamp(0)
+  IloscDni                    Int
+  Kwota                       Int
+  IdKlienci                   Int
+  IdUbezpieczenia             Int?
+  IdWypozyczeniaStatus        Int
+  IdUslugi                    Int
+  klienci                     klienci                       @relation(fields: [IdKlienci], references: [IdKlienci], onUpdate: Restrict, map: "Wypozyczenia_Klienci")
+  ubezpieczenia               ubezpieczenia?                @relation(fields: [IdUbezpieczenia], references: [IdUbezpieczenia], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Ubezpieczenia")
+  uslugi                      uslugi                        @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Wypozyczenia_Uslugi")
+  wypozyczeniastatus          wypozyczeniastatus            @relation(fields: [IdWypozyczeniaStatus], references: [IdWypozyczeniaStatus], onUpdate: Restrict, map: "Wypozyczenia_WypozyczeniaStatus")
+  dodatkoweopcje_wypozyczenia dodatkoweopcje_wypozyczenia[]
+  oplaty                      oplaty[]
+
+  @@index([IdKlienci], map: "Wypozyczenia_Klienci")
+  @@index([IdUbezpieczenia], map: "Wypozyczenia_Ubezpieczenia")
+  @@index([IdUslugi], map: "Wypozyczenia_Uslugi")
+  @@index([IdWypozyczeniaStatus], map: "Wypozyczenia_WypozyczeniaStatus")
+}
+
+model wypozyczeniastatus {
+  IdWypozyczeniaStatus Int            @id
+  Opis                 String         @db.VarChar(150)
+  wypozyczenia         wypozyczenia[]
+}
