@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   LoginFormButton,
   LoginFormFieldName,
@@ -6,26 +6,27 @@ import {
   LoginFormHeader,
 } from "./ui";
 import styles from "./loginform.module.scss";
+import { CsrfContext } from "pages/login";
 
 const LoginForm: FC = () => {
-  // const [loginError, setLoginError] = useState("");
-  // const handleLogin = (event) => {
-  //   event.preventDefault();
-  // };
-
   return (
-    <form
-      className={styles.loginForm}
-      // onSubmit={handleLogin}
-    >
-      <LoginFormHeader />
-      <div className={styles.loginFormFieldGroup}>
-        {/* {loginError} */}
-        <LoginFormFieldName />
-        <LoginFormFieldPassword />
-      </div>
-      <LoginFormButton />
-    </form>
+    <CsrfContext.Consumer>
+      {(csrf) => (
+        <form
+          className={styles.loginForm}
+          method="post"
+          action="/api/auth/callback/credentials"
+        >
+          <LoginFormHeader />
+          <div className={styles.loginFormFieldGroup}>
+            <input name="csrfToken" type="hidden" defaultValue={csrf} />
+            <LoginFormFieldName />
+            <LoginFormFieldPassword />
+          </div>
+          <LoginFormButton />
+        </form>
+      )}
+    </CsrfContext.Consumer>
   );
 };
 

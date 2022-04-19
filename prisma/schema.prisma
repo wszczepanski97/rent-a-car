@@ -8,21 +8,27 @@ datasource db {
 }
 
 model dodatkoweopcje {
-  IdDodatkoweOpcje Int    @id @default(autoincrement())
-  Nazwa            String @db.VarChar(20)
-  KosztNaDzien     Int
+  IdDodatkoweOpcje            Int                           @id @default(autoincrement())
+  Nazwa                       String                        @db.VarChar(20)
+  KosztNaDzien                Int
+  dodatkoweopcje_wypozyczenia dodatkoweopcje_wypozyczenia[]
+
+  @@index([IdDodatkoweOpcje], map: "DodatkoweOpcje_idx_1")
 }
 
 model dodatkoweopcje_wypozyczenia {
   DodatkoweOpcje_Id Int
   Wypozyczenia_Id   Int
-  wypozyczenia      wypozyczenia @relation(fields: [Wypozyczenia_Id], references: [IdWypozyczenia], onUpdate: Restrict, map: "DodatkoweOpcje_aso_Wypozyczenia")
+  dodatkoweopcje    dodatkoweopcje @relation(fields: [DodatkoweOpcje_Id], references: [IdDodatkoweOpcje], onUpdate: Restrict, map: "DodatkoweOpcje_aso_DodatkoweOpcje")
+  wypozyczenia      wypozyczenia   @relation(fields: [Wypozyczenia_Id], references: [IdWypozyczenia], onUpdate: Restrict, map: "DodatkoweOpcje_aso_Wypozyczenia")
 
-  @@id([Wypozyczenia_Id, DodatkoweOpcje_Id])
+  @@id([DodatkoweOpcje_Id, Wypozyczenia_Id])
+  @@index([Wypozyczenia_Id], map: "DodatkoweOpcje_aso_Wypozyczenia")
+  @@index([DodatkoweOpcje_Id, Wypozyczenia_Id], map: "DodatkoweOpcje_wypozyczenia_idx_1")
 }
 
 model klienci {
-  IdKlienci       Int            @id
+  IdKlienci       Int            @id @default(autoincrement())
   Imie            String         @db.VarChar(50)
   Nazwisko        String         @db.VarChar(50)
   Pesel           String         @db.VarChar(11)
@@ -39,10 +45,11 @@ model klienci {
 
   @@index([IdLokalizacje], map: "Klienci_SzczegolyLokalizacji")
   @@index([IdUzytkownicy], map: "Klienci_Uzytkownik")
+  @@index([IdKlienci, Imie, Nazwisko, IdLokalizacje, IdUzytkownicy], map: "Klienci_idx_1")
 }
 
 model lokalizacje {
-  IdLokalizacje                                         Int          @id
+  IdLokalizacje                                         Int          @id @default(autoincrement())
   Kraj                                                  String       @db.VarChar(50)
   KodPocztowy                                           String       @db.VarChar(10)
   Miejscowosc                                           String       @db.VarChar(50)
@@ -54,10 +61,12 @@ model lokalizacje {
   pracownicy                                            pracownicy[]
   uslugi_lokalizacjeTouslugi_IdLokalizacje_Odbior       uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Odbior")
   uslugi_lokalizacjeTouslugi_IdLokalizacje_Podstawienie uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Podstawienie")
+
+  @@index([IdLokalizacje], map: "Lokalizacje_idx_1")
 }
 
 model mycie {
-  IdMycie       Int         @id
+  IdMycie       Int         @id @default(autoincrement())
   DataOd        DateTime    @db.Timestamp(0)
   DataDo        DateTime    @db.Timestamp(0)
   Cena          Int?
@@ -68,26 +77,31 @@ model mycie {
 
   @@index([IdMycieStatus], map: "Mycie_MycieStatus")
   @@index([IdUslugi], map: "Mycie_Usluga")
+  @@index([IdMycie, DataOd, DataDo, IdUslugi, IdMycieStatus], map: "Mycie_idx_1")
 }
 
 model myciestatus {
-  IdMycieStatus Int     @id
+  IdMycieStatus Int     @id @default(autoincrement())
   Opis          String  @db.VarChar(150)
   mycie         mycie[]
+
+  @@index([IdMycieStatus], map: "MycieStatus_idx_1")
 }
 
 model oddzialy {
-  IdOddzialy         Int             @id
+  IdOddzialy         Int             @id @default(autoincrement())
   Nazwa              String          @db.VarChar(30)
   Kontakt            String          @db.VarChar(15)
   Miejsce            String          @db.VarChar(30)
   DataStworzenia     DateTime        @db.Date
   KosztWynajmuLokalu Int
   oddzialy_hist      oddzialy_hist[]
+
+  @@index([IdOddzialy, Miejsce], map: "Oddzialy_idx_1")
 }
 
 model oddzialy_hist {
-  IdOddzialy_hist Int        @id
+  IdOddzialy_hist Int        @id @default(autoincrement())
   OdKiedy         DateTime   @db.Date
   DoKiedy         DateTime?  @db.Date
   IdPracownicy    Int
@@ -97,10 +111,11 @@ model oddzialy_hist {
 
   @@index([IdOddzialy], map: "Oddzialy_hist_Oddzialy")
   @@index([IdPracownicy], map: "Oddzialy_hist_Pracownicy")
+  @@index([IdOddzialy_hist, IdPracownicy, IdOddzialy], map: "Oddzialy_hist_idx_1")
 }
 
 model oplaty {
-  IdOplaty       Int          @id
+  IdOplaty       Int          @id @default(autoincrement())
   DataOplaty     DateTime     @db.Timestamp(0)
   KwotaOplacona  Int
   IdWypozyczenia Int
@@ -110,16 +125,19 @@ model oplaty {
 
   @@index([IdOplatyStatus], map: "Oplaty_OplatyStatus")
   @@index([IdWypozyczenia], map: "Oplaty_Wypozyczenia")
+  @@index([IdOplaty, DataOplaty, IdWypozyczenia, IdOplatyStatus], map: "Oplaty_idx_1")
 }
 
 model oplatystatus {
-  IdOplatyStatus Int      @id
+  IdOplatyStatus Int      @id @default(autoincrement())
   Opis           String   @db.VarChar(150)
   oplaty         oplaty[]
+
+  @@index([IdOplatyStatus], map: "OplatyStatus_idx_1")
 }
 
 model pracownicy {
-  IdPracownicy                                        Int             @id
+  IdPracownicy                                        Int             @id @default(autoincrement())
   Imie                                                String          @db.VarChar(50)
   Nazwisko                                            String          @db.VarChar(50)
   Pesel                                               String          @db.VarChar(11)
@@ -142,12 +160,16 @@ model pracownicy {
   @@index([IdStanowiska], map: "Pracownicy_Stanowisko")
   @@index([IdLokalizacje], map: "Pracownicy_SzczegolyLokalizacji")
   @@index([IdUzytkownicy], map: "Pracownicy_Uzytkownik")
+  @@index([IdPracownicy, Nazwisko, Imie, IdLokalizacje, IdStanowiska, IdUzytkownicy], map: "Pracownicy_idx_1")
 }
 
 model role {
-  IdRole          Int               @id
+  IdRole          Int               @id @default(autoincrement())
   Nazwa           String            @db.VarChar(30)
   role_stanowisko role_stanowisko[]
+  role_uzytkownik role_uzytkownik[]
+
+  @@index([IdRole, Nazwa], map: "Role_idx_1")
 }
 
 model role_stanowisko {
@@ -158,59 +180,73 @@ model role_stanowisko {
 
   @@id([IdRole, IdStanowiska])
   @@index([IdStanowiska], map: "Rola_Stanowisko_Stanowisko")
+  @@index([IdRole, IdStanowiska], map: "Role_Stanowisko_idx_1")
 }
 
 model role_uzytkownik {
   IdUzytkownicy Int
   IdRole        Int
+  role          role        @relation(fields: [IdRole], references: [IdRole], onUpdate: Restrict, map: "Rola_Uzytkownik_Rola")
   uzytkownicy   uzytkownicy @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onUpdate: Restrict, map: "Rola_Uzytkownik_Uzytkownik")
 
   @@id([IdUzytkownicy, IdRole])
   @@index([IdRole], map: "Rola_Uzytkownik_Rola")
+  @@index([IdUzytkownicy, IdRole], map: "Role_Uzytkownik_idx_1")
 }
 
 model samochody {
-  IdSamochody          Int                @id
+  IdSamochody          Int                @id @default(autoincrement())
   Marka                String             @db.VarChar(20)
   Model                String             @db.VarChar(20)
   NumerRejestracyjny   String             @db.VarChar(20)
   NumerVIN             String             @db.VarChar(20)
   CzyDostepny          Boolean            @db.Bit(1)
-  Zdjecia              String?            @db.VarChar(200)
+  Zdjecia              String?            @db.VarChar(2000)
+  CzyUszkodzony        Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
+  Przebieg             String             @db.VarChar(45)
+  CzyUmyty             Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
   IdSamochodySzczegoly Int
   samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
   uslugi               uslugi[]
 
   @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
+  @@index([IdSamochody, Marka, NumerRejestracyjny, CzyDostepny, IdSamochodySzczegoly], map: "Samochody_idx_1")
 }
 
 model samochodyszczegoly {
-  IdSamochodySzczegoly Int         @id
+  IdSamochodySzczegoly Int         @id @default(autoincrement())
   RodzajPaliwa         String      @db.VarChar(20)
   Nadwozie             String      @db.VarChar(20)
   PojemnoscBagaznika   String      @db.VarChar(20)
   IloscDrzwi           String      @db.VarChar(20)
   IloscMiejsc          String      @db.VarChar(20)
   samochody            samochody[]
+
+  @@index([IdSamochodySzczegoly], map: "SamochodySzczegoly_idx_1")
 }
 
 model stanowiska {
-  IdStanowiska    Int               @id
+  IdStanowiska    Int               @id @default(autoincrement())
   Nazwa           String            @db.VarChar(100)
   pracownicy      pracownicy[]
   role_stanowisko role_stanowisko[]
+
+  @@index([IdStanowiska], map: "Stanowiska_idx_1")
 }
 
 model ubezpieczenia {
-  IdUbezpieczenia Int            @id
-  Nazwa           String         @db.VarChar(20)
+  IdUbezpieczenia Int            @id @default(autoincrement())
+  Nazwa           String         @db.VarChar(50)
   OpisOchrony     String         @db.VarChar(150)
   KosztNaDzien    Int
   wypozyczenia    wypozyczenia[]
+
+  @@index([IdUbezpieczenia], map: "Ubezpieczenia_idx_1")
+  @@index([OpisOchrony], map: "Ubezpieczenia_idx_2")
 }
 
 model uslugi {
-  IdUslugi                                                   Int            @id
+  IdUslugi                                                   Int            @id @default(autoincrement())
   AktualnaDataPodstawienia                                   DateTime?      @db.Timestamp(0)
   AktualnaDataOdbioru                                        DateTime?      @db.Timestamp(0)
   AktualnaDataPrzypisania                                    DateTime?      @db.Timestamp(0)
@@ -237,10 +273,11 @@ model uslugi {
   @@index([IdLokalizacje_Podstawienie], map: "Usluga_SzczegolyLokalizacji")
   @@index([IdLokalizacje_Odbior], map: "Uslugi_Lokalizacje")
   @@index([IdSamochody], map: "Uslugi_Samochody")
+  @@index([IdUslugi, AktualnaDataPodstawienia, AktualnaDataOdbioru, AktualnaDataPrzypisania, IdLokalizacje_Podstawienie, IdLokalizacje_Odbior, IdPracownicy_Przypisanie, IdPracownicy_Podstawienie, IdPracownicy_Odbior, IdSamochody], map: "Uslugi_idx_1")
 }
 
 model uszkodzenia {
-  IdUszkodzenia       Int               @id
+  IdUszkodzenia       Int               @id @default(autoincrement())
   DataOd              DateTime          @db.Timestamp(0)
   DataDo              DateTime          @db.Timestamp(0)
   Cena                Int?
@@ -251,28 +288,33 @@ model uszkodzenia {
 
   @@index([IdUslugi], map: "Uszkodzenia_Usluga")
   @@index([IdUszkodzeniaStatus], map: "Uszkodzenia_UszkodzeniaStatus")
+  @@index([IdUszkodzenia, DataOd, DataDo, IdUslugi, IdUszkodzeniaStatus], map: "Uszkodzenia_idx_1")
 }
 
 model uszkodzeniastatus {
-  IdUszkodzeniaStatus Int           @id
+  IdUszkodzeniaStatus Int           @id @default(autoincrement())
   Opis                String        @db.VarChar(150)
   uszkodzenia         uszkodzenia[]
+
+  @@index([IdUszkodzeniaStatus], map: "UszkodzeniaStatus_idx_1")
 }
 
 model uzytkownicy {
-  IdUzytkownicy   Int               @id
+  IdUzytkownicy   Int               @id @default(autoincrement())
   Imie            String            @db.VarChar(50)
   Nazwisko        String            @db.VarChar(50)
-  Login           String            @map("login") @db.VarChar(50)
-  Haslo           String            @map("password") @db.VarChar(50)
+  Login           String            @db.VarChar(50)
+  Haslo           String            @db.VarChar(50)
   Salt            String            @db.VarChar(100)
   klienci         klienci[]
   pracownicy      pracownicy[]
   role_uzytkownik role_uzytkownik[]
+
+  @@index([IdUzytkownicy, Imie, Nazwisko], map: "Uzytkownicy_idx_1")
 }
 
 model wyplaty {
-  IdWyplaty    Int        @id
+  IdWyplaty    Int        @id @default(autoincrement())
   Kwota        Int
   OdKiedy      DateTime   @db.Date
   DoKiedy      DateTime?  @db.Date
@@ -280,10 +322,11 @@ model wyplaty {
   pracownicy   pracownicy @relation(fields: [IdPracownicy], references: [IdPracownicy], onUpdate: Restrict, map: "Wyplata_Pracownicy")
 
   @@index([IdPracownicy], map: "Wyplata_Pracownicy")
+  @@index([IdWyplaty, IdPracownicy], map: "Wyplaty_idx_1")
 }
 
 model wypozyczenia {
-  IdWypozyczenia              Int                           @id
+  IdWypozyczenia              Int                           @id @default(autoincrement())
   DataOd                      DateTime                      @db.Timestamp(0)
   DataDo                      DateTime                      @db.Timestamp(0)
   IloscDni                    Int
@@ -292,6 +335,7 @@ model wypozyczenia {
   IdUbezpieczenia             Int?
   IdWypozyczeniaStatus        Int
   IdUslugi                    Int
+  KwotaPoRabacie              Int?
   klienci                     klienci                       @relation(fields: [IdKlienci], references: [IdKlienci], onUpdate: Restrict, map: "Wypozyczenia_Klienci")
   ubezpieczenia               ubezpieczenia?                @relation(fields: [IdUbezpieczenia], references: [IdUbezpieczenia], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Ubezpieczenia")
   uslugi                      uslugi                        @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Wypozyczenia_Uslugi")
@@ -303,10 +347,13 @@ model wypozyczenia {
   @@index([IdUbezpieczenia], map: "Wypozyczenia_Ubezpieczenia")
   @@index([IdUslugi], map: "Wypozyczenia_Uslugi")
   @@index([IdWypozyczeniaStatus], map: "Wypozyczenia_WypozyczeniaStatus")
+  @@index([IdWypozyczenia, DataOd, DataDo, Kwota, IdKlienci, IloscDni, IdUbezpieczenia, IdWypozyczeniaStatus, IdUslugi], map: "Wypozyczenia_idx_1")
 }
 
 model wypozyczeniastatus {
-  IdWypozyczeniaStatus Int            @id
+  IdWypozyczeniaStatus Int            @id @default(autoincrement())
   Opis                 String         @db.VarChar(150)
   wypozyczenia         wypozyczenia[]
+
+  @@index([IdWypozyczeniaStatus], map: "WypozyczeniaStatus_idx_1")
 }
