@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from "react";
 import {
-  ArticleButtonsContainer,
-  ArticleButtonsContainerProps,
+  ArticleButtonContainer,
+  ArticleButtonContainerProps,
   ArticleParagraph,
   ArticleParagraphProps,
   ArticleTitle,
@@ -13,19 +13,19 @@ const Article: FC<ArticleProps> = ({
   style,
   titleProps,
   paragraphProps,
-  buttonsProps,
+  buttonProps,
 }) => (
   <article style={style} className={className}>
     {titleProps && <ArticleTitle {...titleProps} />}
     {paragraphProps && <ArticleParagraph {...paragraphProps} />}
-    {buttonsProps && <ArticleButtonsContainer {...buttonsProps} />}
+    {buttonProps && <ArticleButtonContainer {...buttonProps} />}
   </article>
 );
 
 type ArticleProps = {
   className?: string;
   style?: CSSProperties;
-  buttonsProps?: ArticleButtonsContainerProps;
+  buttonProps?: ArticleButtonContainerProps;
   titleProps?: ArticleTitleProps;
   paragraphProps?: ArticleParagraphProps;
 };

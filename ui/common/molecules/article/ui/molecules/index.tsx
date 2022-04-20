@@ -1,4 +1,4 @@
 export {
-    default as ArticleButtonsContainer,
-    type ArticleButtonsContainerProps
-} from './articlebuttonscontainer/articlebuttonscontainer.component';
+  default as ArticleButtonContainer,
+  type ArticleButtonContainerProps,
+} from "./articlebuttoncontainer/articlebuttoncontainer.component";

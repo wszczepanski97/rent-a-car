@@ -7,7 +7,6 @@ import {
   getSession,
   LiteralUnion,
 } from "next-auth/react";
-import { createContext } from "react";
 import { Login as LoginUI } from "ui";
 
 export type SessionDataProps = {
@@ -16,15 +15,10 @@ export type SessionDataProps = {
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null;
-  csrfToken: string | undefined;
 };
 
-export const CsrfContext = createContext<string | undefined>(undefined);
-
 const Login: NextPage<SessionDataProps> = (sessionData) => (
-  <CsrfContext.Provider value={sessionData.csrfToken}>
-    <LoginUI {...sessionData} />
-  </CsrfContext.Provider>
+  <LoginUI {...sessionData} />
 );
 export default Login;
 

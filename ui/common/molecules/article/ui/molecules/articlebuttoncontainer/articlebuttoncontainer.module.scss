@@ -1,6 +1,6 @@
 @import "mixins";
 
-.articleButtonsContainer {
+.ArticleButtonContainer {
   @include flexRow;
   gap: 10px;
 }

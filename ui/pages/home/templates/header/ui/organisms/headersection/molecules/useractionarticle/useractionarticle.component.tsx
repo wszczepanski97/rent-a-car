@@ -10,7 +10,7 @@ const UserActionArticle: FC = () => (
       paragraphText:
         "We want to lending car easier for you. Check our offer and decide what car to drive.",
     }}
-    buttonsProps={{
+    buttonProps={{
       buttonData: [
         { text: "Rent a car now", active: true },
         { text: "Check prices" },

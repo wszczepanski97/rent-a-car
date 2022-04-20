@@ -1,11 +1,11 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Pricing() {
-  const { data: session } = useSession();
-  if (session) {
+  const { data, status } = useSession();
+  if (status === "authenticated") {
     return (
       <>
-        Signed in as {session?.user?.email} <br />
+        Signed in as {data.user.id} {data.user.role} <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
     );
