@@ -1,0 +1,51 @@
+import { FC, useState } from "react";
+import { Link, LinkProps } from "ui";
+
+type NavbarListItemHoverOption = {
+  name: string;
+  href: string;
+};
+
+type NavbarListItemHoverProps = {
+  title: string;
+  options: NavbarListItemHoverOption[];
+};
+const NavbarListItemHover: FC<NavbarListItemHoverProps> = ({
+  title,
+  options,
+}) => {
+  const [showList, setShowList] = useState(true);
+  return (
+    <li
+      onMouseOver={() => setShowList(true)}
+      onMouseOut={() => setShowList(false)}
+      style={{ position: "relative" }}
+    >
+      <Link name={title} href="" />
+      <ul
+        style={{
+          display: showList ? "block" : "none",
+          position: "absolute",
+          listStyle: "none",
+          backgroundColor: "var(--dark-background-color)",
+          borderRadius: 5,
+          padding: 0,
+        }}
+      >
+        {options.map((option) => (
+          <li
+            style={{
+              display: "inline-block",
+              padding: 5,
+              whiteSpace: "nowrap",
+            }}
+          >
+            <Link {...option} />
+          </li>
+        ))}
+      </ul>
+    </li>
+  );
+};
+
+export default NavbarListItemHover;

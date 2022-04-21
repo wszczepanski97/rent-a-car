@@ -28,7 +28,6 @@ export default NextAuth({
       type: "credentials",
       async authorize(credentials) {
         try {
-          console.log(credentials);
           const user = await prisma.uzytkownicy.findFirst({
             where: {
               Login: credentials?.name,
@@ -54,7 +53,6 @@ export default NextAuth({
               },
             },
           });
-          console.log(user);
           return (
             user && {
               id: user.IdUzytkownicy,

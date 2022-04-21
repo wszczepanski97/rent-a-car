@@ -1,43 +1,38 @@
-import { NextPageContext, NextPage } from "next";
-import { BuiltInProviderType } from "next-auth/providers";
-import {
-  ClientSafeProvider,
-  getCsrfToken,
-  getProviders,
-  getSession,
-  LiteralUnion,
-} from "next-auth/react";
+import { GetServerSideProps, NextPage } from "next";
+import { getSession } from "next-auth/react";
+import { createContext } from "react";
+import { UserRole } from "types/next-auth";
 import { Login as LoginUI } from "ui";
 
-export type SessionDataProps = {
-  session: undefined;
-  providers: Record<
-    LiteralUnion<BuiltInProviderType, string>,
-    ClientSafeProvider
-  > | null;
-};
-
-const Login: NextPage<SessionDataProps> = (sessionData) => (
-  <LoginUI {...sessionData} />
+export const RoleContext = createContext("klient");
+const Login: NextPage<{ role: UserRole }> = ({ role }) => (
+  <RoleContext.Provider value={role}>
+    <LoginUI />
+  </RoleContext.Provider>
 );
 export default Login;
 
-export async function getServerSideProps(context: NextPageContext) {
-  const { req, res } = context;
+export const getServerSideProps: GetServerSideProps<
+  {},
+  { role: string }
+> = async (context) => {
+  const {
+    req,
+    query: { role },
+  } = context;
   const session = await getSession({ req });
-  if (session && res && session.accessToken) {
-    res.writeHead(302, {
-      Location: "/",
-    });
-    res.end();
-    return;
+  if (!session) {
+    return {
+      props: {
+        role: role && typeof role === "string" ? role.toUpperCase() : undefined,
+      },
+    };
   }
-
   return {
-    props: {
-      session: null,
-      providers: await getProviders(),
-      csrfToken: await getCsrfToken(context),
+    redirect: {
+      destination: role && typeof role === "string" ? `${role}/dashboard` : "/",
+      permanent: false,
     },
+    props: {},
   };
-}
+};
