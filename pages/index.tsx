@@ -1,3 +1,20 @@
-import { Home } from "ui";
+import type { NextPage } from "next";
+import {
+  Header,
+  ServicesSection,
+  SolutionsSection,
+  StatsSection,
+} from "templates/home";
+import { ContactSection } from "ui/common";
 
-export default Home;
+const HomePage: NextPage = () => (
+  <>
+    <Header />
+    <StatsSection />
+    <SolutionsSection />
+    <ServicesSection />
+    <ContactSection />
+  </>
+);
+
+export default HomePage;

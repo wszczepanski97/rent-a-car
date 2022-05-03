@@ -38,6 +38,11 @@
   justify-content: space-between;
 }
 
+@mixin flexRowVerticallySpaceAround {
+  @include flexRow();
+  justify-content: space-around;
+}
+
 @mixin flexRowHorizontallyCenteredVerticallySpaceBetween {
   @include flexRowVerticallySpaceBetween();
   align-items: center;

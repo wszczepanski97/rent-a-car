@@ -1,0 +1,5 @@
+@import "mixins";
+
+.carDescriptionRowPropertyWrapper {
+  @include flexColumnHorizontallyCentered;
+}

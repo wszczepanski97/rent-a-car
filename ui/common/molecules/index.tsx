@@ -1,8 +1,9 @@
 export {
   default as Card,
+  type CardButtonProps,
+  type CardDetailsProps,
   type CardParagraphProps,
   type CardTitleProps,
-  type CardButtonProps,
   CardType,
 } from "./card/card.component";
 export { default as Article } from "./article/article.component";

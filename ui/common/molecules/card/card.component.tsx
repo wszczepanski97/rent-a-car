@@ -8,15 +8,20 @@ import {
   CardTitleProps,
   CardButton,
   CardButtonProps,
+  CardDetailsProps,
+  CardDetails,
 } from "./ui";
 
 const Card: FC<CardProps> = ({
+  children,
   className,
   style,
-  photoProps,
-  titleProps,
-  paragraphProps,
   buttonProps,
+  detailsProps,
+  paragraphProps,
+  photoProps,
+  secondButtonProps,
+  titleProps,
   type = CardType.DEFAULT,
 }) =>
   type === CardType.DEFAULT ? (
@@ -39,23 +44,38 @@ const Card: FC<CardProps> = ({
         {paragraphProps && <CardParagraph {...paragraphProps} />}
       </div>
     </div>
-  ) : (
+  ) : type === CardType.WITH_BUTTON ? (
     <div style={style} className={className}>
       {photoProps && <CardPhoto {...photoProps} />}
       {paragraphProps && <CardParagraph {...paragraphProps} />}
       {titleProps && <CardTitle {...titleProps} />}
       {buttonProps && <CardButton {...buttonProps} />}
     </div>
+  ) : type === CardType.CAR_CARD ? (
+    <div style={style} className={className}>
+      {titleProps && <CardTitle {...titleProps} />}
+      {photoProps && <CardPhoto {...photoProps} />}
+      {paragraphProps && <CardParagraph {...paragraphProps} />}
+      {detailsProps && <CardDetails {...detailsProps} />}
+      {buttonProps && <CardButton {...buttonProps} />}
+      {secondButtonProps && <CardButton {...secondButtonProps} />}
+    </div>
+  ) : (
+    <div style={style} className={className}>
+      {children}
+    </div>
   );
 
 export type CardProps = {
   className?: string;
   style?: CSSProperties;
-  photoProps?: PhotoProps;
-  titleProps?: CardTitleProps;
-  paragraphProps?: CardParagraphProps;
-  buttonProps?: CardButtonProps;
   type?: CardType;
+  buttonProps?: CardButtonProps;
+  detailsProps?: CardDetailsProps;
+  paragraphProps?: CardParagraphProps;
+  photoProps?: PhotoProps;
+  secondButtonProps?: CardButtonProps;
+  titleProps?: CardTitleProps;
 };
 
 export enum CardType {
@@ -63,8 +83,15 @@ export enum CardType {
   PHOTO_LAST = "PHOTO_LAST",
   PHOTO_SINGLE_COLUMN = "PHOTO_SINGLE_COLUMN",
   WITH_BUTTON = "WITH_BUTTON",
+  CAR_CARD = "CAR_CARD",
+  CUSTOM = "CUSTOM",
 }
 
-export { type CardParagraphProps, type CardTitleProps, type CardButtonProps };
+export {
+  type CardParagraphProps,
+  type CardTitleProps,
+  type CardButtonProps,
+  type CardDetailsProps,
+};
 
 export default Card;

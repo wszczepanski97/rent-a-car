@@ -200,17 +200,19 @@ model samochody {
   Model                String             @db.VarChar(20)
   NumerRejestracyjny   String             @db.VarChar(20)
   NumerVIN             String             @db.VarChar(20)
-  CzyDostepny          Boolean            @db.Bit(1)
+  Kategoria            String             @db.VarChar(3)
   Zdjecia              String?            @db.VarChar(2000)
   CzyUszkodzony        Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
   Przebieg             String             @db.VarChar(45)
   CzyUmyty             Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
   IdSamochodySzczegoly Int
+  CenaZaDzien          Int
+  OstatniaAktualizacja DateTime?          @db.DateTime(0)
   samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
   uslugi               uslugi[]
 
   @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
-  @@index([IdSamochody, Marka, NumerRejestracyjny, CzyDostepny, IdSamochodySzczegoly], map: "Samochody_idx_1")
+  @@index([IdSamochody, Marka, NumerRejestracyjny, Kategoria, IdSamochodySzczegoly], map: "Samochody_idx_1")
 }
 
 model samochodyszczegoly {

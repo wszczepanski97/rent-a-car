@@ -1,10 +1,14 @@
 import { FC } from "react";
 import NextLink from "next/link";
 
-const Link: FC<LinkProps> = ({ name, href }) => {
+const Link: FC<LinkProps> = ({
+  name,
+  href,
+  color = "var(--light-text-color)",
+}) => {
   return (
     <NextLink href={href}>
-      <a style={{ color: "var(--light-text-color)" }}>{name}</a>
+      <a style={{ color }}>{name}</a>
     </NextLink>
   );
 };
@@ -12,6 +16,7 @@ const Link: FC<LinkProps> = ({ name, href }) => {
 export type LinkProps = {
   name: string;
   href: string;
+  color?: string;
 };
 
 export default Link;

@@ -1,21 +1,14 @@
 import { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { createContext } from "react";
-import { UserRole } from "types/next-auth";
-import { Login as LoginUI } from "ui";
+import { LoginSection, Role, RoleContext } from "templates/login";
 
-export const RoleContext = createContext("klient");
-const Login: NextPage<{ role: UserRole }> = ({ role }) => (
+const LoginPage: NextPage<Role> = ({ role }) => (
   <RoleContext.Provider value={role}>
-    <LoginUI />
+    <LoginSection />
   </RoleContext.Provider>
 );
-export default Login;
 
-export const getServerSideProps: GetServerSideProps<
-  {},
-  { role: string }
-> = async (context) => {
+const getRole: GetServerSideProps<{}, Role> = async (context) => {
   const {
     req,
     query: { role },
@@ -24,7 +17,7 @@ export const getServerSideProps: GetServerSideProps<
   if (!session) {
     return {
       props: {
-        role: role && typeof role === "string" ? role.toUpperCase() : undefined,
+        role: role && typeof role === "string" ? role.toUpperCase() : null,
       },
     };
   }
@@ -36,3 +29,6 @@ export const getServerSideProps: GetServerSideProps<
     props: {},
   };
 };
+
+export const getServerSideProps = getRole;
+export default LoginPage;

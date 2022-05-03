@@ -8,4 +8,7 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles/sass")],
   },
+  images: {
+    domains: ["racstoragepjatk.blob.core.windows.net"],
+  },
 };

@@ -1,0 +1,6 @@
+@import "mixins";
+
+.carDescriptionColumn {
+  @include flexColumn;
+  gap: 20px;
+}

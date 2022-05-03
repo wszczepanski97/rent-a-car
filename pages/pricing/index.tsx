@@ -1,19 +1,54 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { GetStaticProps, NextPage } from "next";
+import {
+  Cars,
+  CarsCardSection,
+  LendSection,
+  PricingPageProps,
+} from "templates/pricing";
+import { ContactSection } from "ui/common";
+import { prisma } from "../../db";
 
-export default function Pricing() {
-  const { data, status } = useSession();
-  if (status === "authenticated") {
-    return (
-      <>
-        Signed in as {data.user.id} {data.user.role} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    );
-  }
+const PricingPage: NextPage<PricingPageProps> = ({ cars }) => {
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <LendSection />
+      <CarsCardSection cars={cars} />
+      <ContactSection />
     </>
   );
-}
+};
+
+const getCars: GetStaticProps<{
+  cars: Cars[];
+}> = async () => {
+  const cars = (
+    await prisma.samochody.findMany({
+      include: {
+        samochodyszczegoly: true,
+      },
+    })
+  ).map(
+    ({
+      CenaZaDzien,
+      IdSamochody,
+      Marka,
+      Model,
+      Zdjecia,
+      samochodyszczegoly: { IdSamochodySzczegoly, ...samochodyszczegolyrest },
+    }) => ({
+      CenaZaDzien,
+      IdSamochody,
+      Marka,
+      Model,
+      Zdjecia,
+      ...samochodyszczegolyrest,
+    })
+  );
+  return {
+    props: { cars },
+  };
+};
+
+export const getStaticProps = getCars;
+
+export default PricingPage;

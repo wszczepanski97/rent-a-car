@@ -4,7 +4,13 @@ const ArticleParagraph: FC<ArticleParagraphProps> = ({
   paragraphText,
   color = "var(--light-text-color)",
   as: Tag = "h4",
-}) => <Tag style={{ color }}>{paragraphText}</Tag>;
+}) => (
+  <>
+    {paragraphText.split("\n").map((chunk) => (
+      <Tag style={{ color }}>{chunk}</Tag>
+    ))}
+  </>
+);
 
 export type ArticleParagraphProps = {
   paragraphText: string;

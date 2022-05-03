@@ -1,0 +1,8 @@
+@import "mixins";
+
+.carCard {
+  @include flexColumnHorizontallyCentered;
+  gap: 15px;
+  padding: 20px 10px;
+  background-color: var(--light-background-color);
+}
