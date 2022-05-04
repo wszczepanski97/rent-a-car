@@ -1,0 +1,10 @@
+@import "mixins";
+
+.carCard {
+  @include flexRowVerticallySpaceAround;
+  background-color: var(--light-background-color);
+  border-radius: 10px;
+  margin-bottom: 50px;
+  padding: 30px 0 50px 0;
+  gap: 20px;
+}

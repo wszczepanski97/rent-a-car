@@ -3,31 +3,22 @@ import { Heading, Link } from "ui";
 import styles from "./cardbutton.module.scss";
 
 const CardButton: FC<CardButtonProps> = (props) => {
-  return props.type === CardButtonType.CardButtonWithBG ? (
+  const buttonStyle =
+    props.type === CardButtonType.CardButtonWithBG
+      ? {
+          backgroundColor: props.bgColor,
+          border: 0,
+        }
+      : {
+          color: props.color,
+          border: `1px solid ${props.color}`,
+          backgroundColor: "transparent",
+        };
+  return (
     <button
       className={styles.cardButton}
       style={{
-        backgroundColor: props.bgColor,
-        border: 0,
-        pointerEvents: props.href ? "auto" : "none",
-        cursor: props.href ? "pointer" : "none",
-      }}
-    >
-      <Heading
-        text={props.buttonText}
-        as="h6"
-        style={{
-          color: props.textColor,
-        }}
-      />
-    </button>
-  ) : (
-    <button
-      className={styles.cardButton}
-      style={{
-        color: props.color,
-        border: `1px solid ${props.color}`,
-        backgroundColor: "transparent",
+        ...buttonStyle,
         pointerEvents: props.href ? "auto" : "none",
         cursor: props.href ? "pointer" : "none",
       }}
@@ -54,7 +45,7 @@ type CardButtonWithBGProps = {
   type: CardButtonType.CardButtonWithBG;
   buttonText: string;
   bgColor: string;
-  textColor: string;
+  color: string;
   href?: string;
 };
 

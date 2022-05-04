@@ -4,7 +4,7 @@ import {
   CarsCardSection,
   LendSection,
   PricingPageProps,
-} from "templates/pricing";
+} from "templates/common";
 import { ContactSection } from "ui/common";
 import { prisma } from "../../db";
 

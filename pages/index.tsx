@@ -4,7 +4,7 @@ import {
   ServicesSection,
   SolutionsSection,
   StatsSection,
-} from "templates/home";
+} from "templates/common";
 import { ContactSection } from "ui/common";
 
 const HomePage: NextPage = () => (

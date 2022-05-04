@@ -1,3 +1,5 @@
+export { default as Article } from "./article/article.component";
+export { default as CarCard } from "./carcard/carcard.component";
 export {
   default as Card,
   type CardButtonProps,
@@ -6,5 +8,4 @@ export {
   type CardTitleProps,
   CardType,
 } from "./card/card.component";
-export { default as Article } from "./article/article.component";
 export { default as CardRow } from "./cardrow/cardrow.component";

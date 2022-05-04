@@ -1,12 +1,19 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { CarDetailsSection, CarProps, Params } from "templates/klient";
-import { prisma } from "../../db";
-import "react-multi-carousel/lib/styles.css";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useSession } from "next-auth/react";
+import { CarProps, Params } from "templates/klient";
+import { UserRole } from "templates/common";
+import { RentSection } from "templates/klient";
+import { prisma } from "../../../db";
 
-const CarPage: NextPage<CarProps> = ({ car }) => (
-  <CarDetailsSection car={car} />
-);
+const RentPage: NextPage<CarProps> = ({ car }) => {
+  const { data: session } = useSession();
+  const role: UserRole | undefined = session ? session.user.role : undefined;
+  return role === "KLIENT" ? (
+    <RentSection car={car} />
+  ) : (
+    <div>To nie klient</div>
+  );
+};
 
 const getCar: GetStaticProps<CarProps, Params> = async (context) => {
   const { id } = context.params!;
@@ -53,4 +60,4 @@ const getCarPaths: GetStaticPaths<Params> = async () => {
 
 export const getStaticProps = getCar;
 export const getStaticPaths = getCarPaths;
-export default CarPage;
+export default RentPage;

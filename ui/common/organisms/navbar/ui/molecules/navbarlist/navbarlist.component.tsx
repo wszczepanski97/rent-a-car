@@ -1,12 +1,13 @@
 import { useSession } from "next-auth/react";
 import { FC } from "react";
-import { UserRole } from "types/next-auth";
-import { NavbarListItem, NavbarListIcon } from "./atoms";
+import { UserRole } from "templates/common";
+import LogoutButton from "ui/common/atoms/logoutbutton/logoutbutton.component";
+import { NavbarListItem } from "./atoms";
 import NavbarListItemHover from "./atoms/navbarlistitemhover/navbarlistitemhover.component";
 import styles from "./navbarlist.module.scss";
 
 const NavbarList: FC = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const role: UserRole | undefined = session ? session.user.role : undefined;
   return (
     <ul className={styles.navbarList}>
@@ -16,9 +17,11 @@ const NavbarList: FC = () => {
             <>
               <NavbarListItem name="Dashboard" href="/klient/dashboard" />
               <NavbarListItem name="Rent a car" href="/klient/rent" />
-              <NavbarListItem name="My rentals" href="/klient/rentals" />
+              <NavbarListItem name="My rentals" href="/klient/myrentals" />
               <NavbarListItem name="Pricing" href="/pricing" />
-              <NavbarListItem name="Sign out" href="/klient/signout" />
+              <LogoutButton>
+                <NavbarListItem name="Sign out" href="/signout" />
+              </LogoutButton>
             </>
           ) : role === "ADMIN" ? (
             <>
@@ -26,14 +29,18 @@ const NavbarList: FC = () => {
               <NavbarListItem name="Scheduler" href="/admin/scheduler" />
               <NavbarListItem name="Map" href="/admin/map" />
               <NavbarListItem name="Charts" href="/admin/charts" />
-              <NavbarListItem name="Sign out" href="/admin/signout" />
+              <LogoutButton>
+                <NavbarListItem name="Sign out" href="/signout" />
+              </LogoutButton>
             </>
           ) : !!role ? (
             <>
               <NavbarListItem name="Home" href="/employee/dashboard" />
               <NavbarListItem name="My jobs" href="/employee/jobs" />
               <NavbarListItem name="Profile" href="/employee/profile" />
-              <NavbarListItem name="Sign out" href="/employee/signout" />
+              <LogoutButton>
+                <NavbarListItem name="Sign out" href="/signout" />
+              </LogoutButton>
             </>
           ) : (
             <>
@@ -41,13 +48,13 @@ const NavbarList: FC = () => {
               <NavbarListItemHover
                 title="Sign in"
                 options={[
-                  { name: "Sign as client", href: "login?role=klient" },
+                  { name: "Sign as client", href: "login?role=client" },
                   { name: "Sign as admin", href: "login?role=admin" },
-                  { name: "Sign as cleaner", href: "login?role=myjkowy" },
-                  { name: "Sign as mechanic", href: "login?role=techniczny" },
+                  { name: "Sign as cleaner", href: "login?role=cleaner" },
+                  { name: "Sign as mechanic", href: "login?role=mechanic" },
                   {
                     name: "Sign as coordinator",
-                    href: "login?role=koordynator",
+                    href: "login?role=coordinator",
                   },
                 ]}
               />

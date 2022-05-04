@@ -1,16 +1,10 @@
 import NextAuth from "next-auth";
-
-export type UserRole =
-  | "ADMIN"
-  | "MYJKOWY"
-  | "TECHNICZNY"
-  | "KOORDYNATOR"
-  | "KLIENT";
+import { UserRole } from "../templates/common/login";
 declare module "next-auth" {
   interface Session {
     user: {
       id: number;
-      role: Role;
+      role: UserRole;
     };
   }
 }
