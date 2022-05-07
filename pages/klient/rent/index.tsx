@@ -6,16 +6,16 @@ import {
   PricingPageProps,
 } from "templates/common";
 import { ContactSection } from "ui/common";
-import { prisma } from "../../db";
+import { prisma } from "../../../db";
 
 const PricingPage: NextPage<PricingPageProps> = ({ cars }) => {
   console.log(cars);
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <>
       <LendSection />
       <CarsCardSection cars={cars} />
       <ContactSection />
-    </div>
+    </>
   );
 };
 

@@ -5,22 +5,25 @@ import { FC } from "react";
 const AdvertisingCardsRow: FC = () => (
   <CardRow style={{ height: "210px", zIndex: 1 }}>
     <AdvertisingCard
-      titleProps={{ title: "Best car lender" }}
+      titleProps={{ title: "Najlepszy partner" }}
       paragraphProps={{
-        paragraphText: "We focus on ergonomics and meeting you where you work.",
+        paragraphText:
+          "Stawiamy na ergonomię i dostępność aut tam, gdzie chcesz.",
       }}
     />
     <AdvertisingCard
-      titleProps={{ title: "Easy to lend" }}
+      titleProps={{ title: "Proste działanie" }}
       paragraphProps={{
-        paragraphText: "Just type what's on your mind and we'll get you there.",
+        paragraphText:
+          "Po prostu wpisz, co masz na myśli, a my Cię tam zaprowadzimy.",
       }}
     />
     <AdvertisingCard
       blue
-      titleProps={{ title: "Huge selection of cars" }}
+      titleProps={{ title: "Duży wybór aut" }}
       paragraphProps={{
-        paragraphText: "Choose whatever car you want and enjoy the ride!",
+        paragraphText:
+          "Wybierz dowolny samochód z naszej oferty i ciesz się bezkresną jazdą w nieznane!",
       }}
     />
   </CardRow>

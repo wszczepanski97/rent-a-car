@@ -5,10 +5,10 @@ import styles from "./statsarticle.module.scss";
 const StatsArticle: FC = () => (
   <Article
     className={styles.statsArticle}
-    titleProps={{ title: "Why choose us" }}
+    titleProps={{ title: "DLACZEGO MY" }}
     paragraphProps={{
       paragraphText:
-        "Problems trying to resolve between people who don’t want to own cars \nand use it only for a while.",
+        "Próbujemy rozwiązać problemy ludzi, którzy nie chcą lub nie mogą posiadać samochodów \nand use it only for a while.",
       as: "p",
     }}
   />

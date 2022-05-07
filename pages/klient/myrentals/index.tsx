@@ -35,9 +35,11 @@ const getClientRentals: GetServerSideProps = async (context) => {
           select: {
             samochody: {
               select: {
+                IdSamochody: true,
                 CenaZaDzien: true,
                 Marka: true,
                 Model: true,
+                Zdjecia: true,
               },
             },
           },
@@ -45,23 +47,21 @@ const getClientRentals: GetServerSideProps = async (context) => {
       },
     })
   ).map(
-    (
-      {
-        DataDo,
-        DataOd,
-        Kwota,
-        uslugi: {
-          samochody: { CenaZaDzien, Marka, Model },
-        },
-      },
-      index
-    ) => ({
-      Id: index + 1,
+    ({
       DataDo,
       DataOd,
       Kwota,
+      uslugi: {
+        samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
+      },
+    }) => ({
+      DataDo: DataDo.toLocaleDateString(),
+      DataOd: DataOd.toLocaleDateString(),
+      Kwota,
       Samochod: `${Marka} ${Model}`,
+      IdSamochod: IdSamochody,
       CenaZaDzien,
+      Zdjecie: Zdjecia?.split(";")[0],
     })
   );
   return {
@@ -76,12 +76,13 @@ export type MyRentalsPageProps = {
 };
 
 export type ClientRental = {
-  Id: number;
-  DataDo: Date;
-  DataOd: Date;
+  DataDo: string;
+  DataOd: string;
   Kwota: number;
   Samochod: string;
+  IdSamochod: number;
   CenaZaDzien: number;
+  Zdjecie: string | undefined;
 };
 
 export const getServerSideProps = getClientRentals;

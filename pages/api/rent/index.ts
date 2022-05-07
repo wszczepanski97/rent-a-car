@@ -17,5 +17,5 @@ export default async function handler(
   //     Kwota,
   //   },
   // });
-  res.status(200).json({ data: { name: "John Doe" } });
+  return res.status(200).json({ data: { name: "John Doe" } });
 }

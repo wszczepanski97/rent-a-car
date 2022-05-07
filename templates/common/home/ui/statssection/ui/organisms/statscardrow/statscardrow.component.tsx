@@ -9,7 +9,7 @@ const StatsCardRow: FC = () => (
         src: "/images/People.svg",
         alt: "People",
       }}
-      paragraphProps={{ paragraphText: "People lend cars" }}
+      paragraphProps={{ paragraphText: "WYPOŻYCZEŃ" }}
       titleProps={{ title: "300K" }}
     />
     <StatsCard
@@ -17,7 +17,7 @@ const StatsCardRow: FC = () => (
         src: "/images/LineChart.svg",
         alt: "LineChart",
       }}
-      paragraphProps={{ paragraphText: "Happy Customers" }}
+      paragraphProps={{ paragraphText: "SATYSFAKCJI" }}
       titleProps={{ title: "92%" }}
     />
     <StatsCard
@@ -25,7 +25,7 @@ const StatsCardRow: FC = () => (
         src: "/images/Award.svg",
         alt: "Award",
       }}
-      paragraphProps={{ paragraphText: "Award Winning" }}
+      paragraphProps={{ paragraphText: "LAURY JAKOŚCI" }}
       titleProps={{ title: "23" }}
     />
     <StatsCard
@@ -33,7 +33,7 @@ const StatsCardRow: FC = () => (
         src: "/images/Baggage.svg",
         alt: "Baggage",
       }}
-      paragraphProps={{ paragraphText: "Car rentals" }}
+      paragraphProps={{ paragraphText: "ODDZIAŁÓW" }}
       titleProps={{ title: "45" }}
     />
   </CardRow>

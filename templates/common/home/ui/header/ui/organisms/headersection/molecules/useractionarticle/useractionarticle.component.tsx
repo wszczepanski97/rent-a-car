@@ -5,15 +5,15 @@ import styles from "./useractionarticle.module.scss";
 const UserActionArticle: FC = () => (
   <Article
     className={styles.userActionArticle}
-    titleProps={{ title: "Make your life easier" }}
+    titleProps={{ title: "UŁATW SWOJE ŻYCIE" }}
     paragraphProps={{
       paragraphText:
-        "We want to lending car easier for you. Check our offer and decide what car to drive.",
+        "Chcemy ułatwić Ci wypożyczanie samochodu. Sprawdź naszą ofertę i zdecyduj jakim samochodem jeździć.",
     }}
     buttonProps={{
       buttonData: [
-        { text: "Rent a car now", active: true },
-        { text: "Check prices" },
+        { text: "Wypożycz teraz", active: true },
+        { text: "Sprawdź ceny" },
       ],
     }}
   />

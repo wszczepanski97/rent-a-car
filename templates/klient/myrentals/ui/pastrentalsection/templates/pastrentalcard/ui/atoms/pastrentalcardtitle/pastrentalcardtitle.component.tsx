@@ -1,7 +1,9 @@
 import { FC } from "react";
 
 const PastRentalCardTitle: FC = () => (
-  <h1 style={{ textAlign: "center" }}>Past Rentals</h1>
+  <h2 style={{ textAlign: "center", color: "var(--text-color)" }}>
+    Wcześniejsze wypożyczenia
+  </h2>
 );
 
 export default PastRentalCardTitle;

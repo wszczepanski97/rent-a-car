@@ -5,7 +5,7 @@ import styles from "./contactarticle.module.scss";
 const ContactArticle: FC = () => (
   <Article
     className={styles.contactArticle}
-    titleProps={{ title: "Get In Touch", lowerCase: true, as: "h2" }}
+    titleProps={{ title: "Pozostańmy w kontakcie", lowerCase: true, as: "h2" }}
   />
 );
 

@@ -5,12 +5,12 @@ const LendArticle = () => (
   <Article
     className={styles.lendArticle}
     titleProps={{
-      title: `Choose a car to lend `,
+      title: `Wybierz auto do wypożyczenia`,
       lowerCase: true,
       as: "h2",
     }}
     paragraphProps={{
-      paragraphText: `We want to provide to you the best performance.\nPlease check out pricing to look out for the best car. `,
+      paragraphText: `Chcemy dać Ci najlepsze doświadczenie jakie tylko możemy.\n Sprawdź wycenę naszych aut by znaleźć najlepsze auto do spełnienia swoich potrzeb. `,
       as: "p",
     }}
   />

@@ -16,37 +16,40 @@ const NavbarList: FC = () => {
           {role === "KLIENT" ? (
             <>
               <NavbarListItem name="Dashboard" href="/klient/dashboard" />
-              <NavbarListItem name="Rent a car" href="/klient/rent" />
-              <NavbarListItem name="My rentals" href="/klient/myrentals" />
-              <NavbarListItem name="Pricing" href="/pricing" />
+              <NavbarListItem name="Wypożycz auto" href="/klient/rent" />
+              <NavbarListItem
+                name="Moje wypożyczenia"
+                href="/klient/myrentals"
+              />
+              <NavbarListItem name="Profil" href="/klient/profile" />
               <LogoutButton>
-                <NavbarListItem name="Sign out" href="/signout" />
+                <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
             </>
           ) : role === "ADMIN" ? (
             <>
-              <NavbarListItem name="Home" href="/admin/dashboard" />
-              <NavbarListItem name="Scheduler" href="/admin/scheduler" />
-              <NavbarListItem name="Map" href="/admin/map" />
-              <NavbarListItem name="Charts" href="/admin/charts" />
+              <NavbarListItem name="Dashboard" href="/admin/dashboard" />
+              <NavbarListItem name="Mój oddział" href="/admin/scheduler" />
+              <NavbarListItem name="Mapa" href="/admin/map" />
+              <NavbarListItem name="Wykresy" href="/admin/charts" />
               <LogoutButton>
-                <NavbarListItem name="Sign out" href="/signout" />
+                <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
             </>
           ) : !!role ? (
             <>
-              <NavbarListItem name="Home" href="/employee/dashboard" />
-              <NavbarListItem name="My jobs" href="/employee/jobs" />
-              <NavbarListItem name="Profile" href="/employee/profile" />
+              <NavbarListItem name="Dashboard" href="/employee/dashboard" />
+              <NavbarListItem name="Moje zlecenia" href="/employee/jobs" />
+              <NavbarListItem name="Profil" href="/employee/profile" />
               <LogoutButton>
-                <NavbarListItem name="Sign out" href="/signout" />
+                <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
             </>
           ) : (
             <>
-              <NavbarListItem name="Home" href="/" />
+              <NavbarListItem name="Strona główna" href="/" />
               <NavbarListItemHover
-                title="Sign in"
+                title="Zaloguj się"
                 options={[
                   { name: "Sign as client", href: "login?role=client" },
                   { name: "Sign as admin", href: "login?role=admin" },
@@ -58,7 +61,7 @@ const NavbarList: FC = () => {
                   },
                 ]}
               />
-              <NavbarListItem name="Pricing" href="/pricing" />
+              <NavbarListItem name="Wyszukaj auto" href="/pricing" />
             </>
           )}
         </div>

@@ -17,7 +17,7 @@ const ContactCard: FC<ContactCardProps> = ({ blue = false, photoProps }) => {
       className={styles.contactCard}
       style={cardStyles}
       photoProps={{ size: { height: "72", width: "72" }, ...photoProps }}
-      titleProps={{ title: "Get Support", as: "h5", color }}
+      titleProps={{ title: "Uzyskaj pomoc", as: "h5", color }}
       paragraphProps={{
         paragraphText: "car-lending@example.com",
         as: "h6",
@@ -25,7 +25,7 @@ const ContactCard: FC<ContactCardProps> = ({ blue = false, photoProps }) => {
       }}
       buttonProps={{
         type: CardButtonType.CardButtonWithoutBG,
-        buttonText: "Submit Request",
+        buttonText: "Wyślij zgłoszenie",
         color: blue ? "var(--light-text-color)" : "var(--primary-color)",
       }}
       type={CardType.WITH_BUTTON}

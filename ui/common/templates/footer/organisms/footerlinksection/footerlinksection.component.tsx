@@ -9,28 +9,28 @@ const FooterLinkSection = () => (
   <section className={styles.footerLinkSection}>
     <div className={styles.footerLinkSectionContainer}>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle text="Company Info" />
-        <FooterLinkSectionColumnLink text="About Us" />
-        <FooterLinkSectionColumnLink text="Carrier" />
-        <FooterLinkSectionColumnLink text="We are hiring" />
+        <FooterLinkSectionColumnTitle text="Informacje o firmie" />
+        <FooterLinkSectionColumnLink text="O nas" />
+        <FooterLinkSectionColumnLink text="Kariera" />
+        <FooterLinkSectionColumnLink text="Zatrudniamy" />
         <FooterLinkSectionColumnLink text="Blog" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle text="Features" />
-        <FooterLinkSectionColumnLink text="Business Marketing" />
-        <FooterLinkSectionColumnLink text="User Analytic" />
-        <FooterLinkSectionColumnLink text="Live Chat" />
-        <FooterLinkSectionColumnLink text="Unlimited Support" />
+        <FooterLinkSectionColumnTitle text="Funkcjonalności" />
+        <FooterLinkSectionColumnLink text="Marketing Biznesowy" />
+        <FooterLinkSectionColumnLink text="Analityka użytkownika" />
+        <FooterLinkSectionColumnLink text="Chat Live" />
+        <FooterLinkSectionColumnLink text="Nieograniczone wsparcie" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle text="Resources" />
+        <FooterLinkSectionColumnTitle text="Zasoby" />
         <FooterLinkSectionColumnLink text="IOS & Android" />
-        <FooterLinkSectionColumnLink text="Watch a Demo" />
-        <FooterLinkSectionColumnLink text="Customers" />
+        <FooterLinkSectionColumnLink text="Obejrzyj Demo" />
+        <FooterLinkSectionColumnLink text="Klienci" />
         <FooterLinkSectionColumnLink text="API" />
       </FooterLinkSectionColumn>
       <FooterLinkSectionColumn>
-        <FooterLinkSectionColumnTitle text="Get In Touch" />
+        <FooterLinkSectionColumnTitle text="Pozostańmy w kontakcie" />
         <FooterLinkSectionColumnLink
           text="(480) 555-0103"
           photoProps={{ src: "/images/PhoneBlue.svg", alt: "Phone" }}
