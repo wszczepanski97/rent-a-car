@@ -51,10 +51,10 @@ const NavbarList: FC = () => {
               <NavbarListItemHover
                 title="Zaloguj się"
                 options={[
-                  { name: "Sign as client", href: "login?role=client" },
-                  { name: "Sign as admin", href: "login?role=admin" },
-                  { name: "Sign as cleaner", href: "login?role=cleaner" },
-                  { name: "Sign as mechanic", href: "login?role=mechanic" },
+                  { name: "Sign as client", href: "/login?role=client" },
+                  { name: "Sign as admin", href: "/login?role=admin" },
+                  { name: "Sign as cleaner", href: "/login?role=cleaner" },
+                  { name: "Sign as mechanic", href: "/login?role=mechanic" },
                   {
                     name: "Sign as coordinator",
                     href: "login?role=coordinator",
