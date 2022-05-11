@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { CarDetailsSection, CarProps, Params } from "templates/klient";
+import { CarDetailsSection, CarProps, Params } from "templates/client";
 import { prisma } from "../../db";
-import "react-multi-carousel/lib/styles.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const CarPage: NextPage<CarProps> = ({ car }) => (

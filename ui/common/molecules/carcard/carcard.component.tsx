@@ -44,7 +44,7 @@ const CarCard: FC<CarCardProps> = ({
             buttonText: "Lend",
             bgColor: "var(--login-button-background)",
             color: "var(--light-text-color)",
-            href: `/klient/rent/${carId}`,
+            href: `/client/rent/${carId}`,
           }
         : undefined
     }

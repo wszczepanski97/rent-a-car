@@ -1,27 +1,18 @@
 import { GetStaticProps, NextPage } from "next";
-import {
-  Cars,
-  CarsCardSection,
-  LendSection,
-  PricingPageProps,
-} from "templates/common";
+import { CarsPageProps } from "templates";
+import { CarsCardSection, LendSection } from "templates/common";
 import { ContactSection } from "ui/common";
 import { prisma } from "../../db";
 
-const PricingPage: NextPage<PricingPageProps> = ({ cars }) => {
-  console.log(cars);
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <LendSection />
-      <CarsCardSection cars={cars} />
-      <ContactSection />
-    </div>
-  );
-};
+const PricingPage: NextPage<CarsPageProps> = ({ cars }) => (
+  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+    <LendSection />
+    <CarsCardSection cars={cars} />
+    <ContactSection />
+  </div>
+);
 
-const getCars: GetStaticProps<{
-  cars: Cars[];
-}> = async () => {
+const getCars: GetStaticProps<CarsPageProps> = async () => {
   const cars = (
     await prisma.samochody.findMany({
       include: {
@@ -39,9 +30,8 @@ const getCars: GetStaticProps<{
     }) => ({
       CenaZaDzien,
       IdSamochody,
-      Marka,
-      Model,
-      Zdjecia,
+      Nazwa: `${Marka} ${Model}`,
+      Zdjecie: Zdjecia?.split(";")[0] || "",
       ...samochodyszczegolyrest,
     })
   );

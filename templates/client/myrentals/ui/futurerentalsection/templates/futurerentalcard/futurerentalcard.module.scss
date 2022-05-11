@@ -1,0 +1,15 @@
+@import "mixins";
+
+.futureRentalCard {
+  @include flexColumnHorizontallyCentered;
+  background-color: var(--light-background-color);
+  border-radius: 10px;
+  margin-bottom: 50px;
+  padding: 30px 0 50px 0;
+  gap: 20px;
+}
+
+.futureRentalCardInnerWrapper {
+  @include flexRowVerticallySpaceBetween;
+  max-width: 1050px;
+}

@@ -15,13 +15,13 @@ const NavbarList: FC = () => {
         <div className={styles.navbarListItemGroup}>
           {role === "KLIENT" ? (
             <>
-              <NavbarListItem name="Dashboard" href="/klient/dashboard" />
-              <NavbarListItem name="Wypożycz auto" href="/klient/rent" />
+              <NavbarListItem name="Dashboard" href="/client/dashboard" />
+              <NavbarListItem name="Wypożycz auto" href="/client/rent" />
               <NavbarListItem
                 name="Moje wypożyczenia"
-                href="/klient/myrentals"
+                href="/client/myrentals"
               />
-              <NavbarListItem name="Profil" href="/klient/profile" />
+              <NavbarListItem name="Profil" href="/client/profile" />
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
@@ -32,6 +32,7 @@ const NavbarList: FC = () => {
               <NavbarListItem name="Mój oddział" href="/admin/scheduler" />
               <NavbarListItem name="Mapa" href="/admin/map" />
               <NavbarListItem name="Wykresy" href="/admin/charts" />
+              <NavbarListItem name="Profil" href="/admin/profile" />
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>

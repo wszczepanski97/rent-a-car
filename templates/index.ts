@@ -1,2 +1,2 @@
 export * from "./common";
-export * from "./klient";
+export * from "./client";
