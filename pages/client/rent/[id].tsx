@@ -24,15 +24,6 @@ const getCar: GetStaticProps<CarProps, Params> = async (context) => {
       IdSamochody: parseInt(id),
     },
     include: {
-      uslugi: {
-        include: {
-          wypozyczenia: {
-            where: {
-              IdWypozyczeniaStatus: 4,
-            },
-          },
-        },
-      },
       samochodyszczegoly: true,
     },
   });

@@ -12,7 +12,7 @@ import {
 } from "templates/common";
 import { ContactSection } from "ui/common";
 
-const HomePage: NextPage<ProfilePageProps> = ({ session }) => {
+const HomePage: NextPage<HomePageProps> = ({ session }) => {
   const router = useRouter();
   useEffect(() => {
     if (session?.user.role === UserRole.client) {
@@ -39,7 +39,7 @@ const getUser: GetServerSideProps = async (context) => {
   };
 };
 
-export type ProfilePageProps = {
+export type HomePageProps = {
   session: Session | null;
 };
 

@@ -15,12 +15,11 @@ const getCar: GetStaticProps<CarProps, Params> = async (context) => {
     },
     include: {
       uslugi: {
+        where: {
+          IdUslugaStatus: 4,
+        },
         include: {
-          wypozyczenia: {
-            where: {
-              IdWypozyczeniaStatus: 4,
-            },
-          },
+          wypozyczenia: true,
         },
       },
       samochodyszczegoly: true,

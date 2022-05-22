@@ -14,18 +14,35 @@ export default async function handler(
       if (!klientByIdUzytkownicy) {
         return res.status(400).json({ data: "Nie odnaleziono klienta" });
       }
-      const [klient] = await prisma.$transaction([
-        prisma.klienci.delete({ where: { IdKlienci } }),
-      ]);
-      await prisma.$transaction([
-        prisma.role_uzytkownik.delete({
-          where: { IdUzytkownicy_IdRole: { IdRole: 5, IdUzytkownicy } },
+      const [user] = await prisma.$transaction([
+        prisma.uzytkownicy.delete({
+          where: { IdUzytkownicy },
+          include: {
+            klienci: true,
+          },
         }),
       ]);
-      const [uzytkownik] = await prisma.$transaction([
-        prisma.uzytkownicy.delete({ where: { IdUzytkownicy } }),
+      return res.status(200).json({ data: { user } });
+    } catch (err) {
+      console.log(err);
+    }
+  } else if (req.method === "PUT") {
+    try {
+      const user = await prisma.uzytkownicy.findFirst({
+        where: { IdUzytkownicy: req.body.IdUzytkownicy },
+      });
+      if (!user) {
+        return res.status(400).json({ data: "Nie odnaleziono klienta" });
+      }
+      const [klient] = await prisma.$transaction([
+        prisma.uzytkownicy.update({
+          data: req.body,
+          where: {
+            IdUzytkownicy: req.body.IdUzytkownicy,
+          },
+        }),
       ]);
-      return res.status(200).json({ data: { klient, uzytkownik } });
+      return res.status(200).json({ data: { klient } });
     } catch (err) {
       console.log(err);
     }

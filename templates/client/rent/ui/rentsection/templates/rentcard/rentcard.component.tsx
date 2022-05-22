@@ -36,7 +36,7 @@ const RentCard: FC<RentCardProps> = ({ car, session }) => {
       Kwota: parseInt(target.Kwota.value),
       IdUbezpieczenia: parseInt(target.IdUbezpieczenia.value),
       IdUzytkownicy: session?.user.id,
-      IdSamochody: car.IdSamochody,
+      IdSamochody: car!.IdSamochody,
     });
 
     const options = {
@@ -76,15 +76,15 @@ const RentCard: FC<RentCardProps> = ({ car, session }) => {
         <h3>Wybrany model</h3>
         <CarCard
           detailsProps={{
-            carBody: car.samochodyszczegoly.Nadwozie,
-            fuelType: car.samochodyszczegoly.RodzajPaliwa,
-            numberOfSeats: car.samochodyszczegoly.IloscMiejsc,
+            carBody: car!.samochodyszczegoly.Nadwozie,
+            fuelType: car!.samochodyszczegoly.RodzajPaliwa,
+            numberOfSeats: car!.samochodyszczegoly.IloscMiejsc,
           }}
           photoProps={{
-            src: car.Zdjecia?.split(";")[0] || "",
-            alt: `${car.Marka} ${car.Model}`,
+            src: car!.Zdjecia?.split(";")[0] || "",
+            alt: `${car!.Marka} ${car!.Model}`,
           }}
-          titleProps={{ title: `${car.Marka} ${car.Model}` }}
+          titleProps={{ title: `${car!.Marka} ${car!.Model}` }}
           withoutBtns
         />
       </div>
@@ -145,7 +145,7 @@ const RentCard: FC<RentCardProps> = ({ car, session }) => {
               name="Kwota"
               required
               disabled
-              value={car.CenaZaDzien * iloscDni}
+              value={car!.CenaZaDzien * iloscDni}
             />
           </div>
           {error && <div>{error}</div>}

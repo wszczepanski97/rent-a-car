@@ -32,14 +32,13 @@ const getClientRentals: GetServerSideProps = async (context) => {
     await prisma.wypozyczenia.findMany({
       where: {
         IdKlienci: userId?.IdKlienci,
-        IdWypozyczeniaStatus: 5,
       },
-      select: {
-        DataOd: true,
-        DataDo: true,
-        Kwota: true,
+      include: {
         uslugi: {
           select: {
+            DataOd: true,
+            DataDo: true,
+            IdUslugaStatus: true,
             samochody: {
               select: {
                 IdSamochody: true,
@@ -53,38 +52,37 @@ const getClientRentals: GetServerSideProps = async (context) => {
         },
       },
     })
-  ).map(
-    ({
-      DataDo,
-      DataOd,
-      Kwota,
-      uslugi: {
-        samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
-      },
-    }) => ({
-      DataDo: DataDo.toLocaleDateString(),
-      DataOd: DataOd.toLocaleDateString(),
-      Kwota,
-      Samochod: `${Marka} ${Model}`,
-      IdSamochod: IdSamochody,
-      CenaZaDzien,
-      Zdjecie: Zdjecia?.split(";")[0],
-    })
-  );
+  )
+    .filter((rental) => rental.uslugi.IdUslugaStatus === 5)
+    .map(
+      ({
+        Kwota,
+        uslugi: {
+          DataDo,
+          DataOd,
+          samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
+        },
+      }) => ({
+        DataDo: DataDo.toLocaleDateString(),
+        DataOd: DataOd.toLocaleDateString(),
+        Kwota,
+        Samochod: `${Marka} ${Model}`,
+        IdSamochod: IdSamochody,
+        CenaZaDzien,
+        Zdjecie: Zdjecia?.split(";")[0],
+      })
+    );
   const futurerentals = (
     await prisma.wypozyczenia.findMany({
       where: {
         IdKlienci: userId?.IdKlienci,
-        IdWypozyczeniaStatus: 1,
       },
-      select: {
-        IdWypozyczenia: true,
-        IdUslugi: true,
-        DataOd: true,
-        DataDo: true,
-        Kwota: true,
+      include: {
         uslugi: {
           select: {
+            DataOd: true,
+            DataDo: true,
+            IdUslugaStatus: true,
             samochody: {
               select: {
                 IdSamochody: true,
@@ -98,28 +96,30 @@ const getClientRentals: GetServerSideProps = async (context) => {
         },
       },
     })
-  ).map(
-    ({
-      IdWypozyczenia,
-      IdUslugi,
-      DataDo,
-      DataOd,
-      Kwota,
-      uslugi: {
-        samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
-      },
-    }) => ({
-      IdWypozyczenia,
-      IdUslugi,
-      DataDo: DataDo.toLocaleDateString(),
-      DataOd: DataOd.toLocaleDateString(),
-      Kwota,
-      Samochod: `${Marka} ${Model}`,
-      IdSamochod: IdSamochody,
-      CenaZaDzien,
-      Zdjecie: Zdjecia?.split(";")[0],
-    })
-  );
+  )
+    .filter((rental) => rental.uslugi.IdUslugaStatus === 1)
+    .map(
+      ({
+        IdWypozyczenia,
+        IdUslugi,
+        Kwota,
+        uslugi: {
+          DataDo,
+          DataOd,
+          samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
+        },
+      }) => ({
+        IdWypozyczenia,
+        IdUslugi,
+        DataDo: DataDo.toLocaleDateString(),
+        DataOd: DataOd.toLocaleDateString(),
+        Kwota,
+        Samochod: `${Marka} ${Model}`,
+        IdSamochod: IdSamochody,
+        CenaZaDzien,
+        Zdjecie: Zdjecia?.split(";")[0],
+      })
+    );
   return {
     props: {
       pastrentals: JSON.parse(JSON.stringify(pastrentals)),

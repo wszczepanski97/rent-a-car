@@ -1,31 +1,33 @@
-import { klienci } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import ProfileSection from "templates/client/profile/ui/profilesection/profilesection.component";
+import { ProfileClient, ProfileSection, UserRole } from "templates";
 import { prisma } from "../../../db";
 
-const ProfilePage: NextPage<ProfilePageProps> = ({ user }) => {
-  return <ProfileSection user={user} />;
+type ProfilClientPageProps = {
+  profile: ProfileClient;
 };
 
-const getUser: GetServerSideProps = async (context) => {
+const ProfileClientPage: NextPage<ProfilClientPageProps> = ({ profile }) => {
+  return <ProfileSection profile={profile} />;
+};
+
+const getUser: GetServerSideProps<ProfilClientPageProps> = async (context) => {
   const session = await getSession(context);
-  const user = await prisma.klienci.findFirst({
+  const foundedUser = await prisma.klienci.findFirst({
     where: {
       IdUzytkownicy: session?.user.id,
     },
-  });
-  return {
-    props: {
-      user,
+    include: {
+      uzytkownicy: true,
     },
+  });
+  const { uzytkownicy, ...userDetails } = foundedUser!;
+  const user = { ...userDetails, ...uzytkownicy };
+  return {
+    props: { profile: { user, type: UserRole.client } },
   };
-};
-
-export type ProfilePageProps = {
-  user: klienci;
 };
 
 export const getServerSideProps = getUser;
 
-export default ProfilePage;
+export default ProfileClientPage;

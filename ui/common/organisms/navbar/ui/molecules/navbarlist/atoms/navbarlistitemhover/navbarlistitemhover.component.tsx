@@ -27,7 +27,7 @@ const NavbarListItemHover: FC<NavbarListItemHoverProps> = ({
           display: showList ? "block" : "none",
           position: "absolute",
           listStyle: "none",
-          backgroundColor: "var(--dark-background-color)",
+          backgroundColor: "var(--secondary-color-1)",
           borderRadius: 5,
           padding: 0,
         }}
@@ -38,6 +38,7 @@ const NavbarListItemHover: FC<NavbarListItemHoverProps> = ({
               display: "inline-block",
               padding: 5,
               whiteSpace: "nowrap",
+              color: "var(--text-color)",
             }}
           >
             <Link {...option} />

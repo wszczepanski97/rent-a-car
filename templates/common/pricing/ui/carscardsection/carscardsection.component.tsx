@@ -76,6 +76,8 @@ const CarsCardSection: FC<{ cars: Cars[] }> = ({ cars }) => {
     return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
   }
 
+  fuzzyTextFilterFn.autoRemove = (val: string) => !val;
+
   const filterTypes = useMemo(
     () => ({
       fuzzyText: fuzzyTextFilterFn,
@@ -262,38 +264,43 @@ const CarsCardSection: FC<{ cars: Cars[] }> = ({ cars }) => {
 };
 
 type ColumnGroup = HeaderGroup<Cars>;
-function DefaultColumnFilter(column: ColumnGroup) {
-  const count = column.preFilteredRows.length;
+function DefaultColumnFilter({
+  //@ts-ignore
+  column: { filterValue, preFilteredRows, setFilter },
+}) {
+  const count = preFilteredRows.length;
 
   return (
     <input
-      value={column.filterValue || ""}
+      value={filterValue || ""}
       onChange={(e) => {
-        column.setFilter(e.target.value || undefined);
+        setFilter(e.target.value || undefined);
       }}
       placeholder={`Search ${count} records...`}
     />
   );
 }
 
-function SelectColumnFilter(column: ColumnGroup) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
+function SelectColumnFilter({
+  //@ts-ignore
+  column: { filterValue, setFilter, preFilteredRows, id },
+}) {
   const options = useMemo(() => {
     const options = new Set();
-    column.preFilteredRows.forEach((row) => {
-      options.add(row.values[column.id]);
+    //@ts-ignore
+    preFilteredRows.forEach((row) => {
+      options.add(row.values[id]);
     });
     //@ts-ignore
     return [...options.values()];
-  }, [column.id, column.preFilteredRows]);
+  }, [id, preFilteredRows]);
 
   // Render a multi-select box
   return (
     <select
-      value={column.filterValue}
+      value={filterValue}
       onChange={(e) => {
-        column.setFilter(e.target.value || undefined);
+        setFilter(e.target.value || undefined);
       }}
     >
       <option value="">All</option>

@@ -10,11 +10,11 @@ export interface Params extends ParsedUrlQuery {
   id: string;
 }
 
-export type Car = samochody & {
-  uslugi: (uslugi & { wypozyczenia: wypozyczenia[] })[];
-} & {
-  samochodyszczegoly: Omit<samochodyszczegoly, "IdSamochodySzczegoly">;
-};
+export type Car =
+  | (samochody & {
+      samochodyszczegoly: samochodyszczegoly;
+    })
+  | null;
 
 export type CarProps = {
   car: Car;

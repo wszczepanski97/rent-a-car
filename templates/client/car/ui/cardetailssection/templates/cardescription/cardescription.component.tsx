@@ -22,24 +22,24 @@ const CarDescription: FC<CarProps> = ({ car }) => (
     <CarDescriptionHeader />
     <div className={styles.carDescriptionColumnContainer}>
       <CarDescriptionColumn>
-        <OdometerProperty value={car.Przebieg} />
-        <CarBodyProperty value={car.samochodyszczegoly.Nadwozie} />
-        <FuelTypeProperty value={car.samochodyszczegoly.RodzajPaliwa} />
+        <OdometerProperty value={car!.Przebieg} />
+        <CarBodyProperty value={car!.samochodyszczegoly.Nadwozie} />
+        <FuelTypeProperty value={car!.samochodyszczegoly.RodzajPaliwa} />
       </CarDescriptionColumn>
       <CarDescriptionColumn>
-        <NumberOfSeatsProperty value={car.samochodyszczegoly.IloscMiejsc} />
-        <NumberOfDoorsProperty value={car.samochodyszczegoly.IloscDrzwi} />
+        <NumberOfSeatsProperty value={car!.samochodyszczegoly.IloscMiejsc} />
+        <NumberOfDoorsProperty value={car!.samochodyszczegoly.IloscDrzwi} />
         <BootCapacityProperty
-          value={car.samochodyszczegoly.PojemnoscBagaznika}
+          value={car!.samochodyszczegoly.PojemnoscBagaznika}
         />
       </CarDescriptionColumn>
     </div>
     <CarDescriptionRow>
-      <CategoryProperty value={car.Kategoria} />
-      <PriceForDayProperty value={car.CenaZaDzien} />
+      <CategoryProperty value={car!.Kategoria} />
+      <PriceForDayProperty value={car!.CenaZaDzien} />
       <AvailabilityProperty available={true} />
     </CarDescriptionRow>
-    <Link href={`/client/rent/${car.IdSamochody}`}>
+    <Link href={`/client/rent/${car!.IdSamochody}`}>
       <button
         style={{
           padding: "10px 36px",

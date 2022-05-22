@@ -7,23 +7,13 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     let usluga;
-    const {
-      DataOd,
-      DataDo,
-      Opis,
-      Kwota,
-      IloscDni,
-      IdUzytkownicy,
-      IdUbezpieczenia,
-      IdSamochody,
-    } = req.body;
-    if (!IdSamochody) {
+    if (!req.body.IdSamochody) {
       return res.status(400).json({ data: "Nie odnaleziono samochodu" });
     }
     try {
       const klient = await prisma.klienci.findFirst({
         where: {
-          IdUzytkownicy,
+          IdUzytkownicy: req.body.IdUzytkownicy,
         },
       });
       if (!klient) {
@@ -32,7 +22,14 @@ export default async function handler(
       usluga = await prisma.$transaction([
         prisma.uslugi.create({
           data: {
-            Opis,
+            DataOd: new Date(req.body.DataOd),
+            DataDo: new Date(req.body.DataDo),
+            Opis: req.body.Opis,
+            uslugistatus: {
+              connect: {
+                IdUslugiStatus: 1,
+              },
+            },
             lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: {
               connect: {
                 IdLokalizacje: klient?.IdLokalizacje,
@@ -45,18 +42,14 @@ export default async function handler(
             },
             samochody: {
               connect: {
-                IdSamochody,
+                IdSamochody: req.body.IdSamochody,
               },
             },
             wypozyczenia: {
               create: {
-                DataOd: new Date(DataOd),
-                DataDo: new Date(DataDo),
-                IloscDni,
-                Kwota,
+                Kwota: req.body.Kwota,
                 IdKlienci: klient.IdKlienci,
-                IdUbezpieczenia,
-                IdWypozyczeniaStatus: 1,
+                IdUbezpieczenia: req.body.IdUbezpieczenia,
                 KwotaPoRabacie: null,
               },
             },

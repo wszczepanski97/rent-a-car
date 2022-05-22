@@ -26,13 +26,17 @@ const NavbarList: FC = () => {
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
             </>
-          ) : role === "ADMIN" ? (
+          ) : role === "KOORDYNATOR" ? (
             <>
-              <NavbarListItem name="Dashboard" href="/admin/dashboard" />
-              <NavbarListItem name="Mój oddział" href="/admin/scheduler" />
-              <NavbarListItem name="Mapa" href="/admin/map" />
-              <NavbarListItem name="Wykresy" href="/admin/charts" />
-              <NavbarListItem name="Profil" href="/admin/profile" />
+              <NavbarListItem name="Dashboard" href="/coordinator/dashboard" />
+              <NavbarListItem
+                name="Mój oddział"
+                href="/coordinator/mydepartment"
+              />
+              <NavbarListItem name="Kalendarz" href="/coordinator/calendar" />
+              <NavbarListItem name="Mapa" href="/coordinator/map" />
+              <NavbarListItem name="Wykresy" href="/coordinator/charts" />
+              <NavbarListItem name="Profil" href="/coordinator/profile" />
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
@@ -52,13 +56,21 @@ const NavbarList: FC = () => {
               <NavbarListItemHover
                 title="Zaloguj się"
                 options={[
-                  { name: "Sign as client", href: "/login?role=client" },
-                  { name: "Sign as admin", href: "/login?role=admin" },
-                  { name: "Sign as cleaner", href: "/login?role=cleaner" },
-                  { name: "Sign as mechanic", href: "/login?role=mechanic" },
                   {
-                    name: "Sign as coordinator",
-                    href: "login?role=coordinator",
+                    name: "Zaloguj się jako klient",
+                    href: "/login?role=client",
+                  },
+                  {
+                    name: "Zaloguj się jako koordynator",
+                    href: "/login?role=coordinator",
+                  },
+                  {
+                    name: "Zaloguj się jako pracownik myjni",
+                    href: "/login?role=cleaner",
+                  },
+                  {
+                    name: "Zaloguj się jako mechanik",
+                    href: "/login?role=mechanic",
                   },
                 ]}
               />
