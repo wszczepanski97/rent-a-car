@@ -13,7 +13,10 @@ import {
   wypozyczenia,
 } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
+import { ReactElement } from "react";
 import { CalendarSection } from "templates/admin/calendar/ui";
+import { NextPageWithLayout } from "types/next";
+import { Footer, Navbar } from "ui";
 import { prisma } from "../../../db";
 
 export type CalendarAdminPageProps = {
@@ -74,8 +77,23 @@ export type Car = samochody & {
   uslugi: uslugi[];
 };
 
-const CalendarAdminPage: NextPage<CalendarAdminPageProps> = (props) => (
-  <CalendarSection {...props} />
+const CalendarAdminPage: NextPageWithLayout<CalendarAdminPageProps> = (
+  props
+) => <CalendarSection {...props} />;
+
+CalendarAdminPage.getLayout = (page: ReactElement) => (
+  <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        margin: "0 auto",
+      }}
+    >
+      <Navbar />
+      {page}
+    </div>
+  </>
 );
 
 const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {

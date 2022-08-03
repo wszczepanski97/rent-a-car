@@ -122,8 +122,20 @@ export const Tab3: FC<Tab3Props> = ({
   );
 
   return (
-    <div id="details">
-      <div className="details-page wizard-title">Wstaw datę od i do usługi</div>
+    <div
+      id="details"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 350,
+        width: 500,
+        gap: 15,
+        margin: "0 auto",
+      }}
+    >
+      <h4 className="e-textlabel"> Wstaw datę od i do usługi</h4>
       <div
         style={{
           display: "flex",
@@ -131,7 +143,7 @@ export const Tab3: FC<Tab3Props> = ({
           gap: 20,
         }}
       >
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <label className="e-textlabel">Data od</label>
           <DatePickerComponent
             id="StartDate"
@@ -151,7 +163,7 @@ export const Tab3: FC<Tab3Props> = ({
             value={state.startDateValue}
           />
         </div>
-        <div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <label className="e-textlabel">Data do</label>
           <DatePickerComponent
             id="EndDate"
@@ -173,16 +185,30 @@ export const Tab3: FC<Tab3Props> = ({
         </div>
       </div>
       <br />
-      <div className="btn-container">
-        <button id="goBackToBook" className="e-btn" onClick={goStepBack}>
-          Back
-        </button>
+      <div
+        className="btn-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 10,
+        }}
+      >
         <button
           id="selectDates"
           className="e-btn"
           onClick={() => onClick(state)}
+          style={{ backgroundColor: "#5aad73", border: 0 }}
         >
-          Continue
+          Przejdź dalej
+        </button>
+        <button
+          id="goBackToBook"
+          className="e-btn"
+          onClick={goStepBack}
+          style={{ backgroundColor: "#ff5757", border: 0 }}
+        >
+          Wróć
         </button>
       </div>
       <span id="err3" />

@@ -56,7 +56,7 @@ export const commands: any = [
 
 export async function actionBegin(args: any, path: string) {
   if (args.requestType === "save" || args.requestType === "delete") {
-    return await fetch(`/api/${path}`, {
+    return await fetch(`/api/coordinator/${path}`, {
       method:
         args.action === "add"
           ? "POST"

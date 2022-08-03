@@ -104,15 +104,19 @@ a {
 }
 
 /* SCROLLBAR */
-html::-webkit-scrollbar {
-  width: 10px;
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-html::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background-color: rgb(165, 163, 163);
 }
 
-html::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: rgb(92, 92, 92);
-  border-radius: 8px;
+  border-radius: 6px;
+}
+
+#scheduler_dialog_wrapper {
+  width: 1030px !important;
 }

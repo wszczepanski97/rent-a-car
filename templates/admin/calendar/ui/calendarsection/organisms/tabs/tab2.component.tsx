@@ -1,10 +1,14 @@
 import {
   ColumnDirective,
   ColumnsDirective,
+  Filter,
   GridComponent,
+  Inject,
+  Page,
   RowSelectEventArgs,
+  Sort,
 } from "@syncfusion/ej2-react-grids";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 type Tab2Props = {
   filteredCars: Object[];
@@ -13,6 +17,7 @@ type Tab2Props = {
 };
 
 export const Tab2: FC<Tab2Props> = ({ filteredCars, goStepBack, onClick }) => {
+  // const [disabled, setDisabled] = useState(true);
   let availableCarGrid: GridComponent | null;
   let selectedCar: any;
   const carSelected = (args: RowSelectEventArgs) => {
@@ -22,13 +27,34 @@ export const Tab2: FC<Tab2Props> = ({ filteredCars, goStepBack, onClick }) => {
     availableCarGrid!.dataSource = filteredCars;
   };
   return (
-    <div>
-      <div className="wizard-title">Wybierz auto z listy poniżej </div>
+    <div
+      className="responsive-align"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 430,
+        width: 500,
+        margin: "0 auto",
+      }}
+    >
+      <h4 className="e-textlabel">Wybierz auto z listy poniżej </h4>
       <GridComponent
+        allowPaging
+        allowFiltering
+        allowSorting
+        clipMode="EllipsisWithTooltip"
+        filterSettings={{ type: "CheckBox" }}
         ref={(grid) => (availableCarGrid = grid)}
-        width="100%"
+        width={1000}
         rowSelected={carSelected}
         created={availableCars}
+        pageSettings={{ pageSize: 5 }}
+        // onChange={() => {
+        //   console.log("change");
+        //   setDisabled(false);
+        // }}
       >
         <ColumnsDirective>
           <ColumnDirective
@@ -53,18 +79,34 @@ export const Tab2: FC<Tab2Props> = ({ filteredCars, goStepBack, onClick }) => {
             autoFit
           />
         </ColumnsDirective>
+        <Inject services={[Page, Filter, Sort]} />
       </GridComponent>
       <br />
-      <div className="btn-container">
-        <button id="goToSearch" className="e-btn" onClick={goStepBack}>
-          Back
-        </button>
+      <div
+        className="btn-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 10,
+        }}
+      >
         <button
           id="selectCar"
           className="e-btn"
           onClick={() => onClick(availableCarGrid)}
+          style={{ backgroundColor: "#5aad73", border: 0 }}
+          // disabled={disabled}
         >
-          Continue
+          Przejdź dalej
+        </button>
+        <button
+          id="goToSearch"
+          className="e-btn"
+          onClick={goStepBack}
+          style={{ backgroundColor: "#ff5757", border: 0 }}
+        >
+          Wróć
         </button>
       </div>
       <span id="err2" />

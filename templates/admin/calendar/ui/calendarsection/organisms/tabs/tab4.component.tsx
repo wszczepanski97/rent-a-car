@@ -1,7 +1,7 @@
 import { lokalizacje } from "@prisma/client";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { Employee } from "pages/coordinator/calendar";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { DateRange } from "./tab3.component";
 
 type Tab4Props = {
@@ -19,6 +19,7 @@ export const Tab4: FC<Tab4Props> = ({
   goStepBack,
   onClick,
 }) => {
+  const [disabled, setDisabled] = useState(true);
   let employeeDropdown: DropDownListComponent | null;
   const restrictEmployeesArray = employees
     .filter((employee) => employee.IdLokalizacje === location?.IdLokalizacje)
@@ -57,24 +58,41 @@ export const Tab4: FC<Tab4Props> = ({
         personalData
     );
   return (
-    <div className="responsive-align">
-      <div className="row">
-        <label className="e-textlabel">Wybierz klienta</label>
-        <DropDownListComponent
-          ref={(dropdownlist) => {
-            employeeDropdown = dropdownlist;
-          }}
-          dataSource={restrictEmployeesArray.map(
-            (employee) =>
-              `${employee.uzytkownicy.Imie} ${employee.uzytkownicy.Nazwisko}`
-          )}
-          placeholder="Pracownik"
-        />
-      </div>
-      <div className="btn-container">
-        <button id="goToSearch" className="e-btn" onClick={goStepBack}>
-          Wróć
-        </button>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 350,
+        width: 500,
+        gap: 20,
+        margin: "0 auto",
+      }}
+    >
+      <h4 className="e-textlabel">Wybierz pracownika</h4>
+      <DropDownListComponent
+        ref={(dropdownlist) => {
+          employeeDropdown = dropdownlist;
+        }}
+        dataSource={restrictEmployeesArray.map(
+          (employee) =>
+            `${employee.uzytkownicy.Imie} ${employee.uzytkownicy.Nazwisko}`
+        )}
+        placeholder="Pracownik"
+        onChange={() => {
+          setDisabled(false);
+        }}
+      />
+      <div
+        className="btn-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          gap: 10,
+        }}
+      >
         <button
           id="employee"
           className="e-btn"
@@ -82,8 +100,18 @@ export const Tab4: FC<Tab4Props> = ({
             const employee = findEmployee(employeeDropdown?.value as string);
             onClick(employee);
           }}
+          style={{ backgroundColor: "#5aad73", border: 0 }}
+          disabled={disabled}
         >
-          Dalej
+          Przejdź dalej
+        </button>
+        <button
+          id="goToSearch"
+          className="e-btn"
+          onClick={goStepBack}
+          style={{ backgroundColor: "#ff5757", border: 0 }}
+        >
+          Wróć
         </button>
       </div>
       <span id="err4" />

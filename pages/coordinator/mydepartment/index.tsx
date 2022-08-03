@@ -1,4 +1,10 @@
-import { lokalizacje, oddzialy, pracownicy, stanowiska } from "@prisma/client";
+import {
+  klienci,
+  lokalizacje,
+  oddzialy,
+  pracownicy,
+  stanowiska,
+} from "@prisma/client";
 import type { GetServerSideProps } from "next";
 import { createContext, ReactElement } from "react";
 import {
@@ -6,6 +12,7 @@ import {
   MyDepartmentCarousel,
 } from "templates/admin/mydepartment/ui";
 import DeptCarsSection from "templates/admin/mydepartment/ui/deptcarsssection/deptcarssection.component";
+import DeptClientsSection from "templates/admin/mydepartment/ui/deptclientssection/deptclientssection.component";
 import { NextPageWithLayout } from "types/next";
 import { Navbar } from "ui";
 import { prisma } from "../../../db";
@@ -40,19 +47,46 @@ type Car = {
 
 export type CarsContextInterface = {
   cars: Car[];
-  allCarBodies: string[];
 };
 
 export const CarsContext = createContext({} as CarsContextInterface);
 
+type Client = klienci & {
+  lokalizacje: {
+    IdLokalizacje: number;
+    Nazwa: string;
+  };
+  IdKlienci: number;
+  ProcentRabatu: number | null;
+  uzytkownicy: {
+    IdUzytkownicy: number;
+    Email: string;
+    Imie: string;
+    Nazwisko: string;
+    NumerDowodu: string;
+    NumerPrawaJazdy: string;
+    NumerTelefonu: string;
+    Pesel: string;
+  };
+};
+
+export type ClientsContextInterface = {
+  clients: Client[];
+  allLocations: lokalizacje[] | null;
+};
+
+export const ClientsContext = createContext({} as ClientsContextInterface);
+
 type MyDepartmentPageProps = {
   employeesContext: EmployeesContextInterface;
   carsContext: CarsContextInterface;
+  clientsContext: ClientsContextInterface;
 };
 
 const MyDepartmentAdminPage: NextPageWithLayout<MyDepartmentPageProps> = ({
   employeesContext,
   carsContext,
+  clientsContext,
 }) => (
   <MyDepartmentCarousel>
     <EmployeesContext.Provider value={{ ...employeesContext }}>
@@ -61,6 +95,9 @@ const MyDepartmentAdminPage: NextPageWithLayout<MyDepartmentPageProps> = ({
     <CarsContext.Provider value={{ ...carsContext }}>
       <DeptCarsSection />
     </CarsContext.Provider>
+    <ClientsContext.Provider value={{ ...clientsContext }}>
+      <DeptClientsSection />
+    </ClientsContext.Provider>
   </MyDepartmentCarousel>
 );
 
@@ -148,16 +185,49 @@ const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {
       })
     )
     .filter(({ IdSamochodySzczegoly, ...rest }) => ({ ...rest }));
+  const clients = (
+    await prisma.klienci.findMany({
+      include: {
+        lokalizacje: {
+          select: {
+            IdLokalizacje: true,
+            Miejscowosc: true,
+            Ulica: true,
+            NumerUlicy: true,
+          },
+        },
+        uzytkownicy: {
+          select: {
+            IdUzytkownicy: true,
+            Email: true,
+            Imie: true,
+            Nazwisko: true,
+            NumerDowodu: true,
+            NumerPrawaJazdy: true,
+            NumerTelefonu: true,
+            Pesel: true,
+          },
+        },
+      },
+    })
+  ).map(({ IdLokalizacje, IdUzytkownicy, lokalizacje, ...rest }) => ({
+    ...rest,
+    lokalizacje: {
+      IdLokalizacje: lokalizacje.IdLokalizacje,
+      Nazwa: `${lokalizacje.Miejscowosc}, ${lokalizacje.Ulica} ${lokalizacje.NumerUlicy}`,
+    },
+  }));
+  const allLocations = (await prisma.lokalizacje.findMany()).map(
+    (lokalizacja) => ({
+      IdLokalizacje: lokalizacja.IdLokalizacje,
+      Nazwa: `${lokalizacja.Miejscowosc}, ${lokalizacja.Ulica} ${lokalizacja.NumerUlicy}`,
+    })
+  );
   return {
     props: {
       employeesContext: {
         employees: JSON.parse(JSON.stringify(employees)),
-        allLocations: (await prisma.lokalizacje.findMany()).map(
-          (lokalizacja) => ({
-            IdLokalizacje: lokalizacja.IdLokalizacje,
-            Nazwa: `${lokalizacja.Miejscowosc}, ${lokalizacja.Ulica} ${lokalizacja.NumerUlicy}`,
-          })
-        ),
+        allLocations,
         allJobPositions: await prisma.stanowiska.findMany(),
         allDepartments: (await prisma.oddzialy.findMany()).map(
           ({ IdOddzialy, Nazwa }) => ({
@@ -168,12 +238,10 @@ const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {
       },
       carsContext: {
         cars: JSON.parse(JSON.stringify(cars)),
-        allCarBodies: [...new Set(cars.map((car) => car.Nadwozie))].map(
-          (carBody, index) => ({
-            IdNadwozie: index,
-            Nazwa: carBody,
-          })
-        ),
+      },
+      clientsContext: {
+        clients: JSON.parse(JSON.stringify(clients)),
+        allLocations,
       },
     },
   };

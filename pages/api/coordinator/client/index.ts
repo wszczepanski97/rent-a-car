@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../db";
+import { prisma } from "../../../../db";
 import generator from "generate-password";
 
 export default async function handler(
@@ -7,22 +7,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const [pracownik] = await prisma.$transaction([
-      prisma.pracownicy.create({
+    const [klient] = await prisma.$transaction([
+      prisma.klienci.create({
         data: {
+          ProcentRabatu: req.body.ProcentRabatu,
           lokalizacje: {
             connect: {
               IdLokalizacje: req.body.lokalizacje.IdLokalizacje,
             },
           },
-          stanowiska: {
-            connect: {
-              IdStanowiska: req.body.stanowiska.IdStanowiska,
-            },
-          },
           uzytkownicy: {
             create: {
               ...req.body.uzytkownicy,
+              NumerDowodu: req.body.uzytkownicy.NumerDowodu.toUpperCase(),
               Aktywny: true,
               Haslo: generator.generate({
                 length: 12,
@@ -35,34 +32,25 @@ export default async function handler(
         },
       }),
     ]);
-    const [oddzial] = await prisma.$transaction([
-      prisma.oddzialy_hist.create({
-        data: {
-          OdKiedy: req.body.oddzialy_hist.OdKiedy,
-          DoKiedy: req.body.oddzialy_hist.DoKiedy,
-          IdOddzialy: req.body.oddzialy.IdOddzialy,
-          IdPracownicy: pracownik.IdPracownicy,
-        },
-      }),
-    ]);
-    return res.status(200).json({ data: { pracownik, oddzial } });
+    return res.status(200).json({ data: { klient } });
   } else if (req.method === "DELETE") {
     try {
-      const employeeByIdUzytkownicy = await prisma.pracownicy.findFirst({
-        where: { IdUzytkownicy: req.body["0"].uzytkownicy.IdUzytkownicy },
+      console.log(req.body);
+      const clientByIdKlienci = await prisma.klienci.findFirst({
+        where: { IdKlienci: req.body["0"].IdKlienci },
       });
-      if (!employeeByIdUzytkownicy) {
-        return res.status(400).json({ data: "Nie odnaleziono pracownika" });
+      if (!clientByIdKlienci) {
+        return res.status(400).json({ data: "Nie odnaleziono klienta" });
       }
-      const [user] = await prisma.$transaction([
+      const [klient] = await prisma.$transaction([
+        prisma.klienci.delete({
+          where: { IdKlienci: req.body["0"].IdKlienci },
+        }),
         prisma.uzytkownicy.delete({
           where: { IdUzytkownicy: req.body["0"].uzytkownicy.IdUzytkownicy },
-          include: {
-            pracownicy: true,
-          },
         }),
       ]);
-      return res.status(200).json({ data: { user } });
+      return res.status(200).json({ data: { klient } });
     } catch (err) {
       console.log(err);
     }
