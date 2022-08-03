@@ -2,7 +2,7 @@ import { Heading } from "ui";
 
 const CopyrightHeader = () => (
   <Heading
-    text="Made With Love By Figmaland All Right Reserved"
+    text="Car Rental Wszelkie prawa zastrzeżone"
     style={{ color: "var(--light-text-color)" }}
     as="h6"
   />

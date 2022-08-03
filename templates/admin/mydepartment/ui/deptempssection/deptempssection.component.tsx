@@ -1,10 +1,27 @@
-import { MyDepartmentAdminPageProps } from "pages/coordinator/mydepartment";
 import { FC } from "react";
-import { DeptEmpsSectionTable } from "./organisms/deptempssectiontable.component";
+import { DeptEmpsSectionTable } from "./organisms";
+import styles from "./deptempssection.module.scss";
+import { Article } from "ui";
 
-const DeptEmpsSection: FC<MyDepartmentAdminPageProps> = ({ deptEmps }) => (
-  <section id="deptEmpsSection">
-    <DeptEmpsSectionTable deptEmps={deptEmps} />
+const DeptEmpsSection: FC = () => (
+  <section
+    id="deptEmpsSection"
+    data-carousel="Pracownicy"
+    className={styles.deptEmpsSection}
+  >
+    <Article
+      className={styles.lendArticle}
+      titleProps={{
+        title: `Przeglądaj dane pracowników`,
+        lowerCase: true,
+        as: "h2",
+      }}
+      paragraphProps={{
+        paragraphText: `Poniżej znajduje się tabela w której możesz dokonywać dowolne akcje`,
+        as: "p",
+      }}
+    />
+    <DeptEmpsSectionTable />
   </section>
 );
 

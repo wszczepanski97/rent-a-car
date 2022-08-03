@@ -4,17 +4,19 @@ import { CarProps, Params } from "templates/client";
 import { UserRole } from "templates/common";
 import { RentSection } from "templates/client";
 import { prisma } from "../../../db";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const RentPage: NextPage<CarProps> = ({ car }) => {
   const { data: session } = useSession();
-  const role: UserRole | undefined = session ? session.user.role : undefined;
-  return role === "KLIENT" ? (
-    <>
-      <RentSection car={car} session={session} />
-    </>
-  ) : (
-    <div>To nie klient</div>
-  );
+  const router = useRouter();
+  const role: UserRole | undefined = session?.user.role;
+  useEffect(() => {
+    if (role !== "KLIENT") {
+      router.push("/login?role=client");
+    }
+  }, [role]);
+  return <RentSection car={car} />;
 };
 
 const getCar: GetStaticProps<CarProps, Params> = async (context) => {

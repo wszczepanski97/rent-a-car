@@ -7,9 +7,9 @@ import styles from "./deleteuserbutton.module.scss";
 const DeleteUserButton: FC = () => {
   const { profile } = useProfileSectionContext();
   const submitEndpoint =
-    profile.type === UserRole.client ? `/api/client` : `/api/coordinator`;
+    profile.type === UserRole.CLIENT ? `/api/client` : `/api/coordinator`;
   const submitBody =
-    profile.type === UserRole.client
+    profile.type === UserRole.CLIENT
       ? {
           IdKlienci: profile.user?.IdKlienci,
           IdUzytkownicy: profile.user?.IdUzytkownicy,

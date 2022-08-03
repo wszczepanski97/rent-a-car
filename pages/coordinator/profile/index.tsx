@@ -1,6 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { ProfileAdmin, ProfileSection, UserRole } from "templates";
+import { ProfileSection, UserRole } from "templates";
+import { ProfileAdmin } from "templates/common/types";
 import { prisma } from "../../../db";
 
 type ProfileAdminPageProps = {
@@ -24,7 +25,7 @@ const getUser: GetServerSideProps<ProfileAdminPageProps> = async (context) => {
   const { uzytkownicy, ...userDetails } = foundedUser!;
   const user = { ...userDetails, ...uzytkownicy };
   return {
-    props: { profile: { user, type: UserRole.coordinator } },
+    props: { profile: { user, type: UserRole.COORDINATOR } },
   };
 };
 

@@ -10,13 +10,12 @@ const ServicesPromoParagraph: FC = () => (
         size: { height: "32", width: "32" },
       }}
       titleProps={{
-        title: `the quick fox jumps over the lazy 
-      dog`,
+        title: `szybki lis przeskakuje nad leniwym psem`,
         as: "h5",
         color: "var(--light-text-color)",
       }}
       paragraphProps={{
-        paragraphText: `Things on a very small scale`,
+        paragraphText: `Rzeczy na bardzo małą skalę`,
         as: "h6",
         color: "var(--light-text-color)",
       }}
@@ -30,13 +29,12 @@ const ServicesPromoParagraph: FC = () => (
         size: { height: "32", width: "32" },
       }}
       titleProps={{
-        title: `the quick fox jumps over the lazy 
-    dog`,
+        title: `szybki lis przeskakuje nad leniwym psem`,
         as: "h5",
         color: "var(--light-text-color)",
       }}
       paragraphProps={{
-        paragraphText: `Things on a very small scale`,
+        paragraphText: `Rzeczy na bardzo małą skalę`,
         as: "h6",
         color: "var(--light-text-color)",
       }}

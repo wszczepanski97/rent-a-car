@@ -1,0 +1,11 @@
+@import "mixins";
+
+.deptCarsSection {
+  height: 100%;
+  width: 1500px;
+  margin: 0 auto;
+}
+
+.infoArticle {
+  @include flexColumnHorizontallyCentered;
+}

@@ -1,81 +1,52 @@
-import {
-  ColumnDirective,
-  ColumnsDirective,
-  GridComponent,
-  RowSelectEventArgs,
-} from "@syncfusion/ej2-react-grids";
+import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { Client } from "pages/coordinator/calendar";
 import { FC } from "react";
-import { UslugaType } from "../add-event2.component";
 
 type Tab1Props = {
-  filteredCars: Object[];
-  serviceType: UslugaType | undefined;
+  clients: Client[];
   goStepBack(): void;
-  onClick(element: GridComponent | null): void;
+  onClick(element: Client | undefined): void;
 };
 
-export const Tab1: FC<Tab1Props> = ({
-  filteredCars,
-  serviceType,
-  goStepBack,
-  onClick,
-}) => {
-  console.log(serviceType);
-  let availableCarGrid: GridComponent | null;
-  let selectedCar: any;
-  const carSelected = (args: RowSelectEventArgs) => {
-    selectedCar = args.data;
-  };
-  const availableCars = () => {
-    availableCarGrid!.dataSource = filteredCars;
-  };
+export const Tab1: FC<Tab1Props> = ({ clients, goStepBack, onClick }) => {
+  let clientDropdown: DropDownListComponent | null;
+  const findClient = (personalData: string) =>
+    clients.find(
+      (client) =>
+        `${client.uzytkownicy.Imie} ${client.uzytkownicy.Nazwisko}` ===
+        personalData
+    );
   return (
-    <div>
-      <div className="wizard-title">Wybierz auto z listy poniżej </div>
-      <GridComponent
-        ref={(grid) => (availableCarGrid = grid)}
-        width="100%"
-        rowSelected={carSelected}
-        created={availableCars}
-      >
-        <ColumnsDirective>
-          <ColumnDirective
-            field="IdSamochody"
-            headerText="Id"
-            type="number"
-            autoFit
-          />
-          <ColumnDirective field="Marka" headerText="Marka" autoFit />
-          <ColumnDirective field="Model" headerText="Model" autoFit />
-          <ColumnDirective
-            field="NumerRejestracyjny"
-            headerText="Numer rejestracyjny"
-            autoFit
-          />
-          <ColumnDirective field="NumerVIN" headerText="Numer VIN" autoFit />
-          <ColumnDirective field="Kategoria" headerText="Kategoria" autoFit />
-          <ColumnDirective field="Przebieg" headerText="Przebieg" autoFit />
-          <ColumnDirective
-            field="CenaZaDzien"
-            headerText="Cena za dzień"
-            autoFit
-          />
-        </ColumnsDirective>
-      </GridComponent>
-      <br />
+    <div className="responsive-align">
+      <div className="row">
+        <label className="e-textlabel">Wybierz klienta</label>
+        <DropDownListComponent
+          ref={(dropdownlist) => {
+            clientDropdown = dropdownlist;
+          }}
+          dataSource={clients.map(
+            (client) =>
+              `${client.uzytkownicy.Imie} ${client.uzytkownicy.Nazwisko}`
+          )}
+          placeholder="Klient"
+        />
+      </div>
       <div className="btn-container">
         <button id="goToSearch" className="e-btn" onClick={goStepBack}>
-          Back
+          Wróć
         </button>
         <button
-          id="selectCar"
+          id="client"
           className="e-btn"
-          onClick={() => onClick(availableCarGrid)}
+          onClick={() => {
+            const client = findClient(clientDropdown?.value as string);
+            onClick(client);
+          }}
         >
-          Continue
+          Dalej
         </button>
       </div>
-      <span id="err2" />
+      <span id="err1" />
     </div>
   );
 };

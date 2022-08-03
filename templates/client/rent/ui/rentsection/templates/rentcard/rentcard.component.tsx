@@ -1,14 +1,13 @@
-import { Session } from "next-auth";
-import { FC, FormEventHandler, useCallback, useRef, useState } from "react";
+import { FC, FormEventHandler, useState } from "react";
 import { Car } from "templates/client";
 import { CarCard, Card, CardType } from "ui";
-import DatePicker, { ReactDatePicker } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./rentcard.module.scss";
+import { useSession } from "next-auth/react";
 
 type RentCardProps = {
   car: Car;
-  session: Session | null;
 };
 
 type SubmitFormType = {
@@ -19,7 +18,8 @@ type SubmitFormType = {
   IdUbezpieczenia: { value: string };
 };
 
-const RentCard: FC<RentCardProps> = ({ car, session }) => {
+const RentCard: FC<RentCardProps> = ({ car }) => {
+  const { data: session } = useSession();
   const [error, setError] = useState("");
   const [iloscDni, setIloscDni] = useState(0);
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {

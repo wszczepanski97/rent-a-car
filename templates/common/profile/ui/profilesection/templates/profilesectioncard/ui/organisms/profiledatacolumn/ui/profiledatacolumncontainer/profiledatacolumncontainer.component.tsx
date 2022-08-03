@@ -25,7 +25,7 @@ const ProfileDataColumnContainer: FC = ({ children }) => {
   } = useProfileSectionContext();
   const router = useRouter();
   const getRole = (type: string) =>
-    type === UserRole.client ? "client" : "coordinator";
+    type === UserRole.CLIENT ? "client" : "coordinator";
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const target = e.target as typeof e.target & SubmitFormType;

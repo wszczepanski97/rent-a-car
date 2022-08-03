@@ -5,7 +5,7 @@ const cx = classnames.bind(styles);
 
 const LoginFormButton = () => (
   <button className={cx(styles.loginFormButton, "btn-text")} type="submit">
-    Login
+    Zaloguj się
   </button>
 );
 

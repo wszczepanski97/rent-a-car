@@ -27,7 +27,7 @@ export const Tab0: FC<Tab0Props> = ({ onClick }) => {
       >
         Przejdź dalej
       </button>
-      <span id="err1" />
+      <span id="err0" />
     </div>
   );
 };

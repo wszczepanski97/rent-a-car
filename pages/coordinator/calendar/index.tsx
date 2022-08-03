@@ -1,7 +1,9 @@
 import {
+  klienci,
   lokalizacje,
   mycie,
   pracownicy,
+  role,
   role_stanowisko,
   samochody,
   stanowiska,
@@ -17,6 +19,7 @@ import { prisma } from "../../../db";
 export type CalendarAdminPageProps = {
   services: Service[];
   cars: Car[];
+  clients: Client[];
   coordinators: Employee[];
   carwashers: Employee[];
   mechanics: Employee[];
@@ -47,10 +50,20 @@ export type Service = uslugi & {
     | null;
 };
 
+export type Client = klienci & {
+  lokalizacje: lokalizacje;
+  uzytkownicy: uzytkownicy;
+  wypozyczenia: (wypozyczenia & {
+    uslugi: uslugi;
+  })[];
+};
+
 export type Employee = pracownicy & {
   lokalizacje: lokalizacje;
   stanowiska: stanowiska & {
-    role_stanowisko: role_stanowisko[];
+    role_stanowisko: (role_stanowisko & {
+      role: role;
+    })[];
   };
   uzytkownicy: uzytkownicy;
   uslugi_pracownicyTouslugi_IdPracownicy_Odbior: uslugi[];
@@ -61,11 +74,9 @@ export type Car = samochody & {
   uslugi: uslugi[];
 };
 
-const CalendarAdminPage: NextPage<CalendarAdminPageProps> = (props) => {
-  console.log(props);
-  // return <p>hahaha</p>;
-  return <CalendarSection {...props} />;
-};
+const CalendarAdminPage: NextPage<CalendarAdminPageProps> = (props) => (
+  <CalendarSection {...props} />
+);
 
 const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
   const services = await prisma.uslugi.findMany({
@@ -93,6 +104,22 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
       samochody: true,
     },
   });
+  const clients = await prisma.klienci.findMany({
+    where: {
+      uzytkownicy: {
+        Aktywny: true,
+      },
+    },
+    include: {
+      wypozyczenia: {
+        include: {
+          uslugi: true,
+        },
+      },
+      lokalizacje: true,
+      uzytkownicy: true,
+    },
+  });
   const employees = await prisma.pracownicy.findMany({
     where: {
       uzytkownicy: {
@@ -102,7 +129,11 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
     include: {
       stanowiska: {
         include: {
-          role_stanowisko: true,
+          role_stanowisko: {
+            include: {
+              role: true,
+            },
+          },
         },
       },
       lokalizacje: true,
@@ -116,11 +147,11 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
       uslugi: true,
     },
   });
-
   return {
     props: {
       services: JSON.parse(JSON.stringify(services)),
       cars: JSON.parse(JSON.stringify(cars)),
+      clients: JSON.parse(JSON.stringify(clients)),
       coordinators: JSON.parse(
         JSON.stringify(
           employees.filter((employee) =>

@@ -86,8 +86,6 @@ export const Calendar: FC<CalendarAdminPageProps> = (props) => {
     },
   };
 
-  console.log(props.services);
-
   const resourceDataOwner: Record<string, any>[] = Array.from(
     new Set(
       props

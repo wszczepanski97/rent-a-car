@@ -1,16 +1,11 @@
 import { FC } from "react";
+import { LoginUserRole, UserRoleKey } from "templates/common";
 import { Heading } from "ui";
 
-const LoginFormHeader: FC<{ role: string }> = ({ role }) => {
+const LoginFormHeader: FC<{ role: UserRoleKey }> = ({ role }) => {
   return (
     <Heading
-      text={
-        role
-          ? `Log to ${
-              role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()
-            } Panel`
-          : "Log in"
-      }
+      text={`Zaloguj się jako ${LoginUserRole[role].toLowerCase()}`}
       style={{ textAlign: "center" }}
     />
   );

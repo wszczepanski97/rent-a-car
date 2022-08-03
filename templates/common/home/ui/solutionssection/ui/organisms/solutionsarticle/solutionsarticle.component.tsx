@@ -8,7 +8,7 @@ const SolutionsArticle: FC = () => (
     titleProps={{ title: "PRAKTYCZNE PORADY" }}
     paragraphProps={{
       paragraphText:
-        "Próbujemy rozwiązać problemy ludzi, którzy nie chcą lub nie mogą posiadać samochodów \nand use it only for a while.",
+        "Próbujemy rozwiązać problemy ludzi, którzy nie chcą lub nie mogą posiadać samochodów \ni używają go tylko przez chwilę.",
       as: "p",
     }}
   />

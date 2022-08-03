@@ -12,18 +12,19 @@ import { UserRole, UserRoleKey } from "templates/common";
 
 const LoginForm: FC = () => {
   const router = useRouter();
-  const logRole = router.query.role as UserRoleKey;
+  if (!router.query.role) return null;
+  let logRole = (router.query.role as string).toUpperCase() as UserRoleKey;
   const [error, setError] = useState("");
   const [prevUrl] = useState(logRole);
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(e.target as HTMLFormElement);
     e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
     const res = await signIn<"credentials">("credentials", {
       redirect: false,
       ...Object.fromEntries(formData),
     });
     if (res?.error) {
-      setError("You are not allowed to move further.");
+      setError("Wprowadzone dane logowania są niepoprawne.");
     } else {
       setError("");
       router.push(`/${logRole.toLowerCase()}/dashboard`);

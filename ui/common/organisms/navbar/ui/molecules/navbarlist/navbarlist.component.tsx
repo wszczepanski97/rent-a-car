@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import { FC } from "react";
-import { UserRole } from "templates/common";
 import LogoutButton from "ui/common/atoms/logoutbutton/logoutbutton.component";
 import { NavbarListItem } from "./atoms";
 import NavbarListItemHover from "./atoms/navbarlistitemhover/navbarlistitemhover.component";
@@ -8,7 +7,7 @@ import styles from "./navbarlist.module.scss";
 
 const NavbarList: FC = () => {
   const { data: session } = useSession();
-  const role: UserRole | undefined = session ? session.user.role : undefined;
+  const role = session?.user.role;
   return (
     <ul className={styles.navbarList}>
       <div className={styles.navbarListContainer}>
@@ -78,10 +77,6 @@ const NavbarList: FC = () => {
             </>
           )}
         </div>
-        {/* <div className={styles.navbarListIconGroup}>
-          <NavbarListIcon src="/images/SearchIcon.svg" alt="SearchIcon" />
-          <NavbarListIcon src="/images/BasketIcon.svg" alt="BasketIcon" />
-        </div> */}
       </div>
     </ul>
   );

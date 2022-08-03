@@ -2,7 +2,7 @@ import { LoginFormField, LoginFormInput, LoginFormLabel } from "../../atoms";
 
 const LoginFormFieldPassword = () => (
   <LoginFormField>
-    <LoginFormLabel text="Password" />
+    <LoginFormLabel text="Hasło" />
     <LoginFormInput type="password" name="password" />
   </LoginFormField>
 );

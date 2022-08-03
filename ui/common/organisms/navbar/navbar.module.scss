@@ -3,4 +3,6 @@
 .Navbar {
   @include flexRowHorizontallyCenteredVerticallySpaceBetween;
   height: 10vh;
+  width: 1050px;
+  margin: 0 auto;
 }

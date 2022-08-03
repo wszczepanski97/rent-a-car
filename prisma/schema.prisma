@@ -90,7 +90,7 @@ model oddzialy_hist {
   IdPracownicy    Int
   IdOddzialy      Int
   oddzialy        oddzialy   @relation(fields: [IdOddzialy], references: [IdOddzialy], onUpdate: Restrict, map: "Oddzialy_hist_Oddzialy")
-  pracownicy      pracownicy @relation(fields: [IdPracownicy], references: [IdPracownicy], onUpdate: Restrict, map: "Oddzialy_hist_Pracownicy")
+  pracownicy      pracownicy @relation(fields: [IdPracownicy], references: [IdPracownicy], onDelete: Cascade, onUpdate: Restrict, map: "Oddzialy_hist_Pracownicy")
 
   @@index([IdOddzialy], map: "Oddzialy_hist_Oddzialy")
   @@index([IdPracownicy], map: "Oddzialy_hist_Pracownicy")
@@ -126,7 +126,7 @@ model pracownicy {
   IdUzytkownicy                                       Int
   lokalizacje                                         lokalizacje     @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Pracownicy_SzczegolyLokalizacji")
   stanowiska                                          stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
-  uzytkownicy                                         uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
+  uzytkownicy                                         uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onDelete: Cascade, onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
   oddzialy_hist                                       oddzialy_hist[]
   uslugi_pracownicyTouslugi_IdPracownicy_Odbior       uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Odbior")
   uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Podstawienie")
@@ -137,6 +137,15 @@ model pracownicy {
   @@index([IdLokalizacje], map: "Pracownicy_SzczegolyLokalizacji")
   @@index([IdUzytkownicy], map: "Pracownicy_Uzytkownik")
   @@index([IdPracownicy, IdLokalizacje, IdStanowiska, IdUzytkownicy], map: "Pracownicy_idx_1")
+}
+
+model relokacje {
+  IdRelokacje Int    @id
+  Cena        Int?
+  IdUslugi    Int
+  uslugi      uslugi @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Relokacje_Usluga")
+
+  @@index([IdUslugi], map: "Relokacje_Usluga_idx")
 }
 
 model role {
@@ -250,11 +259,19 @@ model uslugi {
   @@index([IdPracownicy_Odbior], map: "Usluga_Pracownicy_Odbior")
   @@index([IdPracownicy_Podstawienie], map: "Usluga_Pracownicy_Podstawienie")
   @@index([IdPracownicy_Przypisanie], map: "Usluga_Pracownicy_Przypisanie")
+  @@index([IdUslugaStatus], map: "Usluga_Status_idx")
   @@index([IdLokalizacje_Podstawienie], map: "Usluga_SzczegolyLokalizacji")
   @@index([IdLokalizacje_Odbior], map: "Uslugi_Lokalizacje")
   @@index([IdSamochody], map: "Uslugi_Samochody")
   @@index([IdUslugi, IdLokalizacje_Podstawienie, IdLokalizacje_Odbior, IdPracownicy_Przypisanie, IdPracownicy_Podstawienie, IdPracownicy_Odbior, IdSamochody], map: "Uslugi_idx_1")
-  @@index([IdUslugaStatus], map: "Usluga_Status_idx")
+}
+
+model uslugistatus {
+  IdUslugiStatus Int      @id @default(autoincrement())
+  Status         String   @db.VarChar(150)
+  uslugi         uslugi[]
+
+  @@index([IdUslugiStatus], map: "UszkodzeniaStatus_idx_1")
 }
 
 model uszkodzenia {
@@ -319,21 +336,4 @@ model wypozyczenia {
   @@index([IdUbezpieczenia], map: "Wypozyczenia_Ubezpieczenia")
   @@index([IdUslugi], map: "Wypozyczenia_Uslugi")
   @@index([IdWypozyczenia, Kwota, IdKlienci, IdUbezpieczenia, IdUslugi], map: "Wypozyczenia_idx_1")
-}
-
-model uslugistatus {
-  IdUslugiStatus Int      @id @default(autoincrement())
-  Status         String   @db.VarChar(150)
-  uslugi         uslugi[]
-
-  @@index([IdUslugiStatus], map: "UszkodzeniaStatus_idx_1")
-}
-
-model relokacje {
-  IdRelokacje Int    @id
-  Cena        Int?
-  IdUslugi    Int
-  uslugi      uslugi @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Relokacje_Usluga")
-
-  @@index([IdUslugi], map: "Relokacje_Usluga_idx")
 }

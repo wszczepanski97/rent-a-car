@@ -1,15 +1,16 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { ProfileClient, ProfileSection, UserRole } from "templates";
+import { ProfileSection, UserRole } from "templates";
+import { ProfileClient } from "templates/common/types";
 import { prisma } from "../../../db";
 
 type ProfilClientPageProps = {
   profile: ProfileClient;
 };
 
-const ProfileClientPage: NextPage<ProfilClientPageProps> = ({ profile }) => {
-  return <ProfileSection profile={profile} />;
-};
+const ProfileClientPage: NextPage<ProfilClientPageProps> = ({ profile }) => (
+  <ProfileSection profile={profile} />
+);
 
 const getUser: GetServerSideProps<ProfilClientPageProps> = async (context) => {
   const session = await getSession(context);
@@ -24,7 +25,7 @@ const getUser: GetServerSideProps<ProfilClientPageProps> = async (context) => {
   const { uzytkownicy, ...userDetails } = foundedUser!;
   const user = { ...userDetails, ...uzytkownicy };
   return {
-    props: { profile: { user, type: UserRole.client } },
+    props: { profile: { user, type: UserRole.CLIENT } },
   };
 };
 

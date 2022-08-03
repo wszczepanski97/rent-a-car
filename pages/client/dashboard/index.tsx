@@ -1,23 +1,6 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { prisma } from "../../../db";
-import { DashboardCarousel } from "templates/client/dashboard/ui";
-import DashboardHeader from "templates/client/dashboard/ui/dashboardheader/dashboardheader.component";
-import { DashboardPageProps } from "templates/common/home/types";
-
-const DashboardPage: NextPage<DashboardPageProps> = ({ cars }) => (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 20,
-    }}
-  >
-    <DashboardHeader />
-    <DashboardCarousel cars={cars} />
-  </div>
-);
 
 const getCars: GetStaticProps = async () => {
   const cars = (
@@ -37,9 +20,8 @@ const getCars: GetStaticProps = async () => {
     }) => ({
       CenaZaDzien,
       IdSamochody,
-      Marka,
-      Model,
-      Zdjecia,
+      Nazwa: `${Marka} ${Model}`,
+      Zdjecie: Zdjecia?.split(";")[0] || "",
       ...samochodyszczegolyrest,
     })
   );
@@ -50,4 +32,4 @@ const getCars: GetStaticProps = async () => {
 
 export const getStaticProps = getCars;
 
-export default DashboardPage;
+export { default } from "templates/client/dashboard";

@@ -27,7 +27,6 @@ export default NextAuth({
       name: "credentials",
       type: "credentials",
       async authorize(credentials) {
-        console.log(credentials?.role);
         try {
           const user = await prisma.uzytkownicy.findFirst({
             where: {

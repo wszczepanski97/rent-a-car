@@ -1,0 +1,5 @@
+@import "mixins";
+
+.myDepartmentLayout {
+  height: calc(100vh - var(--navbar-height));
+}

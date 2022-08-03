@@ -1,57 +1,62 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../db";
+import generator from "generate-password";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    // const [uzytkownik, pracownik] = await prisma.$transaction([
-    //   prisma.uslugi.create({
-    //     data: {
-    //       Opis,
-    //       lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: {
-    //         connect: {
-    //           IdLokalizacje: klient?.IdLokalizacje,
-    //         },
-    //       },
-    //       lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie: {
-    //         connect: {
-    //           IdLokalizacje: klient?.IdLokalizacje,
-    //         },
-    //       },
-    //       samochody: {
-    //         connect: {
-    //           IdSamochody,
-    //         },
-    //       },
-    //       wypozyczenia: {
-    //         create: {
-    //           DataOd: new Date(DataOd),
-    //           DataDo: new Date(DataDo),
-    //           IloscDni,
-    //           Kwota,
-    //           IdKlienci: klient.IdKlienci,
-    //           IdUbezpieczenia,
-    //           IdWypozyczeniaStatus: 1,
-    //           KwotaPoRabacie: null,
-    //         },
-    //       },
-    //     },
-    //   }),
-    // ]);
+    const [pracownik] = await prisma.$transaction([
+      prisma.pracownicy.create({
+        data: {
+          lokalizacje: {
+            connect: {
+              IdLokalizacje: req.body.lokalizacje.IdLokalizacje,
+            },
+          },
+          stanowiska: {
+            connect: {
+              IdStanowiska: req.body.stanowiska.IdStanowiska,
+            },
+          },
+          uzytkownicy: {
+            create: {
+              ...req.body.uzytkownicy,
+              Aktywny: true,
+              Haslo: generator.generate({
+                length: 12,
+                numbers: true,
+              }),
+              Login: `s${Math.floor(Math.random() * 100000)}`,
+              Salt: "salt",
+            },
+          },
+        },
+      }),
+    ]);
+    const [oddzial] = await prisma.$transaction([
+      prisma.oddzialy_hist.create({
+        data: {
+          OdKiedy: req.body.oddzialy_hist.OdKiedy,
+          DoKiedy: req.body.oddzialy_hist.DoKiedy,
+          IdOddzialy: req.body.oddzialy.IdOddzialy,
+          IdPracownicy: pracownik.IdPracownicy,
+        },
+      }),
+    ]);
+    return res.status(200).json({ data: { pracownik, oddzial } });
   } else if (req.method === "DELETE") {
-    const { IdPracownicy, IdUzytkownicy } = req.body;
     try {
       const employeeByIdUzytkownicy = await prisma.pracownicy.findFirst({
-        where: { IdPracownicy },
+        where: { IdUzytkownicy: req.body["0"].uzytkownicy.IdUzytkownicy },
       });
       if (!employeeByIdUzytkownicy) {
         return res.status(400).json({ data: "Nie odnaleziono pracownika" });
       }
       const [user] = await prisma.$transaction([
         prisma.uzytkownicy.delete({
-          where: { IdUzytkownicy },
+          where: { IdUzytkownicy: req.body["0"].uzytkownicy.IdUzytkownicy },
           include: {
             pracownicy: true,
           },
@@ -62,17 +67,32 @@ export default async function handler(
       console.log(err);
     }
   } else if (req.method === "PUT") {
-    const { IdUzytkownicy } = req.body;
     try {
       const employeeByIdUzytkownicy = await prisma.pracownicy.findFirst({
-        where: { IdUzytkownicy },
+        where: { IdUzytkownicy: req.body.uzytkownicy.IdUzytkownicy },
       });
       if (!employeeByIdUzytkownicy) {
         return res.status(400).json({ data: "Nie odnaleziono pracownika" });
       }
       const [admin] = await prisma.$transaction([
         prisma.pracownicy.update({
-          data: req.body,
+          data: {
+            lokalizacje: {
+              connect: {
+                IdLokalizacje: req.body.lokalizacje.IdLokalizacje,
+              },
+            },
+            stanowiska: {
+              connect: {
+                IdStanowiska: req.body.stanowiska.IdStanowiska,
+              },
+            },
+            uzytkownicy: {
+              update: {
+                ...req.body.uzytkownicy,
+              },
+            },
+          },
           where: {
             IdPracownicy: employeeByIdUzytkownicy.IdPracownicy,
           },

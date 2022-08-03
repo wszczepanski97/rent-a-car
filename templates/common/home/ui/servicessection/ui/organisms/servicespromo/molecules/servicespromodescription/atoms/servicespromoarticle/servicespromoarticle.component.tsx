@@ -4,15 +4,13 @@ import { Article } from "ui";
 const ServicesPromoArticle: FC = () => (
   <Article
     titleProps={{
-      title: `Most trusted in
-      our field`,
+      title: `Najbardziej zaufany`,
       lowerCase: true,
       as: "h2",
     }}
     paragraphProps={{
-      paragraphText: `Most calendars are designed for teams. Slate
-        is designed for freelancers who want a
-        simple way to plan their schedule.`,
+      paragraphText: `Większość kalendarzy jest przeznaczona dla zespołów. 
+      Slate jest przeznaczony dla freelancerów, którzy chcą prostego sposobu na zaplanowanie swojego grafiku.`,
       as: "p",
     }}
     style={{

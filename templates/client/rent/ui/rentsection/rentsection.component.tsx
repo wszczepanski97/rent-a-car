@@ -8,10 +8,10 @@ type RentSectionProps = {
   session: Session | null;
 };
 
-const RentSection: FC<RentSectionProps> = ({ car, session }) => {
+const RentSection: FC<RentSectionProps> = ({ car }) => {
   return (
     <section id="rentSection">
-      <RentCard car={car} session={session} />
+      <RentCard car={car} />
     </section>
   );
 };

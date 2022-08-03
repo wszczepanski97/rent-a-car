@@ -1,0 +1,11 @@
+@import "mixins";
+
+.deptEmpsSection {
+  height: 100%;
+  width: 1500px;
+  margin: 0 auto;
+}
+
+.lendArticle {
+  @include flexColumnHorizontallyCentered;
+}
