@@ -8,7 +8,7 @@ import {
   RowSelectEventArgs,
   Sort,
 } from "@syncfusion/ej2-react-grids";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 type Tab2Props = {
   filteredCars: Object[];
@@ -27,18 +27,7 @@ export const Tab2: FC<Tab2Props> = ({ filteredCars, goStepBack, onClick }) => {
     availableCarGrid!.dataSource = filteredCars;
   };
   return (
-    <div
-      className="responsive-align"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: 430,
-        width: 500,
-        margin: "0 auto",
-      }}
-    >
+    <div>
       <h4 className="e-textlabel">Wybierz auto z listy poniżej </h4>
       <GridComponent
         allowPaging
@@ -94,7 +83,7 @@ export const Tab2: FC<Tab2Props> = ({ filteredCars, goStepBack, onClick }) => {
         <button
           id="selectCar"
           className="e-btn"
-          onClick={() => onClick(availableCarGrid)}
+          onClick={() => customOnNextButtonClick(availableCarGrid)}
           style={{ backgroundColor: "#5aad73", border: 0 }}
           // disabled={disabled}
         >

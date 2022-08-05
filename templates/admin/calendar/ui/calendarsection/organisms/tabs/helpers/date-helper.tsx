@@ -8,6 +8,27 @@ export const getPrevHalfHourDate = (date: Date) => {
   return new Date(dateDuplicate.getTime() - 30 * 60 * 1000);
 };
 
+export const getNextHalfHourDateForToday = (date: Date) => {
+  const dateDuplicate = new Date(date.getTime());
+  return dateDuplicate.getMinutes() >= 30
+    ? new Date(
+        dateDuplicate.getFullYear(),
+        dateDuplicate.getMonth(),
+        dateDuplicate.getDay(),
+        dateDuplicate.getHours() + 1,
+        0,
+        0
+      )
+    : new Date(
+        dateDuplicate.getFullYear(),
+        dateDuplicate.getMonth(),
+        dateDuplicate.getDay(),
+        dateDuplicate.getHours(),
+        30,
+        0
+      );
+};
+
 export const getNextDayDate = (date: Date) => {
   const dateDuplicate = new Date(date.getTime());
   return new Date(dateDuplicate.setDate(date.getDate() + 1));

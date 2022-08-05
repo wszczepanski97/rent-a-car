@@ -34,29 +34,30 @@ export const Tab6: FC<Tab6Props> = ({
   goStepBack,
 }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    const target = e.target as typeof e.target & SubmitFormType;
-    const [DataOd, DataDo] = target.timeRange.value
-      .split("-")
-      .map((date) => date.trim());
-    const body = JSON.stringify({
-      DataOd,
-      DataDo,
-      Opis: target.Opis.value,
-      IloscDni: parseInt(target.IloscDni.value),
-      Kwota: parseInt(target.Kwota.value),
-      IdUbezpieczenia: parseInt(target.IdUbezpieczenia.value),
-      IdUzytkownicy: session?.user.id,
-      IdSamochody: car!.IdSamochody,
-    });
+    console.log(e.target);
+    // e.preventDefault();
+    // const target = e.target as typeof e.target & SubmitFormType;
+    // const [DataOd, DataDo] = target.timeRange.value
+    //   .split("-")
+    //   .map((date) => date.trim());
+    // const body = JSON.stringify({
+    //   DataOd,
+    //   DataDo,
+    //   Opis: target.Opis.value,
+    //   IloscDni: parseInt(target.IloscDni.value),
+    //   Kwota: parseInt(target.Kwota.value),
+    //   IdUbezpieczenia: parseInt(target.IdUbezpieczenia.value),
+    //   IdUzytkownicy: session?.user.id,
+    //   IdSamochody: car!.IdSamochody,
+    // });
 
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body,
-    };
-    const response = await fetch("/api/coordinator/calendar", options);
-    const result = await response.json();
+    // const options = {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body,
+    // };
+    // const response = await fetch("/api/coordinator/calendar", options);
+    // const result = await response.json();
   };
   return (
     <div
@@ -72,36 +73,59 @@ export const Tab6: FC<Tab6Props> = ({
         margin: "0 auto",
       }}
     >
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <h3 style={{ textAlign: "center" }}>Podsumowanie zlecenia usługi</h3>
         <div
           style={{
             display: "flex",
-            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
             gap: 50,
           }}
         >
           <div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Typ usługi</label>
               <span>{selectedService}</span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Klient</label>
               <span>
                 {selectedClient?.uzytkownicy.Imie}{" "}
                 {selectedClient?.uzytkownicy.Nazwisko}
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Samochód</label>
               <span>
                 {selectedCar.Marka} {selectedCar.Model}
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Czas</label>
               <span>
                 {datetimeRange?.startDateValue.toLocaleString()} -{" "}
@@ -110,34 +134,65 @@ export const Tab6: FC<Tab6Props> = ({
             </div>
           </div>
           <div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Pracownik</label>
               <span>
                 {selectedEmployee?.uzytkownicy.Imie}{" "}
                 {selectedEmployee?.uzytkownicy.Nazwisko}
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Lokalizacja</label>
               <span>
                 {location?.Miejscowosc} {location?.Ulica} {location?.NumerUlicy}
               </span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+              }}
+            >
               <label className="e-textlabel">Cena</label>
               <span>{selectedService}</span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "10px 0",
+                textOverflow: "ellipsis",
+              }}
+            >
               <label className="e-textlabel">Opis</label>
-              <span>{serviceDescription || "Brak opisu"}</span>
+              <span style={{ textOverflow: "ellipsis" }}>
+                {serviceDescription || "Brak opisu"}
+              </span>
             </div>
           </div>
-          <span id="err6" />
         </div>
+        <span id="err6" />
       </form>
       <div
         className="btn-container"
-        style={{ display: "flex", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+        }}
       >
         <button
           id="goToSearch"
@@ -145,7 +200,7 @@ export const Tab6: FC<Tab6Props> = ({
           onClick={goStepBack}
           style={{ backgroundColor: "#ff5757", border: 0 }}
         >
-          Wróć
+          Wróć do poprzednich kroków
         </button>
       </div>
     </div>

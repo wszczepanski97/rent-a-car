@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useContext, useMemo, useState } from "react";
 import {
   DatePickerComponent,
   ItemEventArgs,
@@ -9,29 +9,19 @@ import {
   getNextDayDate,
   getNextHalfHourDate,
   getPrevHalfHourDate,
+  getNextHalfHourDateForToday,
   getBlockedPeriods,
   getBlockedDates,
-} from "./datehelper";
-import { Client } from "pages/coordinator/calendar";
-
-type Tab3Props = {
-  goStepBack(): void;
-  selectedCar: Object | undefined;
-  selectedClient: Client | undefined;
-  onClick(dateRange: DateRange): void;
-};
+} from "./helpers/date-helper";
+import { AddEventContext } from "./contexts/addevent.context";
 
 export type DateRange = {
   startDateValue: Date;
   endDateValue: Date;
 };
 
-export const Tab3: FC<Tab3Props> = ({
-  selectedCar,
-  selectedClient,
-  goStepBack,
-  onClick,
-}) => {
+export const Tab3: FC = () => {
+  const { selectedCar, selectedClient } = useContext(AddEventContext);
   const blockedPeriods: Date[] = useMemo(() => {
     //@ts-ignore
     const carBlockedPeriods = selectedCar.uslugi
@@ -73,9 +63,9 @@ export const Tab3: FC<Tab3Props> = ({
 
   const minDate = useMemo(() => {
     const lastBlockedDay = new Date(blockedDates[blockedDates.length - 1]);
-    return new Date(
-      new Date(getNextDayDate(lastBlockedDay).setHours(7, 0, 0, 0))
-    );
+    return new Date().getTime() > lastBlockedDay.getTime()
+      ? getNextHalfHourDateForToday(new Date())
+      : new Date(new Date(getNextDayDate(lastBlockedDay).setHours(7, 0, 0, 0)));
   }, [blockedDates]);
 
   const [state, setState] = useState({
