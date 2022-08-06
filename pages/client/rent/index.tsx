@@ -1,8 +1,8 @@
 import { GetStaticProps } from "next";
-import { CarsPageProps } from "templates";
+import { Cars } from "templates/common/types";
 import { prisma } from "../../../db";
 
-export const getStaticProps: GetStaticProps<CarsPageProps> = async () => {
+export const getStaticProps: GetStaticProps<{ cars: Cars[] }> = async () => {
   const cars = (
     await prisma.samochody.findMany({
       include: {
@@ -11,14 +11,14 @@ export const getStaticProps: GetStaticProps<CarsPageProps> = async () => {
     })
   ).map(
     ({
-      CenaZaDzien,
+      CenaZaGodzine,
       IdSamochody,
       Marka,
       Model,
       Zdjecia,
       samochodyszczegoly: { IdSamochodySzczegoly, ...samochodyszczegolyrest },
     }) => ({
-      CenaZaDzien,
+      CenaZaGodzine,
       IdSamochody,
       Nazwa: `${Marka} ${Model}`,
       Zdjecie: Zdjecia?.split(";")[0] || "",

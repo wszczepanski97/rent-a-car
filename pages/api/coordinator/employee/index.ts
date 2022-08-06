@@ -10,11 +10,6 @@ export default async function handler(
     const [pracownik] = await prisma.$transaction([
       prisma.pracownicy.create({
         data: {
-          lokalizacje: {
-            connect: {
-              IdLokalizacje: req.body.lokalizacje.IdLokalizacje,
-            },
-          },
           stanowiska: {
             connect: {
               IdStanowiska: req.body.stanowiska.IdStanowiska,
@@ -77,11 +72,6 @@ export default async function handler(
       const [admin] = await prisma.$transaction([
         prisma.pracownicy.update({
           data: {
-            lokalizacje: {
-              connect: {
-                IdLokalizacje: req.body.lokalizacje.IdLokalizacje,
-              },
-            },
             stanowiska: {
               connect: {
                 IdStanowiska: req.body.stanowiska.IdStanowiska,

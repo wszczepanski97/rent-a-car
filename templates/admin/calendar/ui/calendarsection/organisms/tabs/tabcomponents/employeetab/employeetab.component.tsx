@@ -18,25 +18,17 @@ type EmployeeTabProps = { employees: Employee[] };
 
 const EmployeeTab: FC<EmployeeTabProps> = ({ employees }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const {
-    currentTab,
-    selectedDateTimeRange,
-    selectedClient,
-    setSelectedEmployee,
-  } = useContext(AddEventContext);
+  const { currentTab, selectedDateTimeRange, setSelectedEmployee } =
+    useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const restrictEmployeesArray = employees
-    .filter(
-      (employee) =>
-        employee.IdLokalizacje === selectedClient?.lokalizacje?.IdLokalizacje
-    )
     .filter(
       (employee) => employee.stanowiska.role_stanowisko[0].role.IdRole === 4
     )
     .filter(
       (employee) =>
         [
-          ...employee.uslugi_pracownicyTouslugi_IdPracownicy_Odbior.map(
+          ...employee.uslugi.map(
             (usluga) =>
               (new Date(usluga.DataOd) >
                 new Date(selectedDateTimeRange!.startDateValue) &&
@@ -47,7 +39,7 @@ const EmployeeTab: FC<EmployeeTabProps> = ({ employees }) => {
                 new Date(usluga.DataDo) <
                   new Date(selectedDateTimeRange!.endDateValue))
           ),
-          ...employee.uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie.map(
+          ...employee.uslugi.map(
             (usluga) =>
               (new Date(usluga.DataOd) >
                 new Date(selectedDateTimeRange!.startDateValue) &&

@@ -36,7 +36,7 @@ const FutureRentalTable: FC<FutureRentalSectionProps> = ({ rentals }) => {
       },
       {
         Header: "Cena za dzień",
-        accessor: "CenaZaDzien",
+        accessor: "CenaZaGodzine",
       },
     ],
     []

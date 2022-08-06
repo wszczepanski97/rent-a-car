@@ -7,7 +7,7 @@ export type Cars = {
   PojemnoscBagaznika: string;
   IloscDrzwi: string;
   IloscMiejsc: string;
-  CenaZaDzien: number;
+  CenaZaGodzine: number;
   IdSamochody: number;
   Nazwa: string;
   Zdjecie: string;
@@ -46,7 +46,6 @@ export type CoordinatorUser = {
   Salt: string;
   Aktywny: boolean;
   IdPracownicy: number;
-  IdLokalizacje: number;
   IdStanowiska: number;
 };
 

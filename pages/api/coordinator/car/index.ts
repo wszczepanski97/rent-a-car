@@ -82,7 +82,7 @@ export default async function handler(
       Model,
       NumerVIN,
       NumerRejestracyjny,
-      CenaZaDzien,
+      CenaZaGodzine,
       Kategoria,
     } = req.body;
     try {
@@ -103,7 +103,7 @@ export default async function handler(
             CzyUmyty: CzyUmyty === "TAK" ? true : false,
             CzyUszkodzony: CzyUszkodzony === "TAK" ? true : false,
             Przebieg: Przebieg.toString(),
-            CenaZaDzien,
+            CenaZaGodzine,
             Kategoria,
             samochodyszczegoly: {
               update: {

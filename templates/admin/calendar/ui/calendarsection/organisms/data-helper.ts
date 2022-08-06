@@ -10,6 +10,19 @@ const getNameOfService = (service: Service) =>
     ? "Mycie"
     : "Relokacja";
 
+export type Data = {
+  Id: number;
+  Subject: string;
+  StartTime: Date;
+  EndTime: Date;
+  Description: string;
+  type: string;
+  AssignedWorker: number | null;
+  StartTimezone: "Europe/Warsaw";
+  EndTimezone: "Europe/Warsaw";
+  IsReadonly: boolean;
+};
+
 export const getData = (services: Service[]) =>
   extend(
     [],
@@ -37,4 +50,4 @@ export const getData = (services: Service[]) =>
     })),
     undefined,
     true
-  ) as Record<string, any>[];
+  ) as Data[];

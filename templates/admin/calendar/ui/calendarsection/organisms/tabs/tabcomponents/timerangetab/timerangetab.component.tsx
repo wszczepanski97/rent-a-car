@@ -195,6 +195,7 @@ export const TimeRangeTab: FC = () => {
             <DatePickerComponent
               id="StartDate"
               format="dd/MM/yy"
+              serverTimezoneOffset={0}
               data-name="StartDate"
               className="e-field"
               min={minDate}

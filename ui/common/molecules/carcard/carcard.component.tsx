@@ -41,7 +41,7 @@ const CarCard: FC<CarCardProps> = ({
       !withoutBtns
         ? {
             type: CardButtonType.CardButtonWithBG,
-            buttonText: "Lend",
+            buttonText: "Wypożycz",
             bgColor: "var(--login-button-background)",
             color: "var(--light-text-color)",
             href: `/client/rent/${carId}`,
@@ -52,7 +52,7 @@ const CarCard: FC<CarCardProps> = ({
       !withoutBtns
         ? {
             type: CardButtonType.CardButtonWithoutBG,
-            buttonText: "Details",
+            buttonText: "Szczegóły",
             color: "var(--primary-color)",
             href: `/cars/${carId}`,
           }

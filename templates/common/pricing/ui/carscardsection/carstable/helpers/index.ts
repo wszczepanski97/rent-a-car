@@ -1,6 +1,6 @@
 import { matchSorter } from "match-sorter";
 import { Row } from "react-table";
-import { Cars } from "templates";
+import { Cars } from "templates/common/types";
 
 export const fuzzyTextFilterFn = (
   rows: Row<Cars>[],

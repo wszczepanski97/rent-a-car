@@ -1,5 +1,5 @@
 import { Column } from "react-table";
-import { Cars } from "templates/client";
+import { Cars } from "templates/common/types";
 import { SelectColumnFilter } from "../components/selectcolumnfilter/SelectColumnFilter";
 
 export const carsTableColumns: Column<Cars>[] = [
@@ -13,7 +13,7 @@ export const carsTableColumns: Column<Cars>[] = [
   { Header: "Samochód", accessor: "Nazwa" },
   {
     Header: "Cena za dzień",
-    accessor: "CenaZaDzien",
+    accessor: "CenaZaGodzine",
     // Filter: SliderColumnFilter,
     // filter: "equals",
     disableFilters: true,

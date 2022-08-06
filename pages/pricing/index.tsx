@@ -11,14 +11,14 @@ export const getStaticProps: GetStaticProps<{ cars: Cars[] }> = async () => {
     })
   ).map(
     ({
-      CenaZaDzien,
+      CenaZaGodzine,
       IdSamochody,
       Marka,
       Model,
       Zdjecia,
       samochodyszczegoly: { IdSamochodySzczegoly, ...samochodyszczegolyrest },
     }) => ({
-      CenaZaDzien,
+      CenaZaGodzine,
       IdSamochody,
       Nazwa: `${Marka} ${Model}`,
       Zdjecie: Zdjecia?.split(";")[0] || "",

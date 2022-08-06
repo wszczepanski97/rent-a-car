@@ -145,7 +145,7 @@ const RentCard: FC<RentCardProps> = ({ car }) => {
               name="Kwota"
               required
               disabled
-              value={car!.CenaZaDzien * iloscDni}
+              value={car!.CenaZaGodzine * iloscDni}
             />
           </div>
           {error && <div>{error}</div>}

@@ -32,7 +32,7 @@ const PastRentalTable: FC<PastRentalSectionProps> = ({ rentals }) => {
       },
       {
         Header: "Cena za dzień",
-        accessor: "CenaZaDzien",
+        accessor: "CenaZaGodzine",
       },
     ],
     []

@@ -5,7 +5,9 @@ import {
   createContext,
   Dispatch,
   FC,
+  memo,
   SetStateAction,
+  useCallback,
   useRef,
   useState,
 } from "react";
@@ -54,6 +56,7 @@ export type AddEventContextInterface = {
     React.SetStateAction<boolean | undefined>
   >;
   setPriceForService: React.Dispatch<React.SetStateAction<number | undefined>>;
+  resetContextData: () => void;
 };
 
 export const AddEventContext = createContext({} as AddEventContextInterface);
@@ -75,6 +78,19 @@ const AddEventContextProvider: FC = ({ children }) => {
   const [priceForService, setPriceForService] = useState<number>();
   const [deliveryEstimationTime, setDeliveryEstimationTime] =
     useState<string>();
+  const resetContextData = useCallback(() => {
+    setSelectedService(undefined);
+    setSelectedClient(undefined);
+    setSelectedCar(undefined);
+    setSelectedDateTimeRange(undefined);
+    setSelectedEmployee(undefined);
+    setSelectedInsurance(undefined);
+    setSelectedAdditionalOptions(undefined);
+    setSelectedCarPickup(undefined);
+    setSelectedCarDeliver(undefined);
+    setPriceForService(undefined);
+    setDeliveryEstimationTime(undefined);
+  }, []);
   return (
     <AddEventContext.Provider
       value={{
@@ -103,6 +119,7 @@ const AddEventContextProvider: FC = ({ children }) => {
         setSelectedCarDeliver,
         priceForService,
         setPriceForService,
+        resetContextData,
       }}
     >
       {children}

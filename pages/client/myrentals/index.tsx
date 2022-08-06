@@ -42,7 +42,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
             samochody: {
               select: {
                 IdSamochody: true,
-                CenaZaDzien: true,
+                CenaZaGodzine: true,
                 Marka: true,
                 Model: true,
                 Zdjecia: true,
@@ -60,7 +60,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
         uslugi: {
           DataDo,
           DataOd,
-          samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
+          samochody: { IdSamochody, CenaZaGodzine, Marka, Model, Zdjecia },
         },
       }) => ({
         DataDo: DataDo.toLocaleDateString(),
@@ -68,7 +68,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
         Kwota,
         Samochod: `${Marka} ${Model}`,
         IdSamochod: IdSamochody,
-        CenaZaDzien,
+        CenaZaGodzine,
         Zdjecie: Zdjecia?.split(";")[0],
       })
     );
@@ -86,7 +86,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
             samochody: {
               select: {
                 IdSamochody: true,
-                CenaZaDzien: true,
+                CenaZaGodzine: true,
                 Marka: true,
                 Model: true,
                 Zdjecia: true,
@@ -106,7 +106,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
         uslugi: {
           DataDo,
           DataOd,
-          samochody: { IdSamochody, CenaZaDzien, Marka, Model, Zdjecia },
+          samochody: { IdSamochody, CenaZaGodzine, Marka, Model, Zdjecia },
         },
       }) => ({
         IdWypozyczenia,
@@ -116,7 +116,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
         Kwota,
         Samochod: `${Marka} ${Model}`,
         IdSamochod: IdSamochody,
-        CenaZaDzien,
+        CenaZaGodzine,
         Zdjecie: Zdjecia?.split(";")[0],
       })
     );
@@ -139,7 +139,7 @@ export type PastRental = {
   Kwota: number;
   Samochod: string;
   IdSamochod: number;
-  CenaZaDzien: number;
+  CenaZaGodzine: number;
   Zdjecie: string | undefined;
 };
 
@@ -151,7 +151,7 @@ export type FutureRental = {
   Kwota: number;
   Samochod: string;
   IdSamochod: number;
-  CenaZaDzien: number;
+  CenaZaGodzine: number;
   Zdjecie: string | undefined;
 };
 

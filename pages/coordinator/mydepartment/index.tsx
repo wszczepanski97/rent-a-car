@@ -40,7 +40,7 @@ type Car = {
   CzyUszkodzony: string;
   CzyUmyty: string;
   Przebieg: string;
-  CenaZaDzien: number;
+  CenaZaGodzine: number;
   Marka: string;
   Model: string;
 };
@@ -52,12 +52,6 @@ export type CarsContextInterface = {
 export const CarsContext = createContext({} as CarsContextInterface);
 
 type Client = klienci & {
-  lokalizacje: {
-    IdLokalizacje: number;
-    Nazwa: string;
-  };
-  IdKlienci: number;
-  ProcentRabatu: number | null;
   uzytkownicy: {
     IdUzytkownicy: number;
     Email: string;
@@ -112,14 +106,6 @@ const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {
   const employees = (
     await prisma.pracownicy.findMany({
       select: {
-        lokalizacje: {
-          select: {
-            IdLokalizacje: true,
-            Miejscowosc: true,
-            Ulica: true,
-            NumerUlicy: true,
-          },
-        },
         oddzialy_hist: {
           select: {
             OdKiedy: true,
@@ -144,10 +130,6 @@ const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {
   )
     .map((employee) => ({
       ...employee,
-      lokalizacje: {
-        IdLokalizacje: employee.lokalizacje.IdLokalizacje,
-        Nazwa: `${employee.lokalizacje.Miejscowosc}, ${employee.lokalizacje.Ulica} ${employee.lokalizacje.NumerUlicy}`,
-      },
       oddzialy_hist: employee.oddzialy_hist.find(
         (contract) =>
           contract.OdKiedy.getTime() < new Date().getTime() &&
@@ -185,57 +167,33 @@ const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {
       })
     )
     .filter(({ IdSamochodySzczegoly, ...rest }) => ({ ...rest }));
-  const clients = (
-    await prisma.klienci.findMany({
-      include: {
-        lokalizacje: {
-          select: {
-            IdLokalizacje: true,
-            Miejscowosc: true,
-            Ulica: true,
-            NumerUlicy: true,
-          },
-        },
-        uzytkownicy: {
-          select: {
-            IdUzytkownicy: true,
-            Email: true,
-            Imie: true,
-            Nazwisko: true,
-            NumerDowodu: true,
-            NumerPrawaJazdy: true,
-            NumerTelefonu: true,
-            Pesel: true,
-          },
+  const clients = await prisma.klienci.findMany({
+    include: {
+      uzytkownicy: {
+        select: {
+          IdUzytkownicy: true,
+          Email: true,
+          Imie: true,
+          Nazwisko: true,
+          NumerDowodu: true,
+          NumerPrawaJazdy: true,
+          NumerTelefonu: true,
+          Pesel: true,
         },
       },
-    })
-  ).map(({ IdLokalizacje, IdUzytkownicy, lokalizacje, ...rest }) => ({
-    ...rest,
-    lokalizacje: {
-      IdLokalizacje: lokalizacje.IdLokalizacje,
-      Nazwa: `${lokalizacje.Miejscowosc}, ${lokalizacje.Ulica} ${lokalizacje.NumerUlicy}`,
     },
-  }));
-  const allLocations = (await prisma.lokalizacje.findMany()).map(
-    (lokalizacja) => ({
-      IdLokalizacje: lokalizacja.IdLokalizacje,
-      Nazwa: `${lokalizacja.Miejscowosc}, ${lokalizacja.Ulica} ${lokalizacja.NumerUlicy}`,
-    })
-  );
+  });
+  const allLocations = await prisma.lokalizacje.findMany();
   return {
     props: {
-      employeesContext: {
-        employees: JSON.parse(JSON.stringify(employees)),
-        allLocations,
-        allJobPositions: await prisma.stanowiska.findMany(),
-        allDepartments: (await prisma.oddzialy.findMany()).map(
-          ({ IdOddzialy, Nazwa }) => ({
-            IdOddzialy,
-            Nazwa,
-          })
-        ),
-      },
+      employeesContext: JSON.parse(
+        JSON.stringify({
+          employees: JSON.parse(JSON.stringify(employees)),
+          allLocations,
+          allJobPositions: await prisma.stanowiska.findMany(),
+          allDepartments: await prisma.oddzialy.findMany(),
+        })
+      ),
       carsContext: {
         cars: JSON.parse(JSON.stringify(cars)),
       },

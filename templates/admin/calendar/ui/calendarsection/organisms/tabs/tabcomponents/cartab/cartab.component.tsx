@@ -66,7 +66,6 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
         created={getAvailableCars}
         pageSettings={{ pageSize: 5 }}
         onChange={() => {
-          console.log("change");
           setDisabled(false);
         }}
       >
@@ -101,7 +100,6 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
         errorMsg="Proszę wybrać klienta"
         index={2}
         customOnClick={() => customOnNextButtonClick(availableCarGrid)}
-        setSelectedProperty={setSelectedCar}
       />
     </TabContainer>
   );

@@ -30,16 +30,6 @@ export default async function handler(
                 IdUslugiStatus: 1,
               },
             },
-            lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: {
-              connect: {
-                IdLokalizacje: klient?.IdLokalizacje,
-              },
-            },
-            lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie: {
-              connect: {
-                IdLokalizacje: klient?.IdLokalizacje,
-              },
-            },
             samochody: {
               connect: {
                 IdSamochody: req.body.IdSamochody,

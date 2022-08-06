@@ -40,9 +40,11 @@ const isEndOfContractNotBeforeBegin = (args: any) => {
   const doKiedyValue = getValue("value", args);
   if (!doKiedyValue) return true;
   const odKiedyValue = (
-    document.querySelector('[name="oddzialy_hist___OdKiedy"]') as Element
-  ).value;
-  return !(new Date(odKiedyValue).getTime() > new Date(doKiedyValue).getTime());
+    document.querySelector('[name="oddzialy_hist___OdKiedy"]') as HTMLElement
+  ).getAttribute("value");
+  return odKiedyValue
+    ? !(new Date(odKiedyValue).getTime() > new Date(doKiedyValue).getTime())
+    : false;
 };
 
 const nameValidationRule: Object = {

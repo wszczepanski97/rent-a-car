@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { HeaderGroup } from "react-table";
-import { Cars } from "templates";
+import { Cars } from "templates/common/types";
 
 type DefaultColumnFilterProps = {
   column: HeaderGroup<Cars>;

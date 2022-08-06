@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { FC } from "react";
 import { Row } from "react-table";
-import { Cars } from "templates";
+import { Cars } from "templates/common/types";
 import { Photo } from "ui";
 import CardButton, {
   CardButtonType,

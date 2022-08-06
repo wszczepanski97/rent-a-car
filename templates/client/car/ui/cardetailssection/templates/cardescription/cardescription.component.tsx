@@ -36,7 +36,7 @@ const CarDescription: FC<CarProps> = ({ car }) => (
     </div>
     <CarDescriptionRow>
       <CategoryProperty value={car!.Kategoria} />
-      <PriceForDayProperty value={car!.CenaZaDzien} />
+      <PriceForDayProperty value={car!.CenaZaGodzine} />
       <AvailabilityProperty available={true} />
     </CarDescriptionRow>
     <Link href={`/client/rent/${car!.IdSamochody}`}>

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { HeaderGroup } from "react-table";
-import { Cars } from "templates/client";
+import { Cars } from "templates/common/types";
 
 const CarsTableHeader: FC<{ headerGroups: HeaderGroup<Cars>[] }> = ({
   headerGroups,

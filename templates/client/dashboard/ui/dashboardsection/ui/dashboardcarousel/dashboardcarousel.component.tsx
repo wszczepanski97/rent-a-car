@@ -37,7 +37,7 @@ const DashboardCarousel: FC = () => {
               IloscMiejsc,
               Zdjecie,
               Nazwa,
-              CenaZaDzien,
+              CenaZaGodzine,
               IdSamochody,
             }) => (
               <CarCard
@@ -51,7 +51,7 @@ const DashboardCarousel: FC = () => {
                   alt: Nazwa,
                 }}
                 paragraphProps={{
-                  paragraphText: `Price: ${CenaZaDzien}`,
+                  paragraphText: `Price: ${CenaZaGodzine}`,
                 }}
                 titleProps={{ title: Nazwa }}
                 carId={IdSamochody}

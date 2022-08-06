@@ -1,7 +1,7 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 class MyDocument extends Document {
   render() {
-    return this.props.__NEXT_DATA__.page.startsWith("/coordinator") ? (
+    return (
       <Html>
         <Head>
           <link
@@ -14,19 +14,6 @@ class MyDocument extends Document {
           />
           <link
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-            rel="stylesheet"
-          />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    ) : (
-      <Html>
-        <Head>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap"
             rel="stylesheet"
           />
         </Head>

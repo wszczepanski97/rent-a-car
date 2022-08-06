@@ -1,5 +1,6 @@
 .calendarSection {
   width: 95%;
+  max-height: calc(100vh - var(--navbar-height));
   margin: 0 auto;
 }
 

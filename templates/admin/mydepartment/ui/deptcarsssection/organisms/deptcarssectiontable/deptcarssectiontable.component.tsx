@@ -170,7 +170,7 @@ const DeptCarsSectionTable = () => {
               validationRules={carMileageValidationRule}
             ></ColumnDirective>
             <ColumnDirective
-              field="CenaZaDzien"
+              field="CenaZaGodzine"
               headerText="Cena za dzień"
               editType="numericedit"
               defaultValue="100"
