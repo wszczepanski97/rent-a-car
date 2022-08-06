@@ -22,7 +22,7 @@ const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
     return {
       Id: schedule!.getEventMaxID(),
       ServiceType: "",
-      StartTime: new Date(
+      StartTimeZone: new Date(
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),

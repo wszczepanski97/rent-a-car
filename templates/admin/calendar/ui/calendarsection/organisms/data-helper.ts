@@ -6,7 +6,9 @@ const getNameOfService = (service: Service) =>
     ? "Wypożyczenie"
     : !!service.uszkodzenia.length
     ? "Uszkodzenie"
-    : "Mycie";
+    : !!service.mycie.length
+    ? "Mycie"
+    : "Relokacja";
 
 export const getData = (services: Service[]) =>
   extend(
@@ -16,14 +18,21 @@ export const getData = (services: Service[]) =>
       Subject: `${getNameOfService(service)} ${service.samochody.Marka} ${
         service.samochody.Model
       }`,
-      Location: `${service?.lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie.Miejscowosc}, ${service?.lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie.Ulica} ${service?.lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie.NumerUlicy}`,
-      StartTime: service.DataOd,
-      EndTime: service.DataDo,
+      StartTime: new Date(
+        new Date(service.DataOd).setHours(
+          new Date(service.DataOd).getHours() - 2
+        )
+      ),
+      EndTime: new Date(
+        new Date(service.DataDo).setHours(
+          new Date(service.DataDo).getHours() - 2
+        )
+      ),
       Description: service.Opis,
       Type: getNameOfService(service),
-      OwnerId: service.IdPracownicy_Przypisanie,
-      PickerId: service.IdPracownicy_Podstawienie,
-      ReturnerId: service.IdPracownicy_Odbior,
+      AssignedWorker: service.IdPracownicy_Przypisanie,
+      StartTimezone: "Europe/Warsaw",
+      EndTimezone: "Europe/Warsaw",
       IsReadonly: service.DataDo && new Date(service.DataDo) < new Date(),
     })),
     undefined,

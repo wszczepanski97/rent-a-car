@@ -23,23 +23,24 @@ type TabNextButtonDefaultProps = {
   type: TabNextButtonType.DEFAULT;
   customOnClick?: undefined;
   dropdownRef: MutableRefObject<DropDownListComponent | null>;
+  errorMsg: string;
+  disabled: boolean;
+  setSelectedProperty: Dispatch<SetStateAction<any>>;
 };
 
 type TabNextButtonCustomProps = {
   type: TabNextButtonType.CUSTOM;
   customOnClick(): void;
   dropdownRef?: undefined;
+  errorMsg?: string;
+  disabled?: boolean;
+  setSelectedProperty?: undefined;
 };
 
 export type TabNextButtonProps = (
   | TabNextButtonDefaultProps
   | TabNextButtonCustomProps
-) & {
-  disabled: boolean;
-  errorMsg: string;
-  index: number;
-  setSelectedProperty: Dispatch<SetStateAction<any>>;
-};
+) & { index: number };
 
 export const removeItem = (
   currentTab: React.MutableRefObject<TabComponent | null>
@@ -72,7 +73,10 @@ const TabNextButton: FC<TabNextButtonProps> = ({
       currentTab.current?.enableTab(index, false);
       setSelectedProperty(dropdownRef.current.value);
     } else {
-      document.getElementById(`err${index}`)!.innerText = errorMsg;
+      const errorSelector = document.getElementById(`err${index}`);
+      if (errorSelector !== null && errorMsg) {
+        errorSelector.innerText = errorMsg;
+      }
     }
   }, []);
   return (

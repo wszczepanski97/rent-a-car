@@ -27,7 +27,7 @@ type CarTabProps = { cars: Car[] };
 const CarTab: FC<CarTabProps> = ({ cars }) => {
   let availableCarGrid: GridComponent | null;
   const carSelected = (args: RowSelectEventArgs) => {
-    setSelectedCar(args.data);
+    setSelectedCar(args.data as Car);
     setDisabled(false);
   };
   const carDeselected = () => {
@@ -36,12 +36,7 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
   const { currentTab, setSelectedCar } = useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const customOnNextButtonClick = (element: GridComponent | null) => {
-    if (
-      element == null ||
-      (element != null &&
-        (element.getSelectedRecords() === undefined ||
-          element.getSelectedRecords().length === 0))
-    ) {
+    if (element === null) {
       document.getElementById("err2")!.innerText =
         "Żadne z aut nie zostało wybrane. Prosimy o wybranie auta.";
     } else {
@@ -55,7 +50,7 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
     availableCarGrid!.dataSource = [...cars];
   };
   return (
-    <TabContainer height={430}>
+    <TabContainer height={500}>
       <TabTitle title="Wybierz auto z listy poniżej" />
       <TabError index={2} />
       <GridComponent

@@ -1,60 +1,47 @@
 import {
+  dodatkoweopcje,
   klienci,
   lokalizacje,
   mycie,
   pracownicy,
+  relokacje,
   role,
   role_stanowisko,
   samochody,
   stanowiska,
+  ubezpieczenia,
   uslugi,
+  uslugistatus,
   uszkodzenia,
   uzytkownicy,
   wypozyczenia,
 } from "@prisma/client";
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetServerSideProps } from "next";
 import { ReactElement } from "react";
 import { CalendarSection } from "templates/admin/calendar/ui";
 import { NextPageWithLayout } from "types/next";
-import { Footer, Navbar } from "ui";
+import { Navbar } from "ui";
 import { prisma } from "../../../db";
 
 export type CalendarAdminPageProps = {
   services: Service[];
   cars: Car[];
   clients: Client[];
-  coordinators: Employee[];
-  carwashers: Employee[];
-  mechanics: Employee[];
-  drivers: Employee[];
+  employees: Employee[];
+  insurances: ubezpieczenia[];
+  additionalRentOptions: dodatkoweopcje[];
 };
 
 export type Service = uslugi & {
-  mycie: mycie[];
-  samochody: samochody;
-  uszkodzenia: uszkodzenia[];
   wypozyczenia: wypozyczenia[];
-  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: lokalizacje;
-  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie: lokalizacje;
-  pracownicy_pracownicyTouslugi_IdPracownicy_Odbior:
-    | (pracownicy & {
-        uzytkownicy: uzytkownicy;
-      })
-    | null;
-  pracownicy_pracownicyTouslugi_IdPracownicy_Podstawienie:
-    | (pracownicy & {
-        uzytkownicy: uzytkownicy;
-      })
-    | null;
-  pracownicy_pracownicyTouslugi_IdPracownicy_Przypisanie:
-    | (pracownicy & {
-        uzytkownicy: uzytkownicy;
-      })
-    | null;
+  relokacje: relokacje[];
+  mycie: mycie[];
+  uszkodzenia: uszkodzenia[];
+  samochody: samochody;
+  uslugistatus: uslugistatus;
 };
 
 export type Client = klienci & {
-  lokalizacje: lokalizacje;
   uzytkownicy: uzytkownicy;
   wypozyczenia: (wypozyczenia & {
     uslugi: uslugi;
@@ -62,15 +49,13 @@ export type Client = klienci & {
 };
 
 export type Employee = pracownicy & {
-  lokalizacje: lokalizacje;
   stanowiska: stanowiska & {
     role_stanowisko: (role_stanowisko & {
       role: role;
     })[];
   };
+  uslugi: uslugi[];
   uzytkownicy: uzytkownicy;
-  uslugi_pracownicyTouslugi_IdPracownicy_Odbior: uslugi[];
-  uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie: uslugi[];
 };
 
 export type Car = samochody & {
@@ -97,54 +82,25 @@ CalendarAdminPage.getLayout = (page: ReactElement) => (
 );
 
 const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
-  const services = await prisma.uslugi.findMany({
+  const services: Service[] = await prisma.uslugi.findMany({
     include: {
       mycie: true,
       uszkodzenia: true,
       wypozyczenia: true,
-      lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: true,
-      lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie: true,
-      pracownicy_pracownicyTouslugi_IdPracownicy_Odbior: {
-        include: {
-          uzytkownicy: true,
-        },
-      },
-      pracownicy_pracownicyTouslugi_IdPracownicy_Podstawienie: {
-        include: {
-          uzytkownicy: true,
-        },
-      },
-      pracownicy_pracownicyTouslugi_IdPracownicy_Przypisanie: {
-        include: {
-          uzytkownicy: true,
-        },
-      },
+      relokacje: true,
+      uslugistatus: true,
       samochody: true,
     },
   });
-  const clients = await prisma.klienci.findMany({
-    where: {
-      uzytkownicy: {
-        Aktywny: true,
-      },
-    },
-    include: {
-      wypozyczenia: {
-        include: {
-          uslugi: true,
-        },
-      },
-      lokalizacje: true,
-      uzytkownicy: true,
-    },
+  const clients: Client[] = await prisma.klienci.findMany({
+    where: { uzytkownicy: { Aktywny: true } },
+    include: { wypozyczenia: { include: { uslugi: true } }, uzytkownicy: true },
   });
-  const employees = await prisma.pracownicy.findMany({
-    where: {
-      uzytkownicy: {
-        Aktywny: true,
-      },
-    },
+  const employees: Employee[] = await prisma.pracownicy.findMany({
+    where: { uzytkownicy: { Aktywny: true } },
     include: {
+      uzytkownicy: true,
+      uslugi: true,
       stanowiska: {
         include: {
           role_stanowisko: {
@@ -154,58 +110,21 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
           },
         },
       },
-      lokalizacje: true,
-      uslugi_pracownicyTouslugi_IdPracownicy_Odbior: true,
-      uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie: true,
-      uzytkownicy: true,
     },
   });
-  const cars = await prisma.samochody.findMany({
-    include: {
-      uslugi: true,
-    },
+  const cars: Car[] = await prisma.samochody.findMany({
+    include: { uslugi: true },
   });
+  const insurances = await prisma.ubezpieczenia.findMany();
+  const additionalRentOptions = await prisma.dodatkoweopcje.findMany();
   return {
     props: {
       services: JSON.parse(JSON.stringify(services)),
       cars: JSON.parse(JSON.stringify(cars)),
       clients: JSON.parse(JSON.stringify(clients)),
-      coordinators: JSON.parse(
-        JSON.stringify(
-          employees.filter((employee) =>
-            employee.stanowiska.role_stanowisko.find(
-              (rolaStanowisko) => rolaStanowisko.IdRole === 1
-            )
-          ) || []
-        )
-      ),
-      carwashers: JSON.parse(
-        JSON.stringify(
-          employees.filter((employee) =>
-            employee.stanowiska.role_stanowisko.find(
-              (rolaStanowisko) => rolaStanowisko.IdRole === 2
-            )
-          ) || []
-        )
-      ),
-      mechanics: JSON.parse(
-        JSON.stringify(
-          employees.filter((employee) =>
-            employee.stanowiska.role_stanowisko.find(
-              (rolaStanowisko) => rolaStanowisko.IdRole === 3
-            )
-          ) || []
-        )
-      ),
-      drivers: JSON.parse(
-        JSON.stringify(
-          employees.filter((employee) =>
-            employee.stanowiska.role_stanowisko.find(
-              (rolaStanowisko) => rolaStanowisko.IdRole === 4
-            )
-          ) || []
-        )
-      ),
+      employees: JSON.parse(JSON.stringify(employees)),
+      insurances: JSON.parse(JSON.stringify(insurances)),
+      additionalRentOptions: JSON.parse(JSON.stringify(additionalRentOptions)),
     },
   };
 };

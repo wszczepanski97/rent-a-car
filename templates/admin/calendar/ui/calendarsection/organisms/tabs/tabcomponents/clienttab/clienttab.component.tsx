@@ -9,14 +9,33 @@ import {
 } from "../../components";
 import { AddEventContext } from "../../contexts/addevent.context";
 import TabButtonContainer from "../../components/tabbuttoncontainer/tabbuttoncontainer.component";
-import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
+import {
+  removeItem,
+  TabNextButtonType,
+} from "../../components/tabnextbutton/tabnextbutton.component";
 
 type ClientTabProps = { clients: Client[] };
 
 const ClientTab: FC<ClientTabProps> = ({ clients }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { setSelectedClient } = useContext(AddEventContext);
+  const { currentTab, setSelectedClient } = useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
+  const onCustomOnNextButtonClick = () => {
+    const client = clients.find(
+      (client) =>
+        `${client.uzytkownicy.Imie} ${client.uzytkownicy.Nazwisko}` ===
+        dropdownRef?.current?.value
+    );
+    if (client) {
+      document.getElementById("err1")!.innerText = "";
+      removeItem(currentTab);
+      currentTab?.current?.enableTab(2, true);
+      currentTab?.current?.enableTab(1, false);
+      setSelectedClient(client);
+    } else {
+      document.getElementById("err1")!.innerText = "Proszę wybrać klienta";
+    }
+  };
   return (
     <TabContainer>
       <TabTitle title="Wybierz klienta" />
@@ -26,18 +45,16 @@ const ClientTab: FC<ClientTabProps> = ({ clients }) => {
           (client) =>
             `${client.uzytkownicy.Imie} ${client.uzytkownicy.Nazwisko}`
         )}
-        placeholder="Klient"
         dropdownRef={dropdownRef}
+        placeholder="Klient"
         setDisabled={setDisabled}
         setSelectedProperty={setSelectedClient}
       />
       <TabButtonContainer
-        type={TabNextButtonType.DEFAULT}
+        type={TabNextButtonType.CUSTOM}
+        customOnClick={onCustomOnNextButtonClick}
         disabled={disabled}
-        dropdownRef={dropdownRef}
         index={1}
-        setSelectedProperty={setSelectedClient}
-        errorMsg="Proszę wybrać klienta"
       />
     </TabContainer>
   );

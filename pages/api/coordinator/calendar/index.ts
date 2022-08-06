@@ -5,52 +5,39 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log(req.body);
   if (req.method === "POST") {
     let usluga;
-    if (!req.body.IdSamochody) {
-      return res.status(400).json({ data: "Nie odnaleziono samochodu" });
-    }
+    const { service, rent, additionalOptions } = req.body;
     try {
-      const klient = await prisma.klienci.findFirst({
-        where: {
-          IdUzytkownicy: req.body.IdUzytkownicy,
-        },
-      });
-      if (!klient) {
-        return res.status(400).json({ data: "Nie odnaleziono klienta" });
-      }
       usluga = await prisma.$transaction([
         prisma.uslugi.create({
           data: {
-            DataOd: new Date(req.body.DataOd),
-            DataDo: new Date(req.body.DataDo),
-            Opis: req.body.Opis,
+            DataOd: new Date(service.DataOd),
+            DataDo: new Date(service.DataDo),
+            Opis: service.Opis || null,
             uslugistatus: {
               connect: {
                 IdUslugiStatus: 1,
               },
             },
-            lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior: {
-              connect: {
-                IdLokalizacje: klient?.IdLokalizacje,
-              },
-            },
-            lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie: {
-              connect: {
-                IdLokalizacje: klient?.IdLokalizacje,
-              },
-            },
             samochody: {
               connect: {
-                IdSamochody: req.body.IdSamochody,
+                IdSamochody: service.IdSamochody,
               },
             },
             wypozyczenia: {
               create: {
-                Kwota: req.body.Kwota,
-                IdKlienci: klient.IdKlienci,
-                IdUbezpieczenia: req.body.IdUbezpieczenia,
-                KwotaPoRabacie: null,
+                ...rent,
+                // dodatkoweopcje_wypozyczenia: {
+                //   create: {
+                //     dodatkoweopcje: {
+                //       create: {
+                //         ...additionalOptions,
+                //       },
+                //     },
+                //   },
+                // },
               },
             },
           },

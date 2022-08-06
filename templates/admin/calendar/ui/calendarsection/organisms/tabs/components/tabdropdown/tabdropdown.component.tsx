@@ -2,7 +2,6 @@ import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import React, {
   Dispatch,
   FC,
-  memo,
   MutableRefObject,
   SetStateAction,
   useCallback,
@@ -12,7 +11,7 @@ type TabDropdownProps = {
   dataSource: string[];
   placeholder: string;
   dropdownRef: MutableRefObject<DropDownListComponent | null>;
-  setDisabled: Dispatch<SetStateAction<boolean>>;
+  setDisabled?: Dispatch<SetStateAction<boolean>>;
   setSelectedProperty: Dispatch<SetStateAction<any>>;
 };
 
@@ -24,7 +23,7 @@ const TabDropdown: FC<TabDropdownProps> = ({
 }) => {
   const onDropdownChange = useCallback(
     (e: any) => {
-      setDisabled(false);
+      setDisabled?.(false);
       setSelectedProperty(e.value);
     },
     [setDisabled, setSelectedProperty]

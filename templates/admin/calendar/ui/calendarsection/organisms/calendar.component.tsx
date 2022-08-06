@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useContext, useState } from "react";
 import {
   Day,
   Week,
@@ -11,6 +11,7 @@ import {
   DragAndDrop,
   ExcelExport,
   Print,
+  ActionEventArgs,
 } from "@syncfusion/ej2-react-schedule";
 import { AddEvent } from "./add-event.component";
 import Toolbar from "./toolbar/toolbar.component";
@@ -25,14 +26,58 @@ import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import { loadCldr } from "@syncfusion/ej2-base";
-import AddEventContextProvider from "./tabs/contexts/addevent.context";
+import { AddEventContext } from "./tabs/contexts/addevent.context";
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 export const Calendar: FC<CalendarAdminPageProps> = (props) => {
+  const {
+    selectedService,
+    selectedClient,
+    selectedCar,
+    selectedDateTimeRange,
+    selectedEmployee,
+    serviceDescription,
+    priceForService,
+    deliveryEstimationTime,
+    selectedInsurance,
+    selectedAdditionalOptions,
+    selectedCarPickup,
+    selectedCarDeliver,
+  } = useContext(AddEventContext);
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(props.services);
-  const onPopupClose = (args) => {
+  const onActionComplete = async (args: ActionEventArgs) => {
     console.log(args);
+    if (args.requestType === "eventCreated") {
+      const body = JSON.stringify({
+        service: {
+          DataOd: selectedDateTimeRange?.startDateValue,
+          DataDo: selectedDateTimeRange?.endDateValue,
+          Opis: serviceDescription,
+          IdPracownicy_Przypisanie: undefined,
+          IdSamochody: selectedCar?.IdSamochody,
+        },
+        rent: {
+          Kwota: priceForService,
+          KwotaPoRabacie:
+            selectedClient?.ProcentRabatu && priceForService
+              ? Math.floor(
+                  priceForService -
+                    0.01 * selectedClient?.ProcentRabatu * priceForService
+                )
+              : null,
+          IdKlienci: selectedClient?.IdKlienci,
+          IdUbezpieczenia: selectedInsurance?.IdUbezpieczenia,
+        },
+        additionalOptions: selectedAdditionalOptions,
+      });
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      };
+      await fetch("/api/coordinator/calendar", options);
+    }
   };
   return (
     <CalendarWrapper>
@@ -50,13 +95,14 @@ export const Calendar: FC<CalendarAdminPageProps> = (props) => {
         timeFormat="HH:mm"
         startHour="09:00"
         endHour="18:00"
-        locale="pl"
-        editorTemplate={() => (
-          <AddEventContextProvider>
+        // timezone="Etc/UTC"
+        editorTemplate={useCallback(
+          () => (
             <AddEvent {...props} />
-          </AddEventContextProvider>
+          ),
+          []
         )}
-        popupClose={onPopupClose}
+        actionComplete={onActionComplete}
       >
         <ViewsDirectives />
         <Inject

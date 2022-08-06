@@ -9,6 +9,7 @@ import {
 } from "../../components";
 import { AddEventContext } from "../../contexts/addevent.context";
 import { UslugaType } from "../../../add-event.component";
+import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
 
 const ServiceTypeTab = () => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
@@ -26,6 +27,7 @@ const ServiceTypeTab = () => {
         setSelectedProperty={setSelectedService}
       />
       <TabNextButton
+        type={TabNextButtonType.DEFAULT}
         disabled={disabled}
         dropdownRef={dropdownRef}
         errorMsg="Proszę uzupełnić typ usługi"

@@ -42,18 +42,18 @@ model klienci {
 }
 
 model lokalizacje {
-  IdLokalizacje                                         Int          @id @default(autoincrement())
-  Kraj                                                  String       @db.VarChar(50)
-  KodPocztowy                                           String       @db.VarChar(10)
-  Miejscowosc                                           String       @db.VarChar(50)
-  Ulica                                                 String       @db.VarChar(50)
-  NumerUlicy                                            String       @db.VarChar(5)
-  DlugoscGeograficzna                                   String       @db.VarChar(10)
-  SzerokoscGeograficzna                                 String       @db.VarChar(10)
-  klienci                                               klienci[]
-  pracownicy                                            pracownicy[]
-  uslugi_lokalizacjeTouslugi_IdLokalizacje_Odbior       uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Odbior")
-  uslugi_lokalizacjeTouslugi_IdLokalizacje_Podstawienie uslugi[]     @relation("lokalizacjeTouslugi_IdLokalizacje_Podstawienie")
+  IdLokalizacje         Int         @id @default(autoincrement())
+  Kraj                  String      @db.VarChar(50)
+  KodPocztowy           String      @db.VarChar(10)
+  Miejscowosc           String      @db.VarChar(50)
+  Ulica                 String      @db.VarChar(50)
+  NumerUlicy            String      @db.VarChar(5)
+  DlugoscGeograficzna   String      @db.VarChar(10)
+  SzerokoscGeograficzna String      @db.VarChar(10)
+  klienci               klienci[]
+  oddzialy              oddzialy[]
+  relokacje             relokacje[]
+  samochody             samochody[]
 
   @@index([IdLokalizacje], map: "Lokalizacje_idx_1")
 }
@@ -75,12 +75,13 @@ model oddzialy {
   IdOddzialy         Int             @id @default(autoincrement())
   Nazwa              String          @db.VarChar(30)
   Kontakt            String          @db.VarChar(15)
-  Miejsce            String          @db.VarChar(30)
   DataStworzenia     DateTime        @db.Date
   KosztWynajmuLokalu Int
+  IdLokalizacje      Int
+  lokalizacje        lokalizacje     @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "oddzialy_Lokalizacje")
   oddzialy_hist      oddzialy_hist[]
 
-  @@index([IdOddzialy, Miejsce], map: "Oddzialy_idx_1")
+  @@index([IdLokalizacje], map: "oddzialy_Lokalizacje")
 }
 
 model oddzialy_hist {
@@ -120,32 +121,28 @@ model oplatystatus {
 }
 
 model pracownicy {
-  IdPracownicy                                        Int             @id @default(autoincrement())
-  IdLokalizacje                                       Int
-  IdStanowiska                                        Int
-  IdUzytkownicy                                       Int
-  lokalizacje                                         lokalizacje     @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Pracownicy_SzczegolyLokalizacji")
-  stanowiska                                          stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
-  uzytkownicy                                         uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onDelete: Cascade, onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
-  oddzialy_hist                                       oddzialy_hist[]
-  uslugi_pracownicyTouslugi_IdPracownicy_Odbior       uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Odbior")
-  uslugi_pracownicyTouslugi_IdPracownicy_Podstawienie uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Podstawienie")
-  uslugi_pracownicyTouslugi_IdPracownicy_Przypisanie  uslugi[]        @relation("pracownicyTouslugi_IdPracownicy_Przypisanie")
-  wyplaty                                             wyplaty[]
+  IdPracownicy  Int             @id @default(autoincrement())
+  IdStanowiska  Int
+  IdUzytkownicy Int
+  stanowiska    stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
+  uzytkownicy   uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onDelete: Cascade, onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
+  oddzialy_hist oddzialy_hist[]
+  uslugi        uslugi[]
+  wyplaty       wyplaty[]
 
   @@index([IdStanowiska], map: "Pracownicy_Stanowisko")
-  @@index([IdLokalizacje], map: "Pracownicy_SzczegolyLokalizacji")
   @@index([IdUzytkownicy], map: "Pracownicy_Uzytkownik")
-  @@index([IdPracownicy, IdLokalizacje, IdStanowiska, IdUzytkownicy], map: "Pracownicy_idx_1")
 }
 
 model relokacje {
-  IdRelokacje Int    @id
-  Cena        Int?
-  IdUslugi    Int
-  uslugi      uslugi @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Relokacje_Usluga")
+  IdRelokacje   Int         @id
+  IdUslugi      Int
+  IdLokalizacje Int
+  lokalizacje   lokalizacje @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "relokacje_Lokalizacja")
+  uslugi        uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onUpdate: Restrict, map: "Relokacje_Usluga")
 
   @@index([IdUslugi], map: "Relokacje_Usluga_idx")
+  @@index([IdLokalizacje], map: "relokacje_Lokalizacja")
 }
 
 model role {
@@ -191,11 +188,14 @@ model samochody {
   Przebieg             String             @db.VarChar(45)
   CzyUmyty             Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
   IdSamochodySzczegoly Int
-  CenaZaDzien          Int
+  CenaZaGodzine        Int
   OstatniaAktualizacja DateTime?          @db.DateTime(0)
+  IdLokalizacje        Int
+  lokalizacje          lokalizacje        @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Lokalizacje")
   samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
   uslugi               uslugi[]
 
+  @@index([IdLokalizacje], map: "Samochody_Lokalizacje")
   @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
   @@index([IdSamochody, Marka, NumerRejestracyjny, Kategoria, IdSamochodySzczegoly], map: "Samochody_idx_1")
 }
@@ -233,37 +233,24 @@ model ubezpieczenia {
 }
 
 model uslugi {
-  IdUslugi                                                   Int            @id @default(autoincrement())
-  DataOd                                                     DateTime       @db.Timestamp(0)
-  DataDo                                                     DateTime       @db.Timestamp(0)
-  Opis                                                       String?        @db.VarChar(150)
-  IdLokalizacje_Podstawienie                                 Int
-  IdLokalizacje_Odbior                                       Int
-  IdPracownicy_Przypisanie                                   Int?
-  IdPracownicy_Podstawienie                                  Int?
-  IdPracownicy_Odbior                                        Int?
-  IdSamochody                                                Int
-  IdUslugaStatus                                             Int
-  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Odbior       lokalizacje    @relation("lokalizacjeTouslugi_IdLokalizacje_Odbior", fields: [IdLokalizacje_Odbior], references: [IdLokalizacje], onUpdate: Restrict, map: "Uslugi_Lokalizacje")
-  lokalizacje_lokalizacjeTouslugi_IdLokalizacje_Podstawienie lokalizacje    @relation("lokalizacjeTouslugi_IdLokalizacje_Podstawienie", fields: [IdLokalizacje_Podstawienie], references: [IdLokalizacje], onUpdate: Restrict, map: "Usluga_SzczegolyLokalizacji")
-  pracownicy_pracownicyTouslugi_IdPracownicy_Odbior          pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Odbior", fields: [IdPracownicy_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Odbior")
-  pracownicy_pracownicyTouslugi_IdPracownicy_Podstawienie    pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Podstawienie", fields: [IdPracownicy_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Podstawienie")
-  pracownicy_pracownicyTouslugi_IdPracownicy_Przypisanie     pracownicy?    @relation("pracownicyTouslugi_IdPracownicy_Przypisanie", fields: [IdPracownicy_Przypisanie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Przypisanie")
-  samochody                                                  samochody      @relation(fields: [IdSamochody], references: [IdSamochody], onUpdate: Restrict, map: "Uslugi_Samochody")
-  uslugistatus                                               uslugistatus   @relation(fields: [IdUslugaStatus], references: [IdUslugiStatus], onUpdate: Restrict, map: "Usluga_Status")
-  mycie                                                      mycie[]
-  relokacje                                                  relokacje[]
-  uszkodzenia                                                uszkodzenia[]
-  wypozyczenia                                               wypozyczenia[]
+  IdUslugi                 Int            @id @default(autoincrement())
+  DataOd                   DateTime       @db.Timestamp(0)
+  DataDo                   DateTime       @db.Timestamp(0)
+  Opis                     String?        @db.VarChar(150)
+  IdPracownicy_Przypisanie Int?
+  IdSamochody              Int
+  IdUslugaStatus           Int
+  pracownicy               pracownicy?    @relation(fields: [IdPracownicy_Przypisanie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Usluga_Pracownicy_Przypisanie")
+  samochody                samochody      @relation(fields: [IdSamochody], references: [IdSamochody], onUpdate: Restrict, map: "Uslugi_Samochody")
+  uslugistatus             uslugistatus   @relation(fields: [IdUslugaStatus], references: [IdUslugiStatus], onUpdate: Restrict, map: "Usluga_Status")
+  mycie                    mycie[]
+  relokacje                relokacje[]
+  uszkodzenia              uszkodzenia[]
+  wypozyczenia             wypozyczenia[]
 
-  @@index([IdPracownicy_Odbior], map: "Usluga_Pracownicy_Odbior")
-  @@index([IdPracownicy_Podstawienie], map: "Usluga_Pracownicy_Podstawienie")
   @@index([IdPracownicy_Przypisanie], map: "Usluga_Pracownicy_Przypisanie")
   @@index([IdUslugaStatus], map: "Usluga_Status_idx")
-  @@index([IdLokalizacje_Podstawienie], map: "Usluga_SzczegolyLokalizacji")
-  @@index([IdLokalizacje_Odbior], map: "Uslugi_Lokalizacje")
   @@index([IdSamochody], map: "Uslugi_Samochody")
-  @@index([IdUslugi, IdLokalizacje_Podstawienie, IdLokalizacje_Odbior, IdPracownicy_Przypisanie, IdPracownicy_Podstawienie, IdPracownicy_Odbior, IdSamochody], map: "Uslugi_idx_1")
 }
 
 model uslugistatus {
