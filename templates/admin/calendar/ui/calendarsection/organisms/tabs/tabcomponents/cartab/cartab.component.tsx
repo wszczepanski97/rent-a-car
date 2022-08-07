@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, memo, useCallback, useContext, useRef, useState } from "react";
 import { Car } from "pages/coordinator/calendar";
 import {
   TabButtonContainer,
@@ -21,20 +21,20 @@ import {
   removeItem,
   TabNextButtonType,
 } from "../../components/tabnextbutton/tabnextbutton.component";
+import { UslugaType } from "../../../add-event.component";
 
 type CarTabProps = { cars: Car[] };
 
-const CarTab: FC<CarTabProps> = ({ cars }) => {
+const CarTab: FC<CarTabProps> = memo(({ cars }) => {
   let availableCarGrid: GridComponent | null;
-  const carSelected = (args: RowSelectEventArgs) => {
-    setSelectedCar(args.data as Car);
+  const carSelected = useRef<Car>();
+  const { currentTab, selectedService, setSelectedCar } =
+    useContext(AddEventContext);
+  const [disabled, setDisabled] = useState(true);
+  const onCarSelected = (args: RowSelectEventArgs) => {
+    carSelected.current = args.data as Car;
     setDisabled(false);
   };
-  const carDeselected = () => {
-    setDisabled(true);
-  };
-  const { currentTab, setSelectedCar } = useContext(AddEventContext);
-  const [disabled, setDisabled] = useState(true);
   const customOnNextButtonClick = (element: GridComponent | null) => {
     if (element === null) {
       document.getElementById("err2")!.innerText =
@@ -42,8 +42,14 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
     } else {
       document.getElementById("err2")!.innerText = "";
       removeItem(currentTab);
-      currentTab?.current?.enableTab(3, true);
-      currentTab?.current?.enableTab(2, false);
+      setSelectedCar(carSelected.current);
+      if (selectedService === UslugaType.WYPOŻYCZENIE) {
+        currentTab?.current?.enableTab(3, true);
+        currentTab?.current?.enableTab(2, false);
+      } else {
+        currentTab?.current?.enableTab(2, true);
+        currentTab?.current?.enableTab(1, false);
+      }
     }
   };
   const getAvailableCars = () => {
@@ -61,13 +67,9 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
         filterSettings={{ type: "CheckBox" }}
         ref={(grid) => (availableCarGrid = grid)}
         width={1000}
-        rowSelected={carSelected}
-        rowDeselected={carDeselected}
+        rowSelected={onCarSelected}
         created={getAvailableCars}
         pageSettings={{ pageSize: 5 }}
-        onChange={() => {
-          setDisabled(false);
-        }}
       >
         <ColumnsDirective>
           <ColumnDirective
@@ -98,11 +100,11 @@ const CarTab: FC<CarTabProps> = ({ cars }) => {
         type={TabNextButtonType.CUSTOM}
         disabled={disabled}
         errorMsg="Proszę wybrać klienta"
-        index={2}
+        index={selectedService === UslugaType.WYPOŻYCZENIE ? 2 : 1}
         customOnClick={() => customOnNextButtonClick(availableCarGrid)}
       />
     </TabContainer>
   );
-};
+});
 
 export default CarTab;

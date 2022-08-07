@@ -1,4 +1,5 @@
 import { FC, useContext } from "react";
+import { UslugaType } from "../../../add-event.component";
 import { TabBackButton, TabContainer, TabTitle } from "../../components";
 import { AddEventContext } from "../../contexts/addevent.context";
 export const SummaryTab: FC = () => {
@@ -6,20 +7,13 @@ export const SummaryTab: FC = () => {
     selectedService,
     selectedClient,
     selectedCar,
+    selectedRepairType,
+    selectedWashingType,
     selectedEmployee,
     selectedDateTimeRange,
     serviceDescription,
     priceForService,
-    setPriceForService,
   } = useContext(AddEventContext);
-  setPriceForService(
-    (selectedCar?.CenaZaGodzine as number) *
-      (Math.abs(
-        (selectedDateTimeRange?.endDateValue as unknown as number) -
-          (selectedDateTimeRange?.startDateValue as unknown as number)
-      ) /
-        36e5)
-  );
   return (
     <TabContainer height={350}>
       <form style={{ width: "100%" }}>
@@ -43,19 +37,21 @@ export const SummaryTab: FC = () => {
               <label className="e-textlabel">Typ usługi</label>
               <span>{selectedService}</span>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px 0",
-              }}
-            >
-              <label className="e-textlabel">Klient</label>
-              <span>
-                {selectedClient?.uzytkownicy.Imie}{" "}
-                {selectedClient?.uzytkownicy.Nazwisko}
-              </span>
-            </div>
+            {selectedService === UslugaType.WYPOŻYCZENIE && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Klient</label>
+                <span>
+                  {selectedClient?.uzytkownicy.Imie}{" "}
+                  {selectedClient?.uzytkownicy.Nazwisko}
+                </span>
+              </div>
+            )}
             <div
               style={{
                 display: "flex",
@@ -97,16 +93,42 @@ export const SummaryTab: FC = () => {
                   : "-"}
               </span>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px 0",
-              }}
-            >
-              <label className="e-textlabel">Cena</label>
-              <span>{priceForService}</span>
-            </div>
+            {selectedService === UslugaType.WYPOŻYCZENIE && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Cena</label>
+                <span>{priceForService}</span>
+              </div>
+            )}
+            {selectedService === UslugaType.MYCIE && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Typ mycia</label>
+                <span>{selectedWashingType}</span>
+              </div>
+            )}
+            {selectedService === UslugaType.NAPRAWA && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Typ naprawy</label>
+                <span>{selectedRepairType}</span>
+              </div>
+            )}
             <div
               style={{
                 display: "flex",

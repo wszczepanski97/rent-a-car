@@ -5,7 +5,7 @@ const getNameOfService = (service: Service) =>
   !!service.wypozyczenia.length
     ? "Wypożyczenie"
     : !!service.uszkodzenia.length
-    ? "Uszkodzenie"
+    ? "Naprawa"
     : !!service.mycie.length
     ? "Mycie"
     : "Relokacja";

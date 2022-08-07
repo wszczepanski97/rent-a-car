@@ -60,10 +60,9 @@ model lokalizacje {
 
 model mycie {
   IdMycie            Int      @id @default(autoincrement())
-  Cena               Int?
   MyjniaBezdotykowa  Boolean? @db.Bit(1)
   MyjniaAutomatyczna Boolean? @db.Bit(1)
-  MjniaPrywatna      Boolean? @db.Bit(1)
+  MyjniaPrywatna     Boolean? @db.Bit(1)
   IdUslugi           Int
   uslugi             uslugi   @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Mycie_Usluga")
 
@@ -263,7 +262,6 @@ model uslugistatus {
 
 model uszkodzenia {
   IdUszkodzenia      Int      @id @default(autoincrement())
-  Cena               Int?
   AutoryzowanySerwis Boolean? @db.Bit(1)
   SamodzielnaNaprawa Boolean? @db.Bit(1)
   Warsztat           Boolean? @db.Bit(1)

@@ -84,6 +84,7 @@ const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
         dropdownRef={dropdownRef}
         placeholder="Wybierz typ ubezpieczenia..."
         setSelectedProperty={setSelectedInsurance}
+        value={selectedInsurance}
       />
       <label className="e-textlabel" style={{ fontSize: 16 }}>
         Dodatkowe opcje

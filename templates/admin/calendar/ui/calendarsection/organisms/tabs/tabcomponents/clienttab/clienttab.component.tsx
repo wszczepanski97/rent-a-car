@@ -18,7 +18,8 @@ type ClientTabProps = { clients: Client[] };
 
 const ClientTab: FC<ClientTabProps> = ({ clients }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { currentTab, setSelectedClient } = useContext(AddEventContext);
+  const { currentTab, selectedClient, setSelectedClient } =
+    useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const onCustomOnNextButtonClick = () => {
     const client = clients.find(
@@ -49,11 +50,12 @@ const ClientTab: FC<ClientTabProps> = ({ clients }) => {
         placeholder="Klient"
         setDisabled={setDisabled}
         setSelectedProperty={setSelectedClient}
+        value={selectedClient}
       />
       <TabButtonContainer
         type={TabNextButtonType.CUSTOM}
         customOnClick={onCustomOnNextButtonClick}
-        disabled={disabled}
+        disabled={!selectedClient}
         index={1}
       />
     </TabContainer>

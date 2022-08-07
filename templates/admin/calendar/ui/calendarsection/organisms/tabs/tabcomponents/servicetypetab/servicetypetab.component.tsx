@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { FC, useContext, useRef, useState } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import {
   TabContainer,
@@ -11,10 +11,9 @@ import { AddEventContext } from "../../contexts/addevent.context";
 import { UslugaType } from "../../../add-event.component";
 import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
 
-const ServiceTypeTab = () => {
+const ServiceTypeTab: FC = () => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { setSelectedService } = useContext(AddEventContext);
-  const [disabled, setDisabled] = useState(true);
+  const { selectedService, setSelectedService } = useContext(AddEventContext);
   return (
     <TabContainer>
       <TabTitle title="Wybierz typ usługi" />
@@ -23,12 +22,12 @@ const ServiceTypeTab = () => {
         dataSource={Object.values(UslugaType)}
         dropdownRef={dropdownRef}
         placeholder="Typ usługi"
-        setDisabled={setDisabled}
         setSelectedProperty={setSelectedService}
+        value={selectedService}
       />
       <TabNextButton
         type={TabNextButtonType.DEFAULT}
-        disabled={disabled}
+        disabled={!selectedService}
         dropdownRef={dropdownRef}
         errorMsg="Proszę uzupełnić typ usługi"
         index={0}

@@ -5,14 +5,15 @@ import {
   createContext,
   Dispatch,
   FC,
-  memo,
   SetStateAction,
   useCallback,
   useRef,
   useState,
 } from "react";
 import { UslugaType } from "../../add-event.component";
+import { RepairType } from "../tabcomponents/repairtypetab/repairtypetab.component";
 import { DateRange } from "../tabcomponents/timerangetab/timerangetab.component";
+import { WashingType } from "../tabcomponents/washingtypetab/washingtypetab.component";
 
 export type AddEventContextInterface = {
   currentTab: React.MutableRefObject<TabComponent | null>;
@@ -28,34 +29,26 @@ export type AddEventContextInterface = {
   selectedCarPickup?: boolean;
   selectedCarDeliver?: boolean;
   priceForService?: number;
-  setSelectedService: React.Dispatch<
-    React.SetStateAction<UslugaType | undefined>
-  >;
-  setSelectedClient: React.Dispatch<React.SetStateAction<Client | undefined>>;
-  setSelectedCar: React.Dispatch<React.SetStateAction<Car | undefined>>;
-  setSelectedDateTimeRange: React.Dispatch<
+  selectedWashingType?: WashingType;
+  selectedRepairType?: RepairType;
+  setSelectedService: Dispatch<React.SetStateAction<UslugaType | undefined>>;
+  setSelectedClient: Dispatch<React.SetStateAction<Client | undefined>>;
+  setSelectedCar: Dispatch<React.SetStateAction<Car | undefined>>;
+  setSelectedDateTimeRange: Dispatch<
     React.SetStateAction<DateRange | undefined>
   >;
-  setSelectedEmployee: React.Dispatch<
-    React.SetStateAction<Employee | undefined>
-  >;
-  setServiceDescription: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
-  setDeliveryEstimationTime: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
+  setSelectedEmployee: Dispatch<React.SetStateAction<Employee | undefined>>;
+  setServiceDescription: Dispatch<React.SetStateAction<string | undefined>>;
+  setDeliveryEstimationTime: Dispatch<React.SetStateAction<string | undefined>>;
   setSelectedInsurance: Dispatch<SetStateAction<ubezpieczenia | undefined>>;
   setSelectedAdditionalOptions: Dispatch<
     SetStateAction<dodatkoweopcje[] | undefined>
   >;
-  setSelectedCarPickup: React.Dispatch<
-    React.SetStateAction<boolean | undefined>
-  >;
-  setSelectedCarDeliver: React.Dispatch<
-    React.SetStateAction<boolean | undefined>
-  >;
-  setPriceForService: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setSelectedCarPickup: Dispatch<React.SetStateAction<boolean | undefined>>;
+  setSelectedCarDeliver: Dispatch<React.SetStateAction<boolean | undefined>>;
+  setPriceForService: Dispatch<React.SetStateAction<number | undefined>>;
+  setSelectedWashingType: Dispatch<SetStateAction<WashingType | undefined>>;
+  setSelectedRepairType: Dispatch<SetStateAction<RepairType | undefined>>;
   resetContextData: () => void;
 };
 
@@ -76,6 +69,8 @@ const AddEventContextProvider: FC = ({ children }) => {
   const [selectedCarPickup, setSelectedCarPickup] = useState<boolean>();
   const [selectedCarDeliver, setSelectedCarDeliver] = useState<boolean>();
   const [priceForService, setPriceForService] = useState<number>();
+  const [selectedWashingType, setSelectedWashingType] = useState<WashingType>();
+  const [selectedRepairType, setSelectedRepairType] = useState<RepairType>();
   const [deliveryEstimationTime, setDeliveryEstimationTime] =
     useState<string>();
   const resetContextData = useCallback(() => {
@@ -90,7 +85,23 @@ const AddEventContextProvider: FC = ({ children }) => {
     setSelectedCarDeliver(undefined);
     setPriceForService(undefined);
     setDeliveryEstimationTime(undefined);
-  }, []);
+    setSelectedWashingType(undefined);
+    setSelectedRepairType(undefined);
+  }, [
+    setSelectedService,
+    setSelectedClient,
+    setSelectedCar,
+    setSelectedDateTimeRange,
+    setSelectedEmployee,
+    setSelectedInsurance,
+    setSelectedAdditionalOptions,
+    setSelectedCarPickup,
+    setSelectedCarDeliver,
+    setPriceForService,
+    setDeliveryEstimationTime,
+    setSelectedWashingType,
+    setSelectedRepairType,
+  ]);
   return (
     <AddEventContext.Provider
       value={{
@@ -119,6 +130,10 @@ const AddEventContextProvider: FC = ({ children }) => {
         setSelectedCarDeliver,
         priceForService,
         setPriceForService,
+        selectedWashingType,
+        setSelectedWashingType,
+        selectedRepairType,
+        setSelectedRepairType,
         resetContextData,
       }}
     >

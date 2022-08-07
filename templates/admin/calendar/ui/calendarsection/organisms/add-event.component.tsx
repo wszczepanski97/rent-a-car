@@ -2,41 +2,34 @@ import * as React from "react";
 import {
   SelectEventArgs,
   TabComponent,
-  TabItemDirective,
   TabItemsDirective,
+  TabItemDirective,
 } from "@syncfusion/ej2-react-navigations";
 import { CalendarAdminPageProps } from "pages/coordinator/calendar";
-import { FC, useCallback, useContext } from "react";
-import ServiceTypeTab from "./tabs/tabcomponents/servicetypetab/servicetypetab.component";
+import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
-import ClientTab from "./tabs/tabcomponents/clienttab/clienttab.component";
 import {
   AdditionalRentOptionsTab,
   CarTab,
-  EmployeeTab,
+  ClientTab,
+  DescriptionTab,
+  EmployeeAssigneeTab,
+  RepairTypeTab,
+  ServiceTypeTab,
+  SummaryTab,
   TimeRangeTab,
+  TimeRangeWashingTab,
+  WashingTypeTab,
 } from "./tabs/tabcomponents";
-import DescriptionTab from "./tabs/tabcomponents/descriptiontab/descriptiontab.component";
-import SummaryTab from "./tabs/tabcomponents/summarytab/summarytab.component";
 
 export enum UslugaType {
   WYPOŻYCZENIE = "Wypożyczenie",
   MYCIE = "Mycie",
-  USZKODZENIE = "Uszkodzenie",
+  NAPRAWA = "Naprawa",
 }
 
 export const AddEvent: FC<CalendarAdminPageProps> = (props) => {
   const { currentTab, selectedService } = useContext(AddEventContext);
-  const headerText = [
-    { text: "1) Typ" },
-    { text: "2) Klient" },
-    { text: "3) Samochód" },
-    { text: "4) Czas" },
-    { text: "5) Dodatkowe opcje" },
-    { text: "6) Opis" },
-    { text: "7) Podsumowanie" },
-  ];
-
   const tabSelecting = (e: SelectEventArgs) => {
     if (e.isSwiped) {
       e.cancel = true;
@@ -52,85 +45,83 @@ export const AddEvent: FC<CalendarAdminPageProps> = (props) => {
     >
       <TabItemsDirective>
         <TabItemDirective
-          header={headerText[0]}
-          content={useCallback(
-            () => (
-              <ServiceTypeTab />
-            ),
-            []
-          )}
+          header={{ text: "1) Typ usługi" }}
+          content={() => <ServiceTypeTab />}
         />
+
         <TabItemDirective
-          header={headerText[1]}
-          content={useCallback(
-            () => (
+          header={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? { text: "2) Klient" }
+              : { text: "2) Samochód" }
+          }
+          content={() =>
+            selectedService === UslugaType.WYPOŻYCZENIE ? (
               <ClientTab clients={props.clients} />
-            ),
-            []
-          )}
-          disabled={true}
-        />
-        <TabItemDirective
-          header={headerText[2]}
-          content={useCallback(
-            () => (
+            ) : (
               <CarTab cars={props.cars} />
-            ),
-            []
-          )}
+            )
+          }
           disabled={true}
         />
         <TabItemDirective
-          header={headerText[3]}
-          content={useCallback(
-            () => (
-              <TimeRangeTab />
-            ),
-            []
-          )}
+          header={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? { text: "3) Samochód" }
+              : { text: "3) Czas" }
+          }
+          content={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? () => <CarTab cars={props.cars} />
+              : () => <TimeRangeWashingTab />
+          }
           disabled={true}
         />
-        {/* <TabItemDirective
-          header={headerText[4]}
-          content={useCallback(
-            () => (
-              <EmployeeTab employees={props.employees} />
-            ),
-            []
-          )}
-          disabled={true}
-        /> */}
         <TabItemDirective
-          header={headerText[4]}
-          content={useCallback(
-            () => (
+          header={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? { text: "4) Czas" }
+              : { text: "4) Pracownik" }
+          }
+          content={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? () => <TimeRangeTab />
+              : () => <EmployeeAssigneeTab employees={props.employees} />
+          }
+          disabled={true}
+        />
+
+        <TabItemDirective
+          header={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? { text: "5) Dodatkowe opcje" }
+              : selectedService === UslugaType.MYCIE
+              ? { text: "5) Typ mycia" }
+              : { text: "5) Typ naprawy" }
+          }
+          content={() =>
+            selectedService === UslugaType.WYPOŻYCZENIE ? (
               <AdditionalRentOptionsTab
                 insurances={props.insurances}
                 additionalOptions={props.additionalRentOptions}
               />
-            ),
-            []
-          )}
+            ) : selectedService === UslugaType.MYCIE ? (
+              <WashingTypeTab />
+            ) : (
+              <RepairTypeTab />
+            )
+          }
           disabled={true}
         />
         <TabItemDirective
-          header={headerText[5]}
-          content={useCallback(
-            () => (
-              <DescriptionTab />
-            ),
-            []
-          )}
+          header={{ text: "6) Opis" }}
+          content={() => <DescriptionTab />}
           disabled={true}
         />
         <TabItemDirective
-          header={headerText[6]}
-          content={useCallback(
-            () => (
-              <SummaryTab />
-            ),
-            []
-          )}
+          header={{ text: "7) Podsumowanie" }}
+          content={() => <SummaryTab />}
+          disabled={true}
         />
       </TabItemsDirective>
     </TabComponent>

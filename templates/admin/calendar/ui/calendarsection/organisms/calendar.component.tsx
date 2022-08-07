@@ -14,7 +14,7 @@ import {
   ActionEventArgs,
   PopupCloseEventArgs,
 } from "@syncfusion/ej2-react-schedule";
-import { AddEvent } from "./add-event.component";
+import { AddEvent, UslugaType } from "./add-event.component";
 import Toolbar from "./toolbar/toolbar.component";
 import Header from "./header/header.component";
 import ViewsDirectives from "./viewsdirectives/viewsdirectives.component";
@@ -27,6 +27,8 @@ import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import { loadCldr } from "@syncfusion/ej2-base";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
+import { WashingType } from "./tabs/tabcomponents/washingtypetab/washingtypetab.component";
+import { RepairType } from "./tabs/tabcomponents/repairtypetab/repairtypetab.component";
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
@@ -41,6 +43,8 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
     deliveryEstimationTime,
     selectedInsurance,
     selectedAdditionalOptions,
+    selectedWashingType,
+    selectedRepairType,
     selectedCarPickup,
     selectedCarDeliver,
     resetContextData,
@@ -48,9 +52,12 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(props.services);
   const onActionComplete = async (args: ActionEventArgs) => {
+    console.log(args.requestType);
     if (args.requestType === "eventCreated") {
-      if (selectedService === "Wypożyczenie") {
+      console.log(selectedService);
+      if (selectedService === UslugaType.WYPOŻYCZENIE) {
         const body = JSON.stringify({
+          type: UslugaType.WYPOŻYCZENIE,
           service: {
             DataOd: selectedDateTimeRange?.startDateValue,
             DataDo: selectedDateTimeRange?.endDateValue,
@@ -78,10 +85,56 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
           body,
         };
         await fetch("/api/coordinator/calendar", options);
+      } else if (selectedService === UslugaType.MYCIE) {
+        const body = JSON.stringify({
+          type: UslugaType.MYCIE,
+          service: {
+            DataOd: selectedDateTimeRange?.startDateValue,
+            DataDo: selectedDateTimeRange?.endDateValue,
+            Opis: serviceDescription,
+            IdPracownicy_Przypisanie: selectedEmployee?.IdPracownicy,
+            IdSamochody: selectedCar?.IdSamochody,
+          },
+          washing: {
+            MyjniaBezdotykowa: selectedWashingType === WashingType.Bezdotykowa,
+            MyjniaAutomatyczna:
+              selectedWashingType === WashingType.Automatyczna,
+            MyjniaPrywatna: selectedWashingType === WashingType.Prywatna,
+          },
+        });
+        const options = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+        };
+        await fetch("/api/coordinator/calendar", options);
+      } else if (selectedService === UslugaType.NAPRAWA) {
+        const body = JSON.stringify({
+          type: UslugaType.NAPRAWA,
+          service: {
+            DataOd: selectedDateTimeRange?.startDateValue,
+            DataDo: selectedDateTimeRange?.endDateValue,
+            Opis: serviceDescription,
+            IdPracownicy_Przypisanie: selectedEmployee?.IdPracownicy,
+            IdSamochody: selectedCar?.IdSamochody,
+          },
+          repair: {
+            AutoryzowanySerwis:
+              selectedRepairType === RepairType.AutoryzowanySerwis,
+            SamodzielnaNaprawa:
+              selectedRepairType === RepairType.SamodzielnaNaprawa,
+            Warsztat: selectedRepairType === RepairType.Warsztat,
+          },
+        });
+        const options = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+        };
+        await fetch("/api/coordinator/calendar", options);
       }
       resetContextData();
-    }
-    if (args.requestType === "eventRemoved") {
+    } else if (args.requestType === "eventRemoved") {
       await Promise.all(
         args.data?.map(async (service: Data) => {
           const options = {
@@ -89,6 +142,7 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               IdUslugi: service.Id,
+              type: service.type,
             }),
           };
           await fetch("/api/coordinator/calendar", options);
@@ -96,9 +150,9 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
       );
     }
   };
-  const onPopupOpen = (e) => {
-    console.log(e);
-  };
+  // const onPopupOpen = (e) => {
+  //   console.log(e);
+  // };
   const onPopupClose = (e: PopupCloseEventArgs) => {
     if (e.type === "Editor" && !e.data) {
       resetContextData();
@@ -127,7 +181,7 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
         )}
         actionComplete={onActionComplete}
         popupClose={onPopupClose}
-        popupOpen={onPopupOpen}
+        // popupOpen={onPopupOpen}
         workHours={{
           highlight: true,
           start: "00:00",

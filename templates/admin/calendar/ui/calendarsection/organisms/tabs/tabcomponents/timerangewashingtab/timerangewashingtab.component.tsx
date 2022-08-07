@@ -23,49 +23,32 @@ import {
   getNextHalfHourDateForToday,
   getPrevHalfHourDate,
 } from "../../helpers/date-helper";
-
 export type DateRange = {
   startDateValue: Date;
   endDateValue: Date;
 };
 
-export const TimeRangeTab: FC = () => {
+export const TimeRangeWashingTab: FC = () => {
   const {
     currentTab,
-    selectedCar,
-    selectedClient,
-    setPriceForService,
     setSelectedDateTimeRange,
+    selectedCar,
     setDeliveryEstimationTime,
   } = useContext(AddEventContext);
   const blockedPeriods: {
     blockedPeriodsStartDate: Date[];
     blockedPeriodsEndDate: Date[];
   } = useMemo(() => {
-    const carBlockedPeriodsStartDate =
+    const blockedPeriodsStartDate =
       selectedCar?.uslugi
         .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
-        .flat() || [];
-    const clientBlockedPeriodsStartDate =
-      selectedClient?.wypozyczenia
-        .map((wypozyczenie) => wypozyczenie.uslugi)
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
-        .flat() || [];
-    const blockedPeriodsStartDate = Array.from(
-      new Set([...carBlockedPeriodsStartDate, ...clientBlockedPeriodsStartDate])
-    ).sort((a, b) => a.getTime() - b.getTime());
-    const carBlockedPeriodsEndDate =
+        .flat()
+        .sort((a, b) => a.getTime() - b.getTime()) || [];
+    const blockedPeriodsEndDate =
       selectedCar?.uslugi
         .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, false))
-        .flat() || [];
-    const clientBlockedPeriodsEndDate =
-      selectedClient?.wypozyczenia
-        .map((wypozyczenie) => wypozyczenie.uslugi)
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, false))
-        .flat() || [];
-    const blockedPeriodsEndDate = Array.from(
-      new Set([...carBlockedPeriodsEndDate, ...clientBlockedPeriodsEndDate])
-    ).sort((a, b) => a.getTime() - b.getTime());
+        .flat()
+        .sort((a, b) => a.getTime() - b.getTime()) || [];
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };
   }, [getBlockedPeriods]);
   const blockedDates = useMemo(
@@ -191,16 +174,8 @@ export const TimeRangeTab: FC = () => {
     } else {
       document.getElementById("err3")!.innerText = "";
       removeItem(currentTab);
-      setPriceForService(
-        (selectedCar?.CenaZaGodzine as number) *
-          (Math.abs(
-            (range.endDateValue as unknown as number) -
-              (range.startDateValue as unknown as number)
-          ) /
-            36e5)
-      );
-      currentTab?.current?.enableTab(4, true);
-      currentTab?.current?.enableTab(3, false);
+      currentTab?.current?.enableTab(3, true);
+      currentTab?.current?.enableTab(2, false);
       setSelectedDateTimeRange(range);
     }
   };
@@ -281,10 +256,10 @@ export const TimeRangeTab: FC = () => {
       <TabButtonContainer
         type={TabNextButtonType.CUSTOM}
         customOnClick={() => onCustomOnNextButtonClick(state)}
-        index={3}
+        index={2}
       />
     </TabContainer>
   );
 };
 
-export default TimeRangeTab;
+export default TimeRangeWashingTab;
