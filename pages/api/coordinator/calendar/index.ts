@@ -112,8 +112,168 @@ export default async function handler(
       }
       return res.status(200).json({ data: { usluga } });
     }
+  } else if (req.method === "PUT") {
+    if (req.body.type === UslugaType.WYPOŻYCZENIE) {
+      const { service, rent, additionalOptions } = req.body;
+      try {
+        const uslugaByIdUslugi = await prisma.uslugi.findFirst({
+          where: { IdUslugi: service.IdUslugi },
+          include: {
+            wypozyczenia: true,
+          },
+        });
+        if (!uslugaByIdUslugi) {
+          return res.status(400).json({ data: "Nie odnaleziono usługi" });
+        }
+        const [usluga] = await prisma.$transaction([
+          prisma.uslugi.update({
+            data: {
+              DataOd: new Date(
+                new Date(service.DataOd).getTime() -
+                  new Date(service.DataOd).getTimezoneOffset() * 60 * 1000
+              ),
+              DataDo: new Date(
+                new Date(service.DataDo).getTime() -
+                  new Date(service.DataDo).getTimezoneOffset() * 60 * 1000
+              ),
+              Opis: service.Opis,
+              samochody: {
+                connect: {
+                  IdSamochody: service.IdSamochody,
+                },
+              },
+              IdPracownicy_Przypisanie: service.IdPracownicy_Przypisanie,
+              wypozyczenia: {
+                update: {
+                  data: {
+                    ...rent,
+                    dodatkoweopcje_wypozyczenia: {
+                      createMany: {
+                        data: additionalOptions.map(
+                          (option: dodatkoweopcje) => ({
+                            DodatkoweOpcje_Id: option.IdDodatkoweOpcje,
+                          })
+                        ),
+                      },
+                    },
+                  },
+                  where: {
+                    IdWypozyczenia:
+                      uslugaByIdUslugi.wypozyczenia[0].IdWypozyczenia,
+                  },
+                },
+              },
+            },
+            where: {
+              IdUslugi: service.IdUslugi,
+            },
+          }),
+        ]);
+        return res.status(200).json({ data: { usluga } });
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (req.body.type === UslugaType.MYCIE) {
+      const { service, washing } = req.body;
+      try {
+        const uslugaByIdUslugi = await prisma.uslugi.findFirst({
+          where: { IdUslugi: service.IdUslugi },
+          include: {
+            mycie: true,
+          },
+        });
+        if (!uslugaByIdUslugi) {
+          return res.status(400).json({ data: "Nie odnaleziono usługi" });
+        }
+        const [usluga] = await prisma.$transaction([
+          prisma.uslugi.update({
+            data: {
+              DataOd: new Date(
+                new Date(service.DataOd).getTime() -
+                  new Date(service.DataOd).getTimezoneOffset() * 60 * 1000
+              ),
+              DataDo: new Date(
+                new Date(service.DataDo).getTime() -
+                  new Date(service.DataDo).getTimezoneOffset() * 60 * 1000
+              ),
+              Opis: service.Opis,
+              samochody: {
+                connect: {
+                  IdSamochody: service.IdSamochody,
+                },
+              },
+              IdPracownicy_Przypisanie: service.IdPracownicy_Przypisanie,
+              mycie: {
+                update: {
+                  data: { ...washing },
+                  where: {
+                    IdMycie: uslugaByIdUslugi.mycie[0].IdMycie,
+                  },
+                },
+              },
+            },
+            where: {
+              IdUslugi: service.IdUslugi,
+            },
+          }),
+        ]);
+        return res.status(200).json({ data: { usluga } });
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (req.body.type === UslugaType.NAPRAWA) {
+      const { service, repair } = req.body;
+      try {
+        const uslugaByIdUslugi = await prisma.uslugi.findFirst({
+          where: { IdUslugi: service.IdUslugi },
+          include: {
+            uszkodzenia: true,
+          },
+        });
+        if (!uslugaByIdUslugi) {
+          return res.status(400).json({ data: "Nie odnaleziono usługi" });
+        }
+        const [usluga] = await prisma.$transaction([
+          prisma.uslugi.update({
+            data: {
+              DataOd: new Date(
+                new Date(service.DataOd).getTime() -
+                  new Date(service.DataOd).getTimezoneOffset() * 60 * 1000
+              ),
+              DataDo: new Date(
+                new Date(service.DataDo).getTime() -
+                  new Date(service.DataDo).getTimezoneOffset() * 60 * 1000
+              ),
+              Opis: service.Opis,
+              samochody: {
+                connect: {
+                  IdSamochody: service.IdSamochody,
+                },
+              },
+              IdPracownicy_Przypisanie: service.IdPracownicy_Przypisanie,
+              uszkodzenia: {
+                update: {
+                  data: { ...repair },
+                  where: {
+                    IdUszkodzenia:
+                      uslugaByIdUslugi.uszkodzenia[0].IdUszkodzenia,
+                  },
+                },
+              },
+            },
+            where: {
+              IdUslugi: service.IdUslugi,
+            },
+          }),
+        ]);
+        return res.status(200).json({ data: { usluga } });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   } else if (req.method === "DELETE") {
     const { IdUslugi, type } = req.body;
+    console.log(req.body);
     if (type === UslugaType.WYPOŻYCZENIE) {
       try {
         const serviceByIdUslugi = await prisma.uslugi.findFirst({
