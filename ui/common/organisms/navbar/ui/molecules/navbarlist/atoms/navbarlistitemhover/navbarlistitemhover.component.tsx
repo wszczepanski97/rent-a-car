@@ -34,6 +34,7 @@ const NavbarListItemHover: FC<NavbarListItemHoverProps> = ({
       >
         {options.map((option) => (
           <li
+            key={option.name}
             style={{
               display: "inline-block",
               padding: 5,

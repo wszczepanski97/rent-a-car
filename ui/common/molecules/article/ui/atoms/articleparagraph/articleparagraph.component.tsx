@@ -6,8 +6,10 @@ const ArticleParagraph: FC<ArticleParagraphProps> = ({
   as: Tag = "h4",
 }) => (
   <>
-    {paragraphText.split("\n").map((chunk) => (
-      <Tag style={{ color }}>{chunk}</Tag>
+    {paragraphText.split("\n").map((chunk, index) => (
+      <Tag key={index} style={{ color }}>
+        {chunk}
+      </Tag>
     ))}
   </>
 );

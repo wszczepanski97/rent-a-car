@@ -96,6 +96,9 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
       );
     }
   };
+  const onPopupOpen = (e) => {
+    console.log(e);
+  };
   const onPopupClose = (e: PopupCloseEventArgs) => {
     if (e.type === "Editor" && !e.data) {
       resetContextData();
@@ -124,10 +127,11 @@ export const Calendar: FC<CalendarAdminPageProps> = memo((props) => {
         )}
         actionComplete={onActionComplete}
         popupClose={onPopupClose}
+        popupOpen={onPopupOpen}
         workHours={{
           highlight: true,
           start: "00:00",
-          end: "00:00",
+          end: "23:30",
         }}
         allowKeyboardInteraction
       >

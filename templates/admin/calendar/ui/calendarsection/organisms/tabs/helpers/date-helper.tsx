@@ -14,7 +14,7 @@ export const getNextHalfHourDateForToday = (date: Date) => {
     ? new Date(
         dateDuplicate.getFullYear(),
         dateDuplicate.getMonth(),
-        dateDuplicate.getDay(),
+        dateDuplicate.getDate(),
         dateDuplicate.getHours() + 1,
         0,
         0
@@ -22,7 +22,7 @@ export const getNextHalfHourDateForToday = (date: Date) => {
     : new Date(
         dateDuplicate.getFullYear(),
         dateDuplicate.getMonth(),
-        dateDuplicate.getDay(),
+        dateDuplicate.getDate(),
         dateDuplicate.getHours(),
         30,
         0
@@ -34,14 +34,26 @@ export const getNextDayDate = (date: Date) => {
   return new Date(dateDuplicate.setDate(date.getDate() + 1));
 };
 
-export const getBlockedPeriods = (startDate: Date, endDate: Date) => {
+export const getBlockedPeriods = (
+  startDate: Date,
+  endDate: Date,
+  isStartDate: boolean
+) => {
   let dates: Date[] = [];
-  let startDateDuplicate = new Date(startDate);
-  const endDateDuplicate = new Date(endDate);
+  let startDateDuplicate = new Date(
+    new Date(startDate).getTime() +
+      new Date(startDate).getTimezoneOffset() * 60 * 1000
+  );
+  const endDateDuplicate = new Date(
+    new Date(endDate).getTime() +
+      new Date(endDate).getTimezoneOffset() * 60 * 1000
+  );
   while (startDateDuplicate <= endDateDuplicate) {
     dates = [...dates, new Date(startDateDuplicate)];
     startDateDuplicate = getNextHalfHourDate(startDateDuplicate);
   }
+  if (isStartDate) dates.pop();
+  else dates.shift();
   return dates;
 };
 
@@ -57,8 +69,8 @@ export const getBlockedDates = (blockedPeriods: Date[]) => {
   const array = [];
   for (const key in object) {
     if (object[key] >= 48) {
-      array.push(key);
+      array.push(new Date(key));
     }
   }
-  return array;
+  return array.sort((a, b) => a.getTime() - b.getTime());
 };
