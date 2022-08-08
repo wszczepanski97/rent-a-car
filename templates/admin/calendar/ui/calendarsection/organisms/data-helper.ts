@@ -27,7 +27,7 @@ export type Data = {
 export const getData = (services: Service[]) => {
   return extend(
     [],
-    services!.map((service) => {
+    services?.map((service) => {
       const serviceName = getNameOfService(service);
       return {
         Id: service.IdUslugi,

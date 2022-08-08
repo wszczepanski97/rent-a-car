@@ -1,10 +1,10 @@
 import { FC, useContext, useRef } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import {
+  TabButtonContainer,
   TabContainer,
   TabDropdown,
   TabError,
-  TabNextButton,
   TabTitle,
 } from "../../components";
 import { AddEventContext } from "../../contexts/addevent.context";
@@ -31,7 +31,7 @@ const RepairTypeTab: FC = () => {
         setSelectedProperty={setSelectedRepairType}
         value={selectedRepairType}
       />
-      <TabNextButton
+      <TabButtonContainer
         type={TabNextButtonType.DEFAULT}
         disabled={!selectedRepairType}
         dropdownRef={dropdownRef}

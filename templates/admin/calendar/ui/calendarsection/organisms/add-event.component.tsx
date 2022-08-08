@@ -21,6 +21,7 @@ import {
   TimeRangeWashingTab,
   WashingTypeTab,
 } from "./tabs/tabcomponents";
+import EmployeeRentTab from "./tabs/tabcomponents/employeerenttab/employeerenttab.component";
 
 export enum UslugaType {
   WYPOŻYCZENIE = "Wypożyczenie",
@@ -114,8 +115,21 @@ export const AddEvent: FC<CalendarAdminPageProps> = (props) => {
           disabled={true}
         />
         <TabItemDirective
-          header={{ text: "6) Opis" }}
-          content={() => <DescriptionTab />}
+          header={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? { text: "6) Podstawienie/Odbiór auta" }
+              : { text: "6) Opis" }
+          }
+          content={
+            selectedService === UslugaType.WYPOŻYCZENIE
+              ? () => (
+                  <EmployeeRentTab
+                    employees={props.employees}
+                    locations={props.locations}
+                  />
+                )
+              : () => <DescriptionTab />
+          }
           disabled={true}
         />
         <TabItemDirective

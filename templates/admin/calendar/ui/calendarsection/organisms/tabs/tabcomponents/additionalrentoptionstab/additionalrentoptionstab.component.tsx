@@ -1,6 +1,6 @@
 import { dodatkoweopcje, ubezpieczenia } from "@prisma/client";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { FC, useContext, useRef, useState } from "react";
+import { FC, useCallback, useContext, useRef, useState } from "react";
 import {
   TabButtonContainer,
   TabContainer,
@@ -39,39 +39,55 @@ const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
   const {
     currentTab,
     selectedInsurance,
-    setSelectedInsurance,
+    selectedAdditionalOptions,
+    setSelectedDateTimeRange,
     setSelectedAdditionalOptions,
-    setSelectedCarDeliver,
-    setSelectedCarPickup,
+    setSelectedInsurance,
   } = useContext(AddEventContext);
-  const onCustomOnNextButtonClick = () => {
-    const insurance = insurances.find(
-      (insurance) => insurance.Nazwa === dropdownRef?.current?.value
-    );
 
-    const carManagement = getDataNames("carManagement");
-    setSelectedCarDeliver(carManagement.includes("carDeliver"));
-    setSelectedCarPickup(carManagement.includes("carPickup"));
-
-    const accesories = getDataNames("accesories").map(
+  const getAccesories = () =>
+    getDataNames("accesories").map(
       (accesory) =>
         additionalOptions.find(
           (additionalOption) => additionalOption.Nazwa === accesory
         ) as dodatkoweopcje
     );
-    setSelectedAdditionalOptions(accesories);
+  const onCustomOnNextButtonClick = () => {
+    const errorElement = document.getElementById("err4");
+    const insurance = insurances.find(
+      (insurance) => insurance.Nazwa === dropdownRef?.current?.value
+    );
+    setSelectedAdditionalOptions(getAccesories());
 
     if (insurance) {
-      document.getElementById("err4")!.innerText = "";
+      if (errorElement) {
+        errorElement.innerText = "";
+      }
       setSelectedInsurance(insurance);
       removeItem(currentTab);
       currentTab?.current?.enableTab(5, true);
       currentTab?.current?.enableTab(4, false);
     } else {
-      document.getElementById("err4")!.innerText =
-        "Proszę wybrać ubezpieczenie. Inne opcje mogą pozostać nieoznaczone.";
+      if (errorElement) {
+        errorElement.innerText =
+          "Proszę wybrać ubezpieczenie. Inne opcje mogą pozostać nieoznaczone.";
+      }
     }
   };
+
+  const onAccesoryChange = useCallback(() => {
+    setSelectedAdditionalOptions(getAccesories());
+  }, [setSelectedAdditionalOptions, getAccesories]);
+
+  const isAccesoryChecked = useCallback(
+    (nazwa: string) => {
+      return !!selectedAdditionalOptions?.find(
+        (accesory) => accesory.Nazwa === nazwa
+      );
+    },
+    [selectedAdditionalOptions]
+  );
+
   return (
     <TabContainer height={500} gap={10}>
       <TabTitle title="Wybierz dodatkowe opcje" marginBottom={0} />
@@ -89,56 +105,33 @@ const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
       <label className="e-textlabel" style={{ fontSize: 16 }}>
         Dodatkowe opcje
       </label>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        <div id="accesories">
-          <label className="e-textlabel" style={{ fontSize: 14 }}>
-            Akcesoria
-          </label>
-          {additionalOptions.map((option) => (
-            <label
-              key={option.Nazwa}
-              className={styles.container}
-              data-name={option.Nazwa}
-            >
-              <label className="e-textlabel" style={{ paddingTop: 3 }}>
-                {option.Nazwa}
-              </label>
-              <input type="checkbox" />
-              <span className={styles.checkmark}></span>
-            </label>
-          ))}
-        </div>
-        <div id="carManagement">
-          <label className="e-textlabel" style={{ fontSize: 14 }}>
-            Podstawienie/odbiór auta
-          </label>
-          <label className={styles.container} data-name="carDeliver">
+      <div id="accesories" style={{ width: 500 }}>
+        {additionalOptions.map((option) => (
+          <label
+            key={option.Nazwa}
+            className={styles.container}
+            data-name={option.Nazwa}
+          >
             <label className="e-textlabel" style={{ paddingTop: 3 }}>
-              Czy podstawić auto?
+              {option.Nazwa}
             </label>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              onChange={onAccesoryChange}
+              checked={isAccesoryChecked(option.Nazwa)}
+            />
             <span className={styles.checkmark}></span>
           </label>
-          <label className={styles.container} data-name="carPickup">
-            <label className="e-textlabel" style={{ paddingTop: 3 }}>
-              Czy odebrać auto?
-            </label>
-            <input type="checkbox" />
-            <span className={styles.checkmark}></span>
-          </label>
-        </div>
+        ))}
       </div>
       <TabButtonContainer
         type={TabNextButtonType.CUSTOM}
         customOnClick={onCustomOnNextButtonClick}
         disabled={!selectedInsurance}
         index={4}
+        onBackClick={() => {
+          setSelectedDateTimeRange(undefined);
+        }}
       />
     </TabContainer>
   );

@@ -1,5 +1,6 @@
+import { FullScreenContext } from "contexts/full-screen-context";
 import { useSession } from "next-auth/react";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import LogoutButton from "ui/common/atoms/logoutbutton/logoutbutton.component";
 import { NavbarListItem } from "./atoms";
 import NavbarListItemHover from "./atoms/navbarlistitemhover/navbarlistitemhover.component";
@@ -8,7 +9,8 @@ import styles from "./navbarlist.module.scss";
 const NavbarList: FC = () => {
   const { data: session } = useSession();
   const role = session?.user.role;
-  return (
+  const { screen } = useContext(FullScreenContext);
+  return screen.active ? null : (
     <ul className={styles.navbarList}>
       <div className={styles.navbarListContainer}>
         <div className={styles.navbarListItemGroup}>
@@ -27,18 +29,22 @@ const NavbarList: FC = () => {
             </>
           ) : role === "KOORDYNATOR" ? (
             <>
-              <NavbarListItem name="Dashboard" href="/coordinator/dashboard" />
               <NavbarListItem
                 name="Mój oddział"
-                href="/coordinator/mydepartment"
+                href="/coordinator/dashboard"
               />
               <NavbarListItem name="Kalendarz" href="/coordinator/calendar" />
               <NavbarListItem name="Mapa" href="/coordinator/map" />
-              <NavbarListItem name="Wykresy" href="/coordinator/charts" />
               <NavbarListItem name="Profil" href="/coordinator/profile" />
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
+              <button
+                onClick={screen.active ? screen.exit : screen.enter}
+                style={{ padding: "5px 10px" }}
+              >
+                {screen.active ? "Desktop" : "Fullscreen"}
+              </button>
             </>
           ) : !!role ? (
             <>
@@ -48,6 +54,9 @@ const NavbarList: FC = () => {
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
+              <button onClick={screen.active ? screen.exit : screen.enter}>
+                {screen.active ? "Desktop" : "Fullscreen"}
+              </button>
             </>
           ) : (
             <>

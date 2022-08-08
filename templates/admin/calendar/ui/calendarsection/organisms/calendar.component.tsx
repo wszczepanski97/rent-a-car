@@ -26,11 +26,13 @@ import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json"
 import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
-import { loadCldr, closest, isNullOrUndefined } from "@syncfusion/ej2-base";
+import { loadCldr, closest } from "@syncfusion/ej2-base";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 import { WashingType } from "./tabs/tabcomponents/washingtypetab/washingtypetab.component";
 import { RepairType } from "./tabs/tabcomponents/repairtypetab/repairtypetab.component";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import { FullScreenContext } from "contexts/full-screen-context";
+
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
 export const Calendar: FC<CalendarAdminPageProps> = memo(
@@ -40,6 +42,7 @@ export const Calendar: FC<CalendarAdminPageProps> = memo(
     clients,
     employees,
     insurances,
+    locations,
     services,
   }) => {
     const {
@@ -50,29 +53,21 @@ export const Calendar: FC<CalendarAdminPageProps> = memo(
       selectedEmployee,
       serviceDescription,
       priceForService,
-      deliveryEstimationTime,
       selectedInsurance,
       selectedAdditionalOptions,
       selectedWashingType,
       selectedRepairType,
-      selectedCarPickup,
-      selectedCarDeliver,
       setSelectedService,
       setSelectedClient,
       setSelectedCar,
       setSelectedDateTimeRange,
       setSelectedEmployee,
       setServiceDescription,
-      setDeliveryEstimationTime,
       setSelectedInsurance,
-      setSelectedAdditionalOptions,
-      setSelectedCarPickup,
-      setSelectedCarDeliver,
-      setPriceForService,
       setSelectedWashingType,
-      setSelectedRepairType,
       resetContextData,
     } = useContext(AddEventContext);
+    const { screen } = useContext(FullScreenContext);
     const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
     const dataSource = getData(services);
     const onActionComplete = async (args: ActionEventArgs) => {
@@ -424,7 +419,10 @@ export const Calendar: FC<CalendarAdminPageProps> = memo(
     };
     return (
       <>
-        <div className={styles["schedule-overview"]}>
+        <div
+          className={styles["schedule-overview"]}
+          style={{ width: screen.active ? "100vw" : "auto" }}
+        >
           <Header schedule={schedule} />
           <div className={styles["overview-toolbar"]}>
             <Toolbar schedule={schedule} />
@@ -438,7 +436,11 @@ export const Calendar: FC<CalendarAdminPageProps> = memo(
             dataSource,
           }}
           timeFormat="HH:mm"
-          style={{ maxHeight: "77vh", overflowY: "auto" }}
+          style={{
+            maxHeight: screen.active ? "87vh" : "77vh",
+            width: screen.active ? "100vw" : "auto",
+            overflowY: "auto",
+          }}
           editorTemplate={useCallback(
             () => (
               <AddEvent
@@ -448,6 +450,7 @@ export const Calendar: FC<CalendarAdminPageProps> = memo(
                 employees={employees}
                 insurances={insurances}
                 services={services}
+                locations={locations}
               />
             ),
             []

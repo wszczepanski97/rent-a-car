@@ -30,6 +30,7 @@ export type CalendarAdminPageProps = {
   employees: Employee[];
   insurances: ubezpieczenia[];
   additionalRentOptions: dodatkoweopcje[];
+  locations: lokalizacje[];
 };
 
 export type Service = uslugi & {
@@ -117,6 +118,7 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
   });
   const insurances = await prisma.ubezpieczenia.findMany();
   const additionalRentOptions = await prisma.dodatkoweopcje.findMany();
+  const locations = await prisma.lokalizacje.findMany();
   return {
     props: {
       services: JSON.parse(JSON.stringify(services)),
@@ -125,6 +127,7 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
       employees: JSON.parse(JSON.stringify(employees)),
       insurances: JSON.parse(JSON.stringify(insurances)),
       additionalRentOptions: JSON.parse(JSON.stringify(additionalRentOptions)),
+      locations: JSON.parse(JSON.stringify(locations)),
     },
   };
 };

@@ -28,19 +28,29 @@ type CarTabProps = { cars: Car[] };
 const CarTab: FC<CarTabProps> = memo(({ cars }) => {
   let availableCarGrid: GridComponent | null;
   const carSelected = useRef<Car>();
-  const { currentTab, selectedService, setSelectedCar } =
-    useContext(AddEventContext);
+  const {
+    currentTab,
+    selectedService,
+    setSelectedCar,
+    setSelectedClient,
+    setSelectedService,
+  } = useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const onCarSelected = (args: RowSelectEventArgs) => {
     carSelected.current = args.data as Car;
     setDisabled(false);
   };
   const customOnNextButtonClick = (element: GridComponent | null) => {
+    const errorElement = document.getElementById("err2");
     if (element === null) {
-      document.getElementById("err2")!.innerText =
-        "Żadne z aut nie zostało wybrane. Prosimy o wybranie auta.";
+      if (errorElement) {
+        errorElement.innerText =
+          "Żadne z aut nie zostało wybrane. Prosimy o wybranie auta.";
+      }
     } else {
-      document.getElementById("err2")!.innerText = "";
+      if (errorElement) {
+        errorElement.innerText = "";
+      }
       removeItem(currentTab);
       setSelectedCar(carSelected.current);
       if (selectedService === UslugaType.WYPOŻYCZENIE) {
@@ -53,7 +63,9 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
     }
   };
   const getAvailableCars = () => {
-    availableCarGrid!.dataSource = [...cars];
+    if (availableCarGrid) {
+      availableCarGrid.dataSource = [...cars];
+    }
   };
   return (
     <TabContainer height={500}>
@@ -102,6 +114,13 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
         errorMsg="Proszę wybrać klienta"
         index={selectedService === UslugaType.WYPOŻYCZENIE ? 2 : 1}
         customOnClick={() => customOnNextButtonClick(availableCarGrid)}
+        onBackClick={() => {
+          if (selectedService === UslugaType.WYPOŻYCZENIE) {
+            setSelectedClient(undefined);
+          } else {
+            setSelectedService(undefined);
+          }
+        }}
       />
     </TabContainer>
   );

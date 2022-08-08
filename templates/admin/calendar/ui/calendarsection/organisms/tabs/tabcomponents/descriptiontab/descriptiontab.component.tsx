@@ -1,4 +1,5 @@
 import { FC, useContext, useRef } from "react";
+import { UslugaType } from "../../../add-event.component";
 import { TabButtonContainer, TabContainer, TabTitle } from "../../components";
 import {
   removeItem,
@@ -7,7 +8,12 @@ import {
 import { AddEventContext } from "../../contexts/addevent.context";
 
 const DescriptionTab: FC = () => {
-  const { currentTab, setServiceDescription } = useContext(AddEventContext);
+  const {
+    currentTab,
+    selectedService,
+    setServiceDescription,
+    setSelectedWashingType,
+  } = useContext(AddEventContext);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   return (
     <TabContainer height={350}>
@@ -31,6 +37,11 @@ const DescriptionTab: FC = () => {
           setServiceDescription(textareaRef.current?.value);
         }}
         index={5}
+        onBackClick={() => {
+          if (selectedService === UslugaType.MYCIE) {
+            setSelectedWashingType(undefined);
+          }
+        }}
       />
     </TabContainer>
   );

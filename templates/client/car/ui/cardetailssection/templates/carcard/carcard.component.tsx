@@ -8,9 +8,9 @@ import { CarCardTitle } from "./ui";
 
 const CarCard: FC<CarProps> = ({ car }) => (
   <Card type={CardType.CUSTOM} className={styles.carCard}>
-    <CarCardTitle carName={`${car!.Marka} ${car!.Model}`} />
+    <CarCardTitle carName={`${car?.Marka} ${car?.Model}`} />
     <div className={styles.carCardInnerWrapper}>
-      <CarCarousel photos={car!.Zdjecia!} />
+      <CarCarousel photos={car?.Zdjecia!} />
       <CarDescription car={car} />
     </div>
   </Card>

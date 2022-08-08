@@ -120,14 +120,16 @@ model oplatystatus {
 }
 
 model pracownicy {
-  IdPracownicy  Int             @id @default(autoincrement())
-  IdStanowiska  Int
-  IdUzytkownicy Int
-  stanowiska    stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
-  uzytkownicy   uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onDelete: Cascade, onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
-  oddzialy_hist oddzialy_hist[]
-  uslugi        uslugi[]
-  wyplaty       wyplaty[]
+  IdPracownicy                                                   Int             @id @default(autoincrement())
+  IdStanowiska                                                   Int
+  IdUzytkownicy                                                  Int
+  stanowiska                                                     stanowiska      @relation(fields: [IdStanowiska], references: [IdStanowiska], onUpdate: Restrict, map: "Pracownicy_Stanowisko")
+  uzytkownicy                                                    uzytkownicy     @relation(fields: [IdUzytkownicy], references: [IdUzytkownicy], onDelete: Cascade, onUpdate: Restrict, map: "Pracownicy_Uzytkownik")
+  oddzialy_hist                                                  oddzialy_hist[]
+  uslugi                                                         uslugi[]
+  wyplaty                                                        wyplaty[]
+  wypozyczenia_pracownicyTowypozyczenia_IdPracownik_Odbior       wypozyczenia[]  @relation("pracownicyTowypozyczenia_IdPracownik_Odbior")
+  wypozyczenia_pracownicyTowypozyczenia_IdPracownik_Podstawienie wypozyczenia[]  @relation("pracownicyTowypozyczenia_IdPracownik_Podstawienie")
 
   @@index([IdStanowiska], map: "Pracownicy_Stanowisko")
   @@index([IdUzytkownicy], map: "Pracownicy_Uzytkownik")
@@ -305,19 +307,25 @@ model wyplaty {
 }
 
 model wypozyczenia {
-  IdWypozyczenia              Int                           @id @default(autoincrement())
-  Kwota                       Int
-  KwotaPoRabacie              Int?
-  IdKlienci                   Int
-  IdUbezpieczenia             Int?
-  IdUslugi                    Int
-  klienci                     klienci                       @relation(fields: [IdKlienci], references: [IdKlienci], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Klienci")
-  ubezpieczenia               ubezpieczenia?                @relation(fields: [IdUbezpieczenia], references: [IdUbezpieczenia], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Ubezpieczenia")
-  uslugi                      uslugi                        @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Uslugi")
-  dodatkoweopcje_wypozyczenia dodatkoweopcje_wypozyczenia[]
-  oplaty                      oplaty[]
+  IdWypozyczenia                                               Int                           @id @default(autoincrement())
+  Kwota                                                        Int
+  KwotaPoRabacie                                               Int?
+  IdKlienci                                                    Int
+  IdUbezpieczenia                                              Int?
+  IdUslugi                                                     Int
+  IdPracownik_Podstawienie                                     Int?
+  IdPracownik_Odbior                                           Int?
+  klienci                                                      klienci                       @relation(fields: [IdKlienci], references: [IdKlienci], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Klienci")
+  pracownicy_pracownicyTowypozyczenia_IdPracownik_Odbior       pracownicy?                   @relation("pracownicyTowypozyczenia_IdPracownik_Odbior", fields: [IdPracownik_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Pracownik_Odbior")
+  pracownicy_pracownicyTowypozyczenia_IdPracownik_Podstawienie pracownicy?                   @relation("pracownicyTowypozyczenia_IdPracownik_Podstawienie", fields: [IdPracownik_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Pracownik_Podstawienie")
+  ubezpieczenia                                                ubezpieczenia?                @relation(fields: [IdUbezpieczenia], references: [IdUbezpieczenia], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Ubezpieczenia")
+  uslugi                                                       uslugi                        @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Uslugi")
+  dodatkoweopcje_wypozyczenia                                  dodatkoweopcje_wypozyczenia[]
+  oplaty                                                       oplaty[]
 
   @@index([IdKlienci], map: "Wypozyczenia_Klienci")
+  @@index([IdPracownik_Odbior], map: "Wypozyczenia_Pracownik_Odbior")
+  @@index([IdPracownik_Podstawienie], map: "Wypozyczenia_Pracownik_Podstawienie")
   @@index([IdUbezpieczenia], map: "Wypozyczenia_Ubezpieczenia")
   @@index([IdUslugi], map: "Wypozyczenia_Uslugi")
   @@index([IdWypozyczenia, Kwota, IdKlienci, IdUbezpieczenia, IdUslugi], map: "Wypozyczenia_idx_1")

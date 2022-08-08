@@ -18,23 +18,28 @@ type ClientTabProps = { clients: Client[] };
 
 const ClientTab: FC<ClientTabProps> = ({ clients }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { currentTab, selectedClient, setSelectedClient } =
+  const { currentTab, selectedClient, setSelectedClient, setSelectedService } =
     useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const onCustomOnNextButtonClick = () => {
+    const errorElement = document.getElementById("err1");
     const client = clients.find(
       (client) =>
         `${client.uzytkownicy.Imie} ${client.uzytkownicy.Nazwisko}` ===
         dropdownRef?.current?.value
     );
     if (client) {
-      document.getElementById("err1")!.innerText = "";
+      if (errorElement) {
+        errorElement.innerText = "";
+      }
       removeItem(currentTab);
       currentTab?.current?.enableTab(2, true);
       currentTab?.current?.enableTab(1, false);
       setSelectedClient(client);
     } else {
-      document.getElementById("err1")!.innerText = "Proszę wybrać klienta";
+      if (errorElement) {
+        errorElement.innerText = "Proszę wybrać klienta";
+      }
     }
   };
   return (
@@ -56,6 +61,9 @@ const ClientTab: FC<ClientTabProps> = ({ clients }) => {
         type={TabNextButtonType.CUSTOM}
         customOnClick={onCustomOnNextButtonClick}
         disabled={!selectedClient}
+        onBackClick={() => {
+          setSelectedService(undefined);
+        }}
         index={1}
       />
     </TabContainer>

@@ -67,7 +67,10 @@ const TabNextButton: FC<TabNextButtonProps> = ({
   const { currentTab } = useContext(AddEventContext);
   const onClickByDropdown = useCallback(() => {
     if (dropdownRef?.current?.value) {
-      document.getElementById(`err${index}`)!.innerText = "";
+      const errorElement = document.getElementById(`err${index}`);
+      if (errorElement) {
+        errorElement.innerText = "";
+      }
       removeItem(currentTab);
       currentTab.current?.enableTab(index + 1, true);
       currentTab.current?.enableTab(index, false);

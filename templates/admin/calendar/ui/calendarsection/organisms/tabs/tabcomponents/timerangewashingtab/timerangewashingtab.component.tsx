@@ -23,6 +23,7 @@ import {
   getNextHalfHourDateForToday,
   getPrevHalfHourDate,
 } from "../../helpers/date-helper";
+import { UslugaType } from "../../../add-event.component";
 export type DateRange = {
   startDateValue: Date;
   endDateValue: Date;
@@ -33,6 +34,8 @@ export const TimeRangeWashingTab: FC = () => {
     currentTab,
     setSelectedDateTimeRange,
     selectedCar,
+    setSelectedCar,
+    selectedService,
     setDeliveryEstimationTime,
   } = useContext(AddEventContext);
   const blockedPeriods: {
@@ -165,14 +168,20 @@ export const TimeRangeWashingTab: FC = () => {
   );
 
   const onCustomOnNextButtonClick = (range: DateRange) => {
+    const errorElement = document.getElementById("err3");
     if (range.startDateValue == null) {
-      document.getElementById("err3")!.innerText =
-        "Data od nie została wybrana, prosimy o uzupełnienie";
+      if (errorElement) {
+        errorElement.innerText =
+          "Data od nie została wybrana, prosimy o uzupełnienie";
+      }
     } else if (range.endDateValue == null) {
-      document.getElementById("err3")!.innerText =
-        "Data do nie została wybrana, prosimy o uzupełnienie";
+      if (errorElement) {
+        errorElement.innerText =
+          "Data do nie została wybrana, prosimy o uzupełnienie";
+      }
     } else {
-      document.getElementById("err3")!.innerText = "";
+      if (errorElement) errorElement.innerText = "";
+
       removeItem(currentTab);
       currentTab?.current?.enableTab(3, true);
       currentTab?.current?.enableTab(2, false);
@@ -236,27 +245,32 @@ export const TimeRangeWashingTab: FC = () => {
             />
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <label className="e-textlabel">
-            Szacowany czas podstawienia/odstawienia (w godzinach)
-          </label>
-          <input
-            type="number"
-            defaultValue={0}
-            min="0"
-            max="4"
-            step="0.5"
-            onChange={(e) => {
-              setDeliveryEstimationTime(e.target.value);
-            }}
-          />
-        </div>
+        {selectedService === UslugaType.WYPOŻYCZENIE && (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <label className="e-textlabel">
+              Szacowany czas podstawienia/odstawienia (w godzinach)
+            </label>
+            <input
+              type="number"
+              defaultValue={0}
+              min="0"
+              max="4"
+              step="0.5"
+              onChange={(e) => {
+                setDeliveryEstimationTime(e.target.value);
+              }}
+            />
+          </div>
+        )}
       </div>
       <br />
       <TabButtonContainer
         type={TabNextButtonType.CUSTOM}
         customOnClick={() => onCustomOnNextButtonClick(state)}
         index={2}
+        onBackClick={() => {
+          setSelectedCar(undefined);
+        }}
       />
     </TabContainer>
   );

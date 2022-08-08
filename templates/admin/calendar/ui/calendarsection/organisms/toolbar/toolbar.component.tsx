@@ -18,41 +18,45 @@ const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
   };
 
   const getEventData = () => {
-    const date = schedule!.selectedDate;
-    return {
-      Id: schedule!.getEventMaxID(),
-      ServiceType: "",
-      StartTimeZone: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        new Date().getHours(),
-        0,
-        0
-      ),
-      EndTime: new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        new Date().getHours() + 1,
-        0,
-        0
-      ),
-      PickLocation: "",
-      ReturnLocation: "",
-      PickEmployee: "",
-      ReturnEmployee: "",
-      OwnerEmployee: "",
-      Description: "",
-      IsAllDay: false,
-    };
+    if (schedule) {
+      const date = schedule.selectedDate;
+      return {
+        Id: schedule.getEventMaxID(),
+        ServiceType: "",
+        StartTimeZone: new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          new Date().getHours(),
+          0,
+          0
+        ),
+        EndTime: new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          new Date().getHours() + 1,
+          0,
+          0
+        ),
+        PickLocation: "",
+        ReturnLocation: "",
+        PickEmployee: "",
+        ReturnEmployee: "",
+        OwnerEmployee: "",
+        Description: "",
+        IsAllDay: false,
+      };
+    }
   };
 
   const onToolbarItemClicked = (args: ClickEventArgs) => {
-    if (args.item.text !== "Nowa Usługa") {
-      schedule!.currentView = args.item.text as View;
-    } else {
-      schedule!.openEditor(getEventData(), "Add", true);
+    if (schedule) {
+      if (args.item.text !== "Nowa Usługa") {
+        schedule.currentView = args.item.text as View;
+      } else {
+        schedule.openEditor(getEventData(), "Add", true);
+      }
     }
   };
 

@@ -1,6 +1,8 @@
 import { FC, useContext, useRef, useState } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import {
+  TabBackButton,
+  TabButtonContainer,
   TabContainer,
   TabDropdown,
   TabError,
@@ -18,7 +20,7 @@ export enum WashingType {
 
 const WashingTypeTab: FC = () => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { selectedWashingType, setSelectedWashingType } =
+  const { selectedWashingType, setSelectedWashingType, setSelectedEmployee } =
     useContext(AddEventContext);
   return (
     <TabContainer>
@@ -31,13 +33,16 @@ const WashingTypeTab: FC = () => {
         setSelectedProperty={setSelectedWashingType}
         value={selectedWashingType}
       />
-      <TabNextButton
+      <TabButtonContainer
         type={TabNextButtonType.DEFAULT}
         disabled={!selectedWashingType}
         dropdownRef={dropdownRef}
         errorMsg="Proszę uzupełnić typ mycia"
         index={4}
         setSelectedProperty={setSelectedWashingType}
+        onBackClick={() => {
+          setSelectedEmployee(undefined);
+        }}
       />
     </TabContainer>
   );

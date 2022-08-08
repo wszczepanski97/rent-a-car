@@ -1,6 +1,6 @@
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { Employee } from "pages/coordinator/calendar";
-import { FC, useContext, useRef, useState } from "react";
+import { FC, useContext, useRef } from "react";
 import { UslugaType } from "../../../add-event.component";
 import {
   TabButtonContainer,
@@ -25,6 +25,7 @@ const EmployeeAssigneeTab: FC<EmployeeAssigneeTabProps> = ({ employees }) => {
     selectedDateTimeRange,
     selectedEmployee,
     setSelectedEmployee,
+    setSelectedDateTimeRange,
   } = useContext(AddEventContext);
   const employeesArr = employees.filter((employee) =>
     selectedService === UslugaType.MYCIE
@@ -39,28 +40,33 @@ const EmployeeAssigneeTab: FC<EmployeeAssigneeTabProps> = ({ employees }) => {
     selectedService === UslugaType.NAPRAWA
       ? employeesArr.filter((employee) => {
           const eventsinDateTimeRange = employee.uslugi.filter((usluga) => {
-            const dataOd = new Date(usluga.DataOd);
-            const dataDo = new Date(usluga.DataDo);
-            const selectedStart = new Date(
-              selectedDateTimeRange!.startDateValue
-            );
-            const selectedEnd = new Date(selectedDateTimeRange!.endDateValue);
-            return (
-              (dataOd >= selectedStart && dataOd <= selectedEnd) ||
-              (dataDo > selectedStart && dataDo <= selectedEnd)
-            );
+            if (selectedDateTimeRange) {
+              const dataOd = new Date(usluga.DataOd);
+              const dataDo = new Date(usluga.DataDo);
+              const selectedStart = new Date(
+                selectedDateTimeRange?.startDateValue
+              );
+              const selectedEnd = new Date(selectedDateTimeRange?.endDateValue);
+              return (
+                (dataOd >= selectedStart && dataOd <= selectedEnd) ||
+                (dataDo > selectedStart && dataDo <= selectedEnd)
+              );
+            }
           });
           return eventsinDateTimeRange.length === 0;
         })
       : employeesArr;
   const onCustomOnNextButtonClick = () => {
+    const errorElement = document.getElementById("err4");
     const employee = filterEmployeesWithFreeTime.find(
       (employee) =>
         `${employee.uzytkownicy.Imie} ${employee.uzytkownicy.Nazwisko}` ===
         dropdownRef?.current?.value
     );
     if (employee) {
-      document.getElementById("err4")!.innerText = "";
+      if (errorElement) {
+        errorElement.innerText = "";
+      }
       removeItem(currentTab);
       if (selectedService === UslugaType.WYPOŻYCZENIE) {
         currentTab?.current?.enableTab(5, true);
@@ -71,13 +77,29 @@ const EmployeeAssigneeTab: FC<EmployeeAssigneeTabProps> = ({ employees }) => {
       }
       setSelectedEmployee(employee);
     } else {
-      document.getElementById("err4")!.innerText = "Proszę wybrać pracownika";
+      if (errorElement) {
+        errorElement.innerText = "Proszę wybrać pracownika";
+      }
     }
   };
   return (
     <TabContainer height={350}>
-      <TabTitle title="Wybierz pracownika" />
-      <TabError index={4} />
+      <TabTitle
+        title={
+          selectedService === UslugaType.MYCIE ||
+          selectedService === UslugaType.NAPRAWA
+            ? `Wybierz pracownika`
+            : `Wybierz przypisanego pracownika`
+        }
+      />
+      <TabError
+        index={
+          selectedService === UslugaType.MYCIE ||
+          selectedService === UslugaType.NAPRAWA
+            ? 4
+            : 5
+        }
+      />
       <TabDropdown
         dataSource={filterEmployeesWithFreeTime.map(
           (employee) =>
@@ -92,7 +114,15 @@ const EmployeeAssigneeTab: FC<EmployeeAssigneeTabProps> = ({ employees }) => {
         type={TabNextButtonType.CUSTOM}
         customOnClick={onCustomOnNextButtonClick}
         disabled={!selectedEmployee}
-        index={3}
+        index={
+          selectedService === UslugaType.MYCIE ||
+          selectedService === UslugaType.NAPRAWA
+            ? 3
+            : 4
+        }
+        onBackClick={() => {
+          setSelectedDateTimeRange(undefined);
+        }}
       />
     </TabContainer>
   );

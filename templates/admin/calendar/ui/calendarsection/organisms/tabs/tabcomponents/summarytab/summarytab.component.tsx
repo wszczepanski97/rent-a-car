@@ -10,19 +10,37 @@ export const SummaryTab: FC = () => {
     selectedRepairType,
     selectedWashingType,
     selectedEmployee,
+    selectedCarPickup,
+    selectedCarPickupEmployee,
+    selectedCarPickupLocation,
+    pickupEstimationTime,
+    selectedCarDeliver,
+    selectedCarDeliverEmployee,
+    selectedCarDeliverLocation,
+    deliveryEstimationTime,
     selectedDateTimeRange,
+    selectedInsurance,
+    selectedAdditionalOptions,
     serviceDescription,
     priceForService,
+    setSelectedCarPickup,
+    setSelectedCarDeliver,
+    setPickupEstimationTime,
+    setDeliveryEstimationTime,
+    setSelectedCarPickupLocation,
+    setSelectedCarDeliverLocation,
+    setSelectedCarPickupEmployee,
+    setSelectedCarDeliverEmployee,
+    setServiceDescription,
   } = useContext(AddEventContext);
   return (
-    <TabContainer height={350}>
+    <TabContainer height={350} width={1000}>
       <form style={{ width: "100%" }}>
         <TabTitle title="Podsumowanie zlecenia usługi" />
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
             gap: 50,
           }}
         >
@@ -47,8 +65,8 @@ export const SummaryTab: FC = () => {
               >
                 <label className="e-textlabel">Klient</label>
                 <span>
-                  {selectedClient?.uzytkownicy.Imie}{" "}
-                  {selectedClient?.uzytkownicy.Nazwisko}
+                  {selectedClient?.uzytkownicy?.Imie}{" "}
+                  {selectedClient?.uzytkownicy?.Nazwisko}
                 </span>
               </div>
             )}
@@ -78,22 +96,8 @@ export const SummaryTab: FC = () => {
               </span>
             </div>
           </div>
-          <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px 0",
-              }}
-            >
-              <label className="e-textlabel">Pracownik</label>
-              <span>
-                {selectedEmployee
-                  ? `${selectedEmployee?.uzytkownicy.Imie} ${selectedEmployee?.uzytkownicy.Nazwisko}`
-                  : "-"}
-              </span>
-            </div>
-            {selectedService === UslugaType.WYPOŻYCZENIE && (
+          {selectedService === UslugaType.WYPOŻYCZENIE && (
+            <div>
               <div
                 style={{
                   display: "flex",
@@ -103,6 +107,161 @@ export const SummaryTab: FC = () => {
               >
                 <label className="e-textlabel">Cena</label>
                 <span>{priceForService}</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <label className="e-textlabel">Opis</label>
+                <span style={{ textOverflow: "ellipsis" }}>
+                  {serviceDescription || "Brak opisu"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <label className="e-textlabel">Ubezpieczenie</label>
+                <span style={{ textOverflow: "ellipsis" }}>
+                  {selectedInsurance?.Nazwa || "-"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <label className="e-textlabel">Dodatkowe opcje</label>
+                {selectedAdditionalOptions?.map((option) => (
+                  <span style={{ textOverflow: "ellipsis" }}>
+                    {option?.Nazwa || "-"}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {selectedService === UslugaType.WYPOŻYCZENIE && selectedCarPickup && (
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Pracownik - podstawienie</label>
+                <span>
+                  {selectedCarPickupEmployee
+                    ? `${selectedCarPickupEmployee?.uzytkownicy?.Imie} ${selectedCarPickupEmployee?.uzytkownicy?.Nazwisko}`
+                    : "-"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">
+                  Lokalizacja - podstawienie
+                </label>
+                <span>
+                  {selectedCarPickupLocation
+                    ? `${selectedCarPickupLocation?.Miejscowosc} ${selectedCarPickupLocation?.Ulica} ${selectedCarPickupLocation?.NumerUlicy}`
+                    : "-"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">
+                  Szacowany czas dojazdu - podstawienie
+                </label>
+                <span>
+                  {pickupEstimationTime ? `${pickupEstimationTime}h` : "-"}
+                </span>
+              </div>
+            </div>
+          )}
+          {selectedService === UslugaType.WYPOŻYCZENIE && selectedCarDeliver && (
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Pracownik - odbiór</label>
+                <span>
+                  {selectedCarDeliverEmployee
+                    ? `${selectedCarDeliverEmployee?.uzytkownicy?.Imie} ${selectedCarDeliverEmployee?.uzytkownicy?.Nazwisko}`
+                    : "-"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">
+                  Lokalizacja - podstawienie
+                </label>
+                <span>
+                  {selectedCarDeliverLocation
+                    ? `${selectedCarDeliverLocation?.Miejscowosc} ${selectedCarDeliverLocation?.Ulica} ${selectedCarDeliverLocation?.NumerUlicy}`
+                    : "-"}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">
+                  Szacowany czas dojazdu - odbiór
+                </label>
+                <span>
+                  {deliveryEstimationTime ? `${deliveryEstimationTime}h` : "-"}
+                </span>
+              </div>
+            </div>
+          )}
+          <div>
+            {selectedService !== UslugaType.WYPOŻYCZENIE && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                }}
+              >
+                <label className="e-textlabel">Pracownik</label>
+                <span>
+                  {selectedEmployee
+                    ? `${selectedEmployee?.uzytkownicy?.Imie} ${selectedEmployee?.uzytkownicy?.Nazwisko}`
+                    : "-"}
+                </span>
               </div>
             )}
             {selectedService === UslugaType.MYCIE && (
@@ -129,23 +288,41 @@ export const SummaryTab: FC = () => {
                 <span>{selectedRepairType}</span>
               </div>
             )}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                padding: "10px 0",
-                textOverflow: "ellipsis",
-              }}
-            >
-              <label className="e-textlabel">Opis</label>
-              <span style={{ textOverflow: "ellipsis" }}>
-                {serviceDescription || "Brak opisu"}
-              </span>
-            </div>
+            {selectedService !== UslugaType.WYPOŻYCZENIE && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "10px 0",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <label className="e-textlabel">Opis</label>
+                <span style={{ textOverflow: "ellipsis" }}>
+                  {serviceDescription || "Brak opisu"}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </form>
-      <TabBackButton index={6} />
+      <TabBackButton
+        index={6}
+        onBackClick={() => {
+          if (selectedService === UslugaType.WYPOŻYCZENIE) {
+            setSelectedCarPickup(false);
+            setSelectedCarDeliver(false);
+            setPickupEstimationTime("0");
+            setDeliveryEstimationTime("0");
+            setSelectedCarPickupLocation(undefined);
+            setSelectedCarDeliverLocation(undefined);
+            setSelectedCarPickupEmployee(undefined);
+            setSelectedCarDeliverEmployee(undefined);
+          } else {
+            setServiceDescription(undefined);
+          }
+        }}
+      />
     </TabContainer>
   );
 };

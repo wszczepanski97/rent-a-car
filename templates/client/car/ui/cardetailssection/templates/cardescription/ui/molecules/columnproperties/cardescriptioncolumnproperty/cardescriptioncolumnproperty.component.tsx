@@ -3,7 +3,7 @@ import styles from "./cardescriptioncolumnproperty.module.scss";
 
 export type CarDescriptionColumnPropertyProps = {
   photo: React.ReactElement;
-  value: string;
+  value?: string;
 };
 
 const CarDescriptionColumnProperty: FC<CarDescriptionColumnPropertyProps> = ({

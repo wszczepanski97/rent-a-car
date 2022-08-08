@@ -6,7 +6,7 @@ export type CarDescriptionRowCirclePropertyProps = {
   type: CarDescriptionRowPropertyType.CIRCLE;
   bgColor: string;
   color: string;
-  value: string | number;
+  value?: string | number;
 };
 
 const CarDescriptionRowCircleProperty: FC<

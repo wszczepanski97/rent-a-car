@@ -25,6 +25,25 @@
   --navbar-height: 10vh;
 }
 
+:not(:root):fullscreen {
+  object-fit: fill !important;
+  user-select: auto !important;
+  position: static !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  box-sizing: border-box !important;
+  min-width: 0px !important;
+  max-width: none !important;
+  min-height: 0px !important;
+  max-height: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  margin: 0px !important;
+}
+
 html,
 body {
   padding: 0;

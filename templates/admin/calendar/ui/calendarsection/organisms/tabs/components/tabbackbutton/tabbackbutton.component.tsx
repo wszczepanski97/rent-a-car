@@ -5,11 +5,15 @@ import classnames from "classnames";
 
 const cx = classnames.bind(styles);
 
-type TabBackButtonProps = { index: number };
+type TabBackButtonProps = {
+  index: number;
+  onBackClick: () => void | undefined;
+};
 
-const TabBackButton: FC<TabBackButtonProps> = ({ index }) => {
+const TabBackButton: FC<TabBackButtonProps> = ({ index, onBackClick }) => {
   const { currentTab } = useContext(AddEventContext);
   const goStepBack = useCallback(() => {
+    onBackClick?.();
     currentTab?.current?.enableTab(index - 1, true);
     currentTab?.current?.select(index - 1);
     currentTab?.current?.enableTab(index, false);

@@ -62,9 +62,9 @@ const CardDetails: FC<CardDetailsProps> = ({
 );
 
 export type CardDetailsProps = {
-  numberOfSeats: string;
-  fuelType: string;
-  carBody: string;
+  numberOfSeats?: string;
+  fuelType?: string;
+  carBody?: string;
 };
 
 export default CardDetails;
