@@ -13,6 +13,7 @@ import {
 
 const ProfileDataColumn: FC = () => {
   const { mode, toggleMode, profile } = useProfileSectionContext();
+  console.log(profile.type);
   if (profile.type === UserRole.CLIENT) {
     const { user } = profile;
     return user ? (
@@ -81,8 +82,14 @@ const ProfileDataColumn: FC = () => {
         )}
       </ProfileDataColumnContainer>
     ) : null;
-  } else if (profile.type === UserRole.COORDINATOR) {
+  } else if (
+    profile.type === UserRole.COORDINATOR ||
+    profile.type === UserRole.CLEANER ||
+    profile.type === UserRole.MECHANIC ||
+    profile.type === UserRole.DRIVER
+  ) {
     const { user } = profile;
+    console.log(user);
     return user ? (
       <ProfileDataColumnContainer>
         <ProfileDataColumnProperty label="Imię" name="Imie" prop={user.Imie} />

@@ -69,7 +69,7 @@ export default async function handler(
       if (!employeeByIdUzytkownicy) {
         return res.status(400).json({ data: "Nie odnaleziono pracownika" });
       }
-      const [admin] = await prisma.$transaction([
+      const [coordinator] = await prisma.$transaction([
         prisma.pracownicy.update({
           data: {
             stanowiska: {
@@ -88,7 +88,7 @@ export default async function handler(
           },
         }),
       ]);
-      return res.status(200).json({ data: { admin } });
+      return res.status(200).json({ data: { coordinator } });
     } catch (err) {
       console.log(err);
     }

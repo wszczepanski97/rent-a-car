@@ -1,15 +1,14 @@
 export enum UserRole {
-  CLEANER = "MYJKOWY",
-  MECHANIC = "TECHNICZNY",
   COORDINATOR = "KOORDYNATOR",
-  CLIENT = "KLIENT",
-}
-
-export enum LoginUserRole {
   CLEANER = "PRACOWNIK MYJNI",
   MECHANIC = "MECHANIK",
-  COORDINATOR = "KOORDYNATOR",
+  DRIVER = "KIEROWCA",
   CLIENT = "KLIENT",
 }
 
-export type UserRoleKey = "CLEANER" | "MECHANIC" | "COORDINATOR" | "CLIENT";
+export type UserRoleKey =
+  | "COORDINATOR"
+  | "CLEANER"
+  | "MECHANIC"
+  | "DRIVER"
+  | "CLIENT";

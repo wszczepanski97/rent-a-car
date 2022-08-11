@@ -32,7 +32,7 @@ export type ClientUser = {
   IdLokalizacje: number;
 };
 
-export type CoordinatorUser = {
+export type EmployeeUser = {
   IdUzytkownicy: number;
   Imie: string;
   Nazwisko: string;
@@ -49,14 +49,20 @@ export type CoordinatorUser = {
   IdStanowiska: number;
 };
 
+//PROFILES
+
 export type ProfileClient = {
   type: UserRole.CLIENT;
   user: ClientUser | null;
 };
 
-export type ProfileAdmin = {
-  type: UserRole.COORDINATOR;
-  user: CoordinatorUser | null;
+export type ProfileEmployee = {
+  type:
+    | UserRole.COORDINATOR
+    | UserRole.CLEANER
+    | UserRole.DRIVER
+    | UserRole.MECHANIC;
+  user: EmployeeUser | null;
 };
 
-export type Profile = ProfileClient | ProfileAdmin;
+export type Profile = ProfileClient | ProfileEmployee;

@@ -46,7 +46,6 @@ export default async function handler(
     ]);
     return res.status(200).json({ data: { samochod } });
   } else if (req.method === "DELETE") {
-    console.log(req.body);
     try {
       const carByIdSamochody = await prisma.samochody.findFirst({
         where: { IdSamochody: req.body["0"].IdSamochody },
@@ -68,7 +67,6 @@ export default async function handler(
       console.log(err);
     }
   } else if (req.method === "PUT") {
-    console.log(req.body);
     const {
       RodzajPaliwa,
       Nadwozie,

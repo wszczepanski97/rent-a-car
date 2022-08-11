@@ -35,7 +35,6 @@ export default async function handler(
     return res.status(200).json({ data: { klient } });
   } else if (req.method === "DELETE") {
     try {
-      console.log(req.body);
       const clientByIdKlienci = await prisma.klienci.findFirst({
         where: { IdKlienci: req.body["0"].IdKlienci },
       });
@@ -62,7 +61,7 @@ export default async function handler(
       if (!employeeByIdUzytkownicy) {
         return res.status(400).json({ data: "Nie odnaleziono pracownika" });
       }
-      const [admin] = await prisma.$transaction([
+      const [coordinator] = await prisma.$transaction([
         prisma.pracownicy.update({
           data: {
             stanowiska: {
@@ -81,7 +80,7 @@ export default async function handler(
           },
         }),
       ]);
-      return res.status(200).json({ data: { admin } });
+      return res.status(200).json({ data: { coordinator } });
     } catch (err) {
       console.log(err);
     }

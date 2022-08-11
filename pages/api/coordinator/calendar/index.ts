@@ -1,6 +1,6 @@
 import { dodatkoweopcje } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { UslugaType } from "templates/admin/calendar/ui/calendarsection/organisms/add-event.component";
+import { UslugaType } from "templates/coordinator/calendar/ui/calendarsection/organisms/add-event.component";
 import { prisma } from "../../../../db";
 
 export default async function handler(
@@ -10,7 +10,7 @@ export default async function handler(
   if (req.method === "POST") {
     let usluga;
     if (req.body.type === UslugaType.WYPOŻYCZENIE) {
-      const { service, rent, additionalOptions } = req.body;
+      const { service, rent, relocations, additionalOptions } = req.body;
       try {
         usluga = await prisma.$transaction([
           prisma.uslugi.create({
@@ -31,6 +31,14 @@ export default async function handler(
               wypozyczenia: {
                 create: {
                   ...rent,
+                  relokacje: {
+                    createMany: {
+                      data: [
+                        relocations.Podstawienie,
+                        relocations.Odbior,
+                      ].filter((relocation) => !!relocation),
+                    },
+                  },
                   dodatkoweopcje_wypozyczenia: {
                     createMany: {
                       data: additionalOptions.map((option: dodatkoweopcje) => ({
@@ -289,9 +297,9 @@ export default async function handler(
               wypozyczenia: {
                 include: {
                   dodatkoweopcje_wypozyczenia: true,
+                  relokacje: true,
                 },
               },
-              relokacje: true,
             },
           }),
         ]);

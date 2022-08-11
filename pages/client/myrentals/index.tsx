@@ -53,7 +53,7 @@ const getClientRentals: GetServerSideProps = async (context) => {
       },
     })
   )
-    .filter((rental) => rental.uslugi.IdUslugaStatus === 5)
+    .filter((rental) => rental.uslugi.IdUslugaStatus === 4)
     .map(
       ({
         Kwota,

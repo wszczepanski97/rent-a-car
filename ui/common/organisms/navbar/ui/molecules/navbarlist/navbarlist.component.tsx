@@ -1,6 +1,8 @@
 import { FullScreenContext } from "contexts/full-screen-context";
 import { useSession } from "next-auth/react";
 import { FC, useContext } from "react";
+import { WindowDesktop, WindowFullscreen } from "react-bootstrap-icons";
+import { UserRole } from "templates";
 import LogoutButton from "ui/common/atoms/logoutbutton/logoutbutton.component";
 import { NavbarListItem } from "./atoms";
 import NavbarListItemHover from "./atoms/navbarlistitemhover/navbarlistitemhover.component";
@@ -14,9 +16,9 @@ const NavbarList: FC = () => {
     <ul className={styles.navbarList}>
       <div className={styles.navbarListContainer}>
         <div className={styles.navbarListItemGroup}>
-          {role === "KLIENT" ? (
+          {role === UserRole.CLIENT ? (
             <>
-              <NavbarListItem name="Dashboard" href="/client/dashboard" />
+              <NavbarListItem name="Panel główny" href="/client/dashboard" />
               <NavbarListItem name="Wypożycz auto" href="/client/rent" />
               <NavbarListItem
                 name="Moje wypożyczenia"
@@ -27,7 +29,7 @@ const NavbarList: FC = () => {
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
             </>
-          ) : role === "KOORDYNATOR" ? (
+          ) : role === UserRole.COORDINATOR ? (
             <>
               <NavbarListItem
                 name="Mój oddział"
@@ -39,24 +41,46 @@ const NavbarList: FC = () => {
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
-              <button
-                onClick={screen.active ? screen.exit : screen.enter}
-                style={{ padding: "5px 10px" }}
-              >
-                {screen.active ? "Desktop" : "Fullscreen"}
-              </button>
             </>
-          ) : !!role ? (
+          ) : role === UserRole.CLEANER ? (
             <>
-              <NavbarListItem name="Dashboard" href="/employee/dashboard" />
-              <NavbarListItem name="Moje zlecenia" href="/employee/jobs" />
-              <NavbarListItem name="Profil" href="/employee/profile" />
+              <NavbarListItem name="Panel główny" href="/cleaner/dashboard" />
+              <NavbarListItem name="Moje zlecenia" href="/cleaner/jobs" />
+              <NavbarListItem
+                name="Kalendarz zleceń"
+                href="/cleaner/calendar"
+              />
+              <NavbarListItem name="Mapa dojazdu" href="/cleaner/map" />
+              <NavbarListItem name="Moje wypłaty" href="/cleaner/paychecks" />
+              <NavbarListItem name="Profil" href="/cleaner/profile" />
               <LogoutButton>
                 <NavbarListItem name="Wyloguj się" href="/signout" />
               </LogoutButton>
-              <button onClick={screen.active ? screen.exit : screen.enter}>
-                {screen.active ? "Desktop" : "Fullscreen"}
-              </button>
+            </>
+          ) : role === UserRole.DRIVER ? (
+            <>
+              <NavbarListItem name="Panel główny" href="/driver/dashboard" />
+              <NavbarListItem name="Moje zlecenia" href="/driver/jobs" />
+              <NavbarListItem name="Kalendarz zleceń" href="/driver/calendar" />
+              <NavbarListItem name="Mapa dojazdu" href="/driver/map" />
+              <NavbarListItem name="Moje wypłaty" href="/driver/paychecks" />
+              <NavbarListItem name="Profil" href="/driver/profile" />
+              <LogoutButton>
+                <NavbarListItem name="Wyloguj się" href="/signout" />
+              </LogoutButton>
+            </>
+          ) : role === UserRole.MECHANIC ? (
+            <>
+              <NavbarListItem name="Panel główny" href="/mechanic/dashboard" />
+              <NavbarListItem name="Stwórz naprawę" href="/mechanic/repair" />
+              <NavbarListItem
+                name="Kalendarz zleceń"
+                href="/mechanic/calendar"
+              />
+              <NavbarListItem name="Profil" href="/mechanic/profile" />
+              <LogoutButton>
+                <NavbarListItem name="Wyloguj się" href="/signout" />
+              </LogoutButton>
             </>
           ) : (
             <>
@@ -79,6 +103,10 @@ const NavbarList: FC = () => {
                   {
                     name: "Zaloguj się jako mechanik",
                     href: "/login?role=mechanic",
+                  },
+                  {
+                    name: "Zaloguj się jako kierowca",
+                    href: "/login?role=driver",
                   },
                 ]}
               />

@@ -19,6 +19,12 @@ const HomePage: NextPage = () => {
       router.replace("/client/dashboard");
     } else if (session?.user.role === UserRole.COORDINATOR) {
       router.replace("/coordinator/dashboard");
+    } else if (session?.user.role === UserRole.CLEANER) {
+      router.replace("/cleaner/dashboard");
+    } else if (session?.user.role === UserRole.DRIVER) {
+      router.replace("/driver/dashboard");
+    } else if (session?.user.role === UserRole.MECHANIC) {
+      router.replace("/mechanic/dashboard");
     }
   }, [session, router]);
   return (

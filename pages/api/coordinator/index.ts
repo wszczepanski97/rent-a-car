@@ -34,7 +34,7 @@ export default async function handler(
       if (!user) {
         return res.status(400).json({ data: "Nie odnaleziono koordynatora" });
       }
-      const [admin] = await prisma.$transaction([
+      const [coordinator] = await prisma.$transaction([
         prisma.uzytkownicy.update({
           data: req.body,
           where: {
@@ -42,7 +42,7 @@ export default async function handler(
           },
         }),
       ]);
-      return res.status(200).json({ data: { admin } });
+      return res.status(200).json({ data: { coordinator } });
     } catch (err) {
       console.log(err);
     }

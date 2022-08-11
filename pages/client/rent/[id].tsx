@@ -15,7 +15,7 @@ const RentPage: NextPage<CarProps> = ({ car }) => {
     if (role !== "KLIENT") {
       router.push("/login?role=client");
     }
-  }, [role]);
+  }, [role, router]);
   return <RentSection car={car} />;
 };
 

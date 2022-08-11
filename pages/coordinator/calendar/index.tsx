@@ -18,12 +18,12 @@ import {
 } from "@prisma/client";
 import type { GetServerSideProps } from "next";
 import { ReactElement } from "react";
-import { CalendarSection } from "templates/admin/calendar/ui";
+import { CalendarSection } from "templates/coordinator/calendar/ui";
 import { NextPageWithLayout } from "types/next";
 import { Navbar } from "ui";
 import { prisma } from "../../../db";
 
-export type CalendarAdminPageProps = {
+export type CalendarCoordinatorPageProps = {
   services: Service[];
   cars: Car[];
   clients: Client[];
@@ -34,8 +34,18 @@ export type CalendarAdminPageProps = {
 };
 
 export type Service = uslugi & {
-  wypozyczenia: wypozyczenia[];
-  relokacje: relokacje[];
+  wypozyczenia: (wypozyczenia & {
+    relokacje: (relokacje & {
+      wypozyczenia: wypozyczenia & {
+        klienci: klienci & {
+          uzytkownicy: uzytkownicy;
+        };
+        uslugi: uslugi & {
+          samochody: samochody;
+        };
+      };
+    })[];
+  })[];
   mycie: mycie[];
   uszkodzenia: uszkodzenia[];
   samochody: samochody;
@@ -63,11 +73,11 @@ export type Car = samochody & {
   uslugi: uslugi[];
 };
 
-const CalendarAdminPage: NextPageWithLayout<CalendarAdminPageProps> = (
-  props
-) => <CalendarSection {...props} />;
+const CalendarCoordinatorPage: NextPageWithLayout<
+  CalendarCoordinatorPageProps
+> = (props) => <CalendarSection {...props} />;
 
-CalendarAdminPage.getLayout = (page: ReactElement) => (
+CalendarCoordinatorPage.getLayout = (page: ReactElement) => (
   <>
     <div
       style={{
@@ -82,13 +92,35 @@ CalendarAdminPage.getLayout = (page: ReactElement) => (
   </>
 );
 
-const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
+const getServices: GetServerSideProps<
+  CalendarCoordinatorPageProps
+> = async () => {
   const services: Service[] = await prisma.uslugi.findMany({
     include: {
       mycie: true,
       uszkodzenia: true,
-      wypozyczenia: true,
-      relokacje: true,
+      wypozyczenia: {
+        include: {
+          relokacje: {
+            include: {
+              wypozyczenia: {
+                include: {
+                  klienci: {
+                    include: {
+                      uzytkownicy: true,
+                    },
+                  },
+                  uslugi: {
+                    include: {
+                      samochody: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
       uslugistatus: true,
       samochody: true,
     },
@@ -134,4 +166,4 @@ const getServices: GetServerSideProps<CalendarAdminPageProps> = async () => {
 
 export const getServerSideProps = getServices;
 
-export default CalendarAdminPage;
+export default CalendarCoordinatorPage;

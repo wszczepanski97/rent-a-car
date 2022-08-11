@@ -5,11 +5,7 @@ import { FullScreenContext } from "contexts/full-screen-context";
 
 const Navbar: FC = () => {
   const { screen } = useContext(FullScreenContext);
-  return screen.active ? (
-    <button onClick={screen.active ? screen.exit : screen.enter}>
-      {screen.active ? "Desktop" : "Fullscreen"}
-    </button>
-  ) : (
+  return screen.active ? null : (
     <nav className={styles.Navbar}>
       <PageTitle />
       <NavbarList />

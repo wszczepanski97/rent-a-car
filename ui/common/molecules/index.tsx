@@ -9,3 +9,4 @@ export {
   CardType,
 } from "./card/card.component";
 export { default as CardRow } from "./cardrow/cardrow.component";
+export { default as FullScreenSwitchButton } from "./fullscreenswitchbutton/fullscreenswitchbutton.component";

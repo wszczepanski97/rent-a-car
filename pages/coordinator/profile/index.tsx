@@ -1,18 +1,20 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import { ProfileSection, UserRole } from "templates";
-import { ProfileAdmin } from "templates/common/types";
+import { ProfileEmployee } from "templates/common/types";
 import { prisma } from "../../../db";
 
-type ProfileAdminPageProps = {
-  profile: ProfileAdmin;
+type ProfileCoordinatorPageProps = {
+  profile: ProfileEmployee;
 };
 
-const ProfileAdminPage: NextPage<ProfileAdminPageProps> = ({ profile }) => (
-  <ProfileSection profile={profile} />
-);
+const ProfileCoordinatorPage: NextPage<ProfileCoordinatorPageProps> = ({
+  profile,
+}) => <ProfileSection profile={profile} />;
 
-const getUser: GetServerSideProps<ProfileAdminPageProps> = async (context) => {
+const getUser: GetServerSideProps<ProfileCoordinatorPageProps> = async (
+  context
+) => {
   const session = await getSession(context);
   const foundedUser = await prisma.pracownicy.findFirst({
     where: {
@@ -31,4 +33,4 @@ const getUser: GetServerSideProps<ProfileAdminPageProps> = async (context) => {
 
 export const getServerSideProps = getUser;
 
-export default ProfileAdminPage;
+export default ProfileCoordinatorPage;

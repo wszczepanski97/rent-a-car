@@ -42,6 +42,7 @@
   height: 100% !important;
   transform: none !important;
   margin: 0px !important;
+  overflow-y: auto;
 }
 
 html,

@@ -1,0 +1,16 @@
+.fullScreenSwitchButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  padding: 15px;
+  opacity: 0.2;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+}
