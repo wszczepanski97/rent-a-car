@@ -1,6 +1,0 @@
-@import "mixins";
-
-.statsSection {
-  @include flexColumnVerticallySpaceAround;
-  height: 100vh;
-}

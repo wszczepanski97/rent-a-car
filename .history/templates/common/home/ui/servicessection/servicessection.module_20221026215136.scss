@@ -1,6 +1,0 @@
-@import "mixins";
-
-.servicesSection {
-  @include flexColumnVerticallySpaceAround;
-  height: 100vh;
-}
