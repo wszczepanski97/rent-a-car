@@ -1,0 +1,6 @@
+@import "mixins";
+
+.servicesSection {
+  @include flexColumnHorizontallyCentered;
+  height: 100vh;
+}

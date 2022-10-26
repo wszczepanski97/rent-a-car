@@ -1,0 +1,11 @@
+@import "mixins";
+
+.layout {
+  @include flexColumn;
+  width: 1050px;
+  margin: 0 auto;
+}
+
+.sidebarActive {
+  margin-left: 15rem;
+}

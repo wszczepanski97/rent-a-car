@@ -1,0 +1,6 @@
+@import "mixins";
+
+.statsArticle {
+  @include flexColumnHorizontallyCentered;
+  margin-bottom: 0;
+}

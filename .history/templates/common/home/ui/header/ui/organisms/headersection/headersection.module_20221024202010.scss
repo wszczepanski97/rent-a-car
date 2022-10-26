@@ -1,0 +1,8 @@
+@import "mixins";
+
+.headerSection {
+  @include flexColumn;
+  gap: 50px;
+  height: 90vh;
+  justify-content: space-evenly;
+}

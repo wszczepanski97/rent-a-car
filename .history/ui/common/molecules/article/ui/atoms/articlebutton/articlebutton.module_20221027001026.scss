@@ -1,0 +1,14 @@
+.articleButton {
+  padding: 10px 36px;
+  height: 48px;
+  border-radius: 37px;
+  background: transparent;
+  border: 1px solid var(--light-background-color);
+  animation: bounce; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s; /* don't forget to set a duration! */
+}
+
+.articleButton_Active {
+  background: var(--primary-color);
+  border: none;
+}

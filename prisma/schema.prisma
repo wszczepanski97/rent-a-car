@@ -54,18 +54,20 @@ model lokalizacje {
   oddzialy                                                    oddzialy[]
   relokacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior       relokacje[] @relation("lokalizacjeTorelokacje_IdLokalizacje_Odbior")
   relokacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie relokacje[] @relation("lokalizacjeTorelokacje_IdLokalizacje_Podstawienie")
-  samochody                                                   samochody[]
+  samochody_lokalizacjeTosamochody_Aktualna_Lokalizacja       samochody[] @relation("lokalizacjeTosamochody_Aktualna_Lokalizacja")
+  samochody_lokalizacjeTosamochody_Domowa_Lokalizacja         samochody[] @relation("lokalizacjeTosamochody_Domowa_Lokalizacja")
 
   @@index([IdLokalizacje], map: "Lokalizacje_idx_1")
 }
 
 model mycie {
-  IdMycie            Int      @id @default(autoincrement())
-  MyjniaBezdotykowa  Boolean? @db.Bit(1)
-  MyjniaAutomatyczna Boolean? @db.Bit(1)
-  MyjniaPrywatna     Boolean? @db.Bit(1)
+  IdMycie            Int         @id @default(autoincrement())
+  MyjniaBezdotykowa  Boolean?    @db.Bit(1)
+  MyjniaAutomatyczna Boolean?    @db.Bit(1)
+  MyjniaPrywatna     Boolean?    @db.Bit(1)
   IdUslugi           Int
-  uslugi             uslugi   @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Mycie_Usluga")
+  uslugi             uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Mycie_Usluga")
+  relokacje          relokacje[]
 
   @@index([IdUslugi], map: "Mycie_Usluga")
   @@index([IdMycie, IdUslugi], map: "Mycie_idx_1")
@@ -144,20 +146,26 @@ model relokacje {
   IdPracownicy_Odbior                                           Int?
   IdLokalizacje_Odbior                                          Int?
   CzasDojazdu_Odbior                                            Float?                  @db.Float
-  IdWypozyczenia                                                Int
+  IdWypozyczenia                                                Int?
+  IdUszkodzenia                                                 Int?
+  IdMycie                                                       Int?
+  Typ_Relokacja                                                 relokacje_Typ_Relokacja
   DataOd                                                        DateTime                @db.Timestamp(0)
   DataDo                                                        DateTime                @db.Timestamp(0)
-  Typ_Relokacja                                                 relokacje_Typ_Relokacja
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior       lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Odbior", fields: [IdLokalizacje_Odbior], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Odbior")
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Podstawienie", fields: [IdLokalizacje_Podstawienie], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Podstawienie")
+  mycie                                                         mycie?                  @relation(fields: [IdMycie], references: [IdMycie], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Mycie")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior          pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Odbior", fields: [IdPracownicy_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Odbior")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie    pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Podstawienie", fields: [IdPracownicy_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Podstawienie")
-  wypozyczenia                                                  wypozyczenia            @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
+  uszkodzenia                                                   uszkodzenia?            @relation(fields: [IdUszkodzenia], references: [IdUszkodzenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Uszkodzenia")
+  wypozyczenia                                                  wypozyczenia?           @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
 
   @@index([IdLokalizacje_Odbior], map: "Relokacje_Lokalizacje_Odbior")
   @@index([IdLokalizacje_Podstawienie], map: "Relokacje_Lokalizacje_Podstawienie")
+  @@index([IdMycie], map: "Relokacje_Mycie")
   @@index([IdPracownicy_Odbior], map: "Relokacje_Pracownicy_Odbior")
   @@index([IdPracownicy_Podstawienie], map: "Relokacje_Pracownicy_Podstawienie")
+  @@index([IdUszkodzenia], map: "Relokacje_Uszkodzenia")
   @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
 }
 
@@ -193,25 +201,28 @@ model role_uzytkownik {
 }
 
 model samochody {
-  IdSamochody          Int                @id @default(autoincrement())
-  Marka                String             @db.VarChar(20)
-  Model                String             @db.VarChar(20)
-  NumerRejestracyjny   String             @db.VarChar(20)
-  NumerVIN             String             @db.VarChar(20)
-  Kategoria            String             @db.VarChar(3)
-  Zdjecia              String?            @db.VarChar(2000)
-  CzyUszkodzony        Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
-  Przebieg             String             @db.VarChar(45)
-  CzyUmyty             Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
-  IdSamochodySzczegoly Int
-  CenaZaGodzine        Int
-  OstatniaAktualizacja DateTime?          @db.DateTime(0)
-  IdLokalizacje        Int
-  lokalizacje          lokalizacje        @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Lokalizacje")
-  samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
-  uslugi               uslugi[]
+  IdSamochody                                             Int                @id @default(autoincrement())
+  Marka                                                   String             @db.VarChar(20)
+  Model                                                   String             @db.VarChar(20)
+  NumerRejestracyjny                                      String             @db.VarChar(20)
+  NumerVIN                                                String             @db.VarChar(20)
+  Kategoria                                               String             @db.VarChar(3)
+  Zdjecia                                                 String?            @db.VarChar(2000)
+  CzyUszkodzony                                           Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
+  Przebieg                                                String             @db.VarChar(45)
+  CzyUmyty                                                Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
+  CenaZaGodzine                                           Int
+  IdSamochodySzczegoly                                    Int
+  Aktualna_Lokalizacja                                    Int
+  Domowa_Lokalizacja                                      Int
+  OstatniaAktualizacja                                    DateTime?          @db.DateTime(0)
+  lokalizacje_lokalizacjeTosamochody_Aktualna_Lokalizacja lokalizacje        @relation("lokalizacjeTosamochody_Aktualna_Lokalizacja", fields: [Aktualna_Lokalizacja], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Aktualna_Lokalizacja")
+  lokalizacje_lokalizacjeTosamochody_Domowa_Lokalizacja   lokalizacje        @relation("lokalizacjeTosamochody_Domowa_Lokalizacja", fields: [Domowa_Lokalizacja], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Domowa_Lokalizacja")
+  samochodyszczegoly                                      samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
+  uslugi                                                  uslugi[]
 
-  @@index([IdLokalizacje], map: "Samochody_Lokalizacje")
+  @@index([Aktualna_Lokalizacja], map: "Samochody_Aktualna_Lokalizacja")
+  @@index([Domowa_Lokalizacja], map: "Samochody_Domowa_Lokalizacja")
   @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
   @@index([IdSamochody, Marka, NumerRejestracyjny, Kategoria, IdSamochodySzczegoly], map: "Samochody_idx_1")
 }
@@ -277,12 +288,13 @@ model uslugistatus {
 }
 
 model uszkodzenia {
-  IdUszkodzenia      Int      @id @default(autoincrement())
-  AutoryzowanySerwis Boolean? @db.Bit(1)
-  SamodzielnaNaprawa Boolean? @db.Bit(1)
-  Warsztat           Boolean? @db.Bit(1)
+  IdUszkodzenia      Int         @id @default(autoincrement())
+  AutoryzowanySerwis Boolean?    @db.Bit(1)
+  SamodzielnaNaprawa Boolean?    @db.Bit(1)
+  Warsztat           Boolean?    @db.Bit(1)
   IdUslugi           Int
-  uslugi             uslugi   @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Uszkodzenia_Usluga")
+  uslugi             uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Uszkodzenia_Usluga")
+  relokacje          relokacje[]
 
   @@index([IdUslugi], map: "Uszkodzenia_Usluga")
   @@index([IdUszkodzenia, IdUslugi], map: "Uszkodzenia_idx_1")

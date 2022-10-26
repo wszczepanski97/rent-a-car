@@ -1,0 +1,26 @@
+@import "mixins";
+
+.statsCard {
+  @include flexColumnDoubleCentered;
+  background-color: var(--light-background-color);
+  padding: 20px;
+  width: 240px;
+
+  &:not(:empty):hover,
+  &:not(:empty):focus {
+    z-index: 1;
+    color: #fff;
+    background: #ea124f;
+    opacity: 1;
+    transform: scale(1.15) rotateZ(20deg);
+    cursor: pointer;
+
+    &:after {
+      opacity: 1;
+    }
+
+    &:before {
+      opacity: 0;
+    }
+  }
+}

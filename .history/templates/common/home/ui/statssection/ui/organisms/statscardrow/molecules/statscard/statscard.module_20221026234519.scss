@@ -1,0 +1,67 @@
+@import "mixins";
+
+.statsCard {
+  @include flexColumnDoubleCentered;
+  position: relative;
+  background-color: var(--light-background-color);
+  padding: 20px;
+  width: 240px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+  transition-property: background, transform, color, opacity;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 219px;
+    width: 60px;
+    border-radius: 50%;
+  }
+  &:hover::before {
+    animation: slide 1s;
+  }
+
+  &:not(:empty):hover,
+  &:not(:empty):focus {
+    z-index: 1;
+    color: #fff;
+    background: #e0fefd;
+    opacity: 1;
+    transform: scale(1.15) rotateZ(20deg);
+    cursor: pointer;
+
+    &:after {
+      opacity: 1;
+    }
+
+    &:before {
+      opacity: 0;
+    }
+  }
+
+  &:not(:empty):before {
+    box-shadow: -2px 2px 8px 2px hsla(0, 0%, 0%, 0.2);
+  }
+
+  &:empty {
+    opacity: 0.3;
+  }
+}
+
+@keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.7s, 0.7s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+  }
+}

@@ -1,0 +1,6 @@
+@import "mixins";
+
+.servicesArticle {
+  @include flexColumnHorizontallyCentered;
+  padding: 80px 0px;
+}

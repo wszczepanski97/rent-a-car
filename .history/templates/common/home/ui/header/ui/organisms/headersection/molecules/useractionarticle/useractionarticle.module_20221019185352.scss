@@ -1,0 +1,8 @@
+@import "mixins";
+
+.userActionArticle {
+  @include flexColumnVerticallySpaceBetween;
+  z-index: 1;
+  max-width: 509px;
+  height: 338px;
+}

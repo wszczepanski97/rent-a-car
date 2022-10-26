@@ -1,0 +1,10 @@
+@import "mixins";
+
+.statsCard {
+  @include flexColumnDoubleCentered;
+  background-color: var(--light-background-color);
+  padding: 20px;
+  width: 240px;
+  transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+  transition-property: background, transform, color, opacity;
+}

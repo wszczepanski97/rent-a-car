@@ -1,0 +1,6 @@
+@import "mixins";
+
+.statsSection {
+  @include flexColumnVerticallyCentered;
+  margin-bottom: 0;
+}

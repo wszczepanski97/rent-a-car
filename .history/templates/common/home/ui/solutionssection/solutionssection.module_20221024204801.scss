@@ -1,0 +1,6 @@
+@import "mixins";
+
+.solutionsSection {
+  @include flexColumnVerticallyCentered;
+  height: 100vh;
+}
