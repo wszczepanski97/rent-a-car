@@ -10,18 +10,31 @@
   transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
   transition-property: background, transform, color, opacity;
 
-  &::before {
+  &:before {
     content: "";
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.3);
-    height: 219px;
-    width: 60px;
-    left: -139px;
-    transform: skewX(-45deg);
-    animation: slide 0.3s;
+    width: 240px;
+    height: 100%;
+    background-image: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0) 70%
+    );
+    top: 0;
+    left: -240px;
+    animation: shine 8s infinite;
   }
-
-  &:hover::before {
+  @keyframes shine {
+    0% {
+      left: -240px;
+    }
+    20% {
+      left: 100%;
+    }
+    100% {
+      left: 100%;
+    }
   }
 
   &:not(:empty):hover,
@@ -48,15 +61,5 @@
 
   &:empty {
     opacity: 0.3;
-  }
-}
-
-@keyframes slide {
-  0%,
-  100% {
-    left: -139px;
-  }
-  50% {
-    left: 150%;
   }
 }

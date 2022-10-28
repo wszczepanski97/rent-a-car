@@ -1,13 +1,18 @@
 import { SidebarContext } from "contexts/sidebar-context";
 import { FC, useContext } from "react";
+import styles from "./main.module.scss";
 
 const Main: FC = ({ children }) => {
-  const { active } = useContext(SidebarContext);
+  const { open } = useContext(SidebarContext);
   const stylesWithSidebar = {
     display: "grid",
     gridTemplateColumns: "15em 1fr",
   };
-  return <main style={active ? stylesWithSidebar : undefined}>{children}</main>;
+  return (
+    <main style={open ? stylesWithSidebar : undefined} className={styles.main}>
+      {children}
+    </main>
+  );
 };
 
 export default Main;

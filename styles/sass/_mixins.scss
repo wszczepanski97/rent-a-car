@@ -38,6 +38,11 @@
   display: flex;
 }
 
+@mixin flexRowHorizontallyCentered {
+  @include flexRow();
+  align-items: center;
+}
+
 @mixin flexRowVerticallySpaceBetween {
   @include flexRow();
   justify-content: space-between;

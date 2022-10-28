@@ -25,6 +25,34 @@
   --navbar-height: 10vh;
 }
 
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  font-style: normal;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  position: relative;
+}
+
+body {
+  min-height: 100%;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--dark-background-color);
+}
+
+html,
+:not(:root):fullscreen {
+  scroll-behavior: smooth;
+}
+
 :not(:root):fullscreen {
   object-fit: fill !important;
   user-select: auto !important;
@@ -46,24 +74,14 @@
   background-color: var(--dark-background-color);
 }
 
-:not(:root):fullscreen,
-html {
-  scroll-behavior: smooth;
-}
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  background-color: var(--dark-background-color);
-}
-
-* {
-  box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
-  font-style: normal;
-  margin: 0;
-}
+/* :not(:root):fullscreen::backdrop {
+  position: static !important;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background: black;
+} */
 
 h1 {
   font-weight: 800;
@@ -116,7 +134,8 @@ p {
   letter-spacing: 0.2px;
 }
 
-a {
+a,
+a:hover {
   text-decoration: none;
 }
 

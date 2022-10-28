@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { FC } from "react";
 import {
   Card,
@@ -8,13 +9,23 @@ import {
 } from "ui";
 import styles from "./solutionscard.module.scss";
 
+const cx = classNames.bind(styles);
+
 const SolutionsCard: FC<SolutionsCardProps> = ({
   photoProps,
   paragraphProps,
   titleProps,
 }) => (
   <Card
-    className={styles.solutionsCard}
+    className={cx(
+      styles.solutionsCard,
+      "btn-text",
+      "animate__animated",
+      // "animate__pulse",
+      "animate__infinite",
+      "animate__slower",
+      "animate__delay-2s"
+    )}
     photoProps={{
       ...photoProps,
       size: { height: "159", width: "230" },

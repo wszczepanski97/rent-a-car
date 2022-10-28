@@ -10,18 +10,9 @@ const ArticleButton: FC<ArticleButtonProps> = ({
   onClick,
 }) => (
   <button
-    className={cx(
-      styles.articleButton,
-      "btn-text",
-      "animate__animated",
-      "animate__bounce",
-      "animate__infinite",
-      "animate__slow",
-      "animate__delay-2s",
-      {
-        [styles.articleButton_Active]: active,
-      }
-    )}
+    className={cx(styles.articleButton, "btn-text", {
+      [styles.articleButton_Active]: active,
+    })}
     onClick={onClick}
   >
     {text}

@@ -1,0 +1,16 @@
+@import "mixins";
+
+.navbarListItem {
+  display: inline-block;
+  a {
+    padding: 10px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+    transition: all 0.5s !important;
+    opacity: 0.6;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

@@ -4,9 +4,9 @@ import styles from "./socialmediasection.module.scss";
 import { CopyrightHeader, SocialMediaIconsBar } from "./ui";
 
 const SocialMediaSection: FC = () => {
-  const { active } = useContext(SidebarContext);
+  const { open } = useContext(SidebarContext);
   return (
-    <section style={active ? { marginLeft: "21rem" } : undefined}>
+    <section style={open ? { marginLeft: "21rem" } : undefined}>
       <div className={styles.socialMediaSection}>
         <CopyrightHeader />
         <SocialMediaIconsBar />

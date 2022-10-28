@@ -1,6 +1,6 @@
 @import "mixins";
 
 .solutionsSection {
-  @include flexColumnVerticallyCentered;
+  @include flexColumnVerticallySpaceAround;
   min-height: 67vh;
 }

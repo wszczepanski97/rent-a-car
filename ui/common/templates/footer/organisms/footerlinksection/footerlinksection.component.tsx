@@ -1,5 +1,3 @@
-import { SidebarContext } from "contexts/sidebar-context";
-import { useContext } from "react";
 import styles from "./footerlinksection.module.scss";
 import { FooterLinkSectionColumn } from "./molecules";
 import {
@@ -8,12 +6,8 @@ import {
 } from "./molecules/footerlinksectioncolumn/atoms";
 
 const FooterLinkSection = () => {
-  const { active } = useContext(SidebarContext);
   return (
-    <section
-      className={styles.footerLinkSection}
-      style={active ? { marginLeft: "21rem" } : undefined}
-    >
+    <section className={styles.footerLinkSection}>
       <div className={styles.footerLinkSectionContainer}>
         <FooterLinkSectionColumn>
           <FooterLinkSectionColumnTitle text="Informacje o firmie" />

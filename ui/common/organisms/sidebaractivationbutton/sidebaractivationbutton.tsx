@@ -2,11 +2,11 @@ import { SidebarContext } from "contexts/sidebar-context";
 import { useContext } from "react";
 
 const SidebarActivationButton = () => {
-  const { setActive } = useContext(SidebarContext);
+  const { open, cycleOpen } = useContext(SidebarContext);
   return (
     <button
       className="openbtn"
-      onClick={() => setActive((active) => !active)}
+      onClick={cycleOpen}
       style={{
         position: "absolute",
         top: "50%",
@@ -15,7 +15,7 @@ const SidebarActivationButton = () => {
         borderRadius: "50%",
       }}
     >
-      Open Sidebar
+      {open ? "Close sidebar" : "Open sidebar"}
     </button>
   );
 };

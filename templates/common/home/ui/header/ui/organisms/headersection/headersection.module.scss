@@ -1,13 +1,20 @@
 @import "mixins";
 
 .headerSection {
-  @include flexColumnVerticallySpaceBetween;
+  @include flexRowHorizontallyCenteredVerticallySpaceBetween;
   gap: 50px;
   height: 90vh;
-  justify-content: space-evenly;
 }
 
 .sidebarActive {
   height: 100vh;
   justify-content: center;
+}
+
+.right-sec {
+  max-width: 60%;
+  img {
+    margin: auto;
+    width: 100%;
+  }
 }

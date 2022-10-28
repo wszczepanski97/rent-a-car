@@ -4,12 +4,9 @@ import styles from "./navbar.module.scss";
 import { NavbarList, PageTitle } from "./ui";
 
 const Navbar: FC = () => {
-  const { active: sidebarActive } = useContext(SidebarContext);
+  const { open } = useContext(SidebarContext);
   return (
-    <nav
-      className={styles.Navbar}
-      style={{ display: sidebarActive ? "none" : "flex" }}
-    >
+    <nav className={styles.Navbar} style={{ display: open ? "none" : "flex" }}>
       <PageTitle />
       <NavbarList />
     </nav>

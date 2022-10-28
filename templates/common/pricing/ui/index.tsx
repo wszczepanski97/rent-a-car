@@ -1,3 +1,4 @@
+import SlideAnimation from "animations/slide.animation";
 import { ReactElement } from "react";
 import { Cars } from "templates/common/types";
 import { NextPageWithLayout } from "types/next";
@@ -11,8 +12,10 @@ type PricingPageProps = {
 
 const PricingPage: NextPageWithLayout<PricingPageProps> = ({ cars }) => (
   <PricingPageContext.Provider value={cars}>
-    <CarsCardSection />
-    <ContactSection />
+    <SlideAnimation>
+      <CarsCardSection />
+      <ContactSection />
+    </SlideAnimation>
   </PricingPageContext.Provider>
 );
 

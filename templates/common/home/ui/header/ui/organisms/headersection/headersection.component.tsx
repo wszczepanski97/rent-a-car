@@ -1,20 +1,43 @@
 import classnames from "classnames";
 import { SidebarContext } from "contexts/sidebar-context";
 import { FC, useContext } from "react";
+import { Carousel } from "react-responsive-carousel";
 import styles from "./headersection.module.scss";
-import { AdvertisingCardsRow, UserActionArticle } from "./molecules";
+import { UserActionArticle } from "./molecules";
 
 const HeaderSection: FC = () => {
-  const { active } = useContext(SidebarContext);
+  const { open } = useContext(SidebarContext);
   return (
     <section
       className={classnames(styles.headerSection, {
-        [styles.sidebarActive]: active,
+        [styles.sidebarActive]: open,
       })}
       id="Ułatw swoje życie"
     >
       <UserActionArticle />
-      <AdvertisingCardsRow />
+      <div className={styles["right-sec"]}>
+        <div className={styles["my-car"]}>
+          <Carousel
+            autoPlay
+            showThumbs={false}
+            showArrows={false}
+            showStatus={false}
+            showIndicators={false}
+            infiniteLoop
+            interval={5000}
+          >
+            {[
+              "/images/Car-1.webp",
+              "/images/Car-3.webp",
+              "/images/Car-4.png",
+            ].map((photo, index) => (
+              <div key={`photo-${index}`}>
+                <img alt="" src={photo} />
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      </div>
     </section>
   );
 };

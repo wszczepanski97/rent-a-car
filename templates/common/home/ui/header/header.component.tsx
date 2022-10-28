@@ -1,11 +1,10 @@
+import SlideAnimation from "animations/slide.animation";
 import { FC } from "react";
-import { HeaderBackground, HeaderSection } from "./ui";
-
+import { HeaderSection } from "templates/common/home/ui/header/ui";
 const Header: FC = () => (
-  <>
-    <HeaderBackground />
+  <SlideAnimation>
     <HeaderSection />
-  </>
+  </SlideAnimation>
 );
 
 export default Header;

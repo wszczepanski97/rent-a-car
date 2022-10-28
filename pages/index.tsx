@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -9,10 +8,12 @@ import {
   StatsSection,
   UserRole,
 } from "templates/common";
+import { NextPageWithLayout } from "types/next";
 
-const HomePage: NextPage = () => {
+const HomePage: NextPageWithLayout<{}> = () => {
   const router = useRouter();
   const { data: session } = useSession();
+
   useEffect(() => {
     if (session?.user.role === UserRole.CLIENT) {
       router.replace("/client/dashboard");
@@ -26,6 +27,7 @@ const HomePage: NextPage = () => {
       router.replace("/mechanic/dashboard");
     }
   }, [session, router]);
+
   return (
     <>
       <Header />

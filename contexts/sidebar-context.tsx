@@ -1,8 +1,9 @@
-import { createContext, Dispatch, FC, SetStateAction, useState } from "react";
+import { useCycle } from "framer-motion";
+import { createContext, FC } from "react";
 
 type SidebarContextValues = {
-  active: boolean;
-  setActive: Dispatch<SetStateAction<boolean>>;
+  open: boolean;
+  cycleOpen: (i?: number) => void;
 };
 
 export const SidebarContext = createContext<SidebarContextValues>(
@@ -10,9 +11,9 @@ export const SidebarContext = createContext<SidebarContextValues>(
 );
 
 export const SidebarContextProvider: FC = ({ children }) => {
-  const [active, setActive] = useState(false);
+  const [open, cycleOpen] = useCycle(false, true);
   return (
-    <SidebarContext.Provider value={{ active, setActive }}>
+    <SidebarContext.Provider value={{ open, cycleOpen }}>
       {children}
     </SidebarContext.Provider>
   );
