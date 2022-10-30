@@ -1,22 +1,42 @@
+import classNames from "classnames";
 import { SidebarContext } from "contexts/sidebar-context";
+import { motion } from "framer-motion";
+import Head from "next/head";
 import { useContext } from "react";
+import styles from "./sidebaractivationbutton.module.scss";
 
 const SidebarActivationButton = () => {
   const { open, cycleOpen } = useContext(SidebarContext);
   return (
-    <button
-      className="openbtn"
-      onClick={cycleOpen}
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "-5%",
-        zIndex: 1,
-        borderRadius: "50%",
-      }}
-    >
-      {open ? "Close sidebar" : "Open sidebar"}
-    </button>
+    <>
+      <Head>
+        <link
+          href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <div
+        className={styles.sidebarActivationButtonWrapper}
+        style={
+          open
+            ? {
+                left: 170,
+                background:
+                  "linear-gradient(90deg, transparent 50%, var(--dark-background-color) 50%)",
+              }
+            : undefined
+        }
+      >
+        <motion.i
+          className={classNames(
+            styles.sidebarActivationButton,
+            "bx",
+            open ? "bx-chevrons-left" : "bx-chevrons-right bx-tada"
+          )}
+          onClick={cycleOpen}
+        ></motion.i>
+      </div>
+    </>
   );
 };
 

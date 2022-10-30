@@ -88,10 +88,15 @@ const NavbarList: FC = () => {
               </>
             ) : (
               <>
-                <NavbarListItem name="Zarejestruj się" href="/" />
+                <NavbarListItem
+                  name="Zarejestruj się"
+                  href="/"
+                  dataIcon="bx-user-plus"
+                />
                 <NavbarListItem
                   name="Zaloguj się"
                   href="/login?role=client"
+                  dataIcon="bxs-log-in"
                   // options={[
                   //   {
                   //     name: "Zaloguj się jako klient",
@@ -115,7 +120,11 @@ const NavbarList: FC = () => {
                   //   },
                   // ]}
                 />
-                <NavbarListItem name="Wyszukaj auto" href="/pricing" />
+                <NavbarListItem
+                  name="Wyszukaj auto"
+                  href="/pricing"
+                  dataIcon="bx-search"
+                />
               </>
             )}
           </AnimatePresence>

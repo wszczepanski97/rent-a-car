@@ -1,0 +1,15 @@
+.sidebarActivationButtonWrapper {
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+  left: -35px;
+  width: 80px;
+  background-color: var(--dark-background-color);
+  text-align: right;
+  .sidebarActivationButton {
+    animation-duration: 3s;
+    color: #ffffff;
+    font-size: 56px;
+    cursor: pointer;
+  }
+}

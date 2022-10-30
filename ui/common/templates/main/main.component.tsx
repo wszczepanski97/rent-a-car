@@ -6,7 +6,7 @@ const Main: FC = ({ children }) => {
   const { open } = useContext(SidebarContext);
   const stylesWithSidebar = {
     display: "grid",
-    gridTemplateColumns: "15em 1fr",
+    gridTemplateColumns: open ? "15em 1fr" : "0 1fr",
   };
   return (
     <main style={open ? stylesWithSidebar : undefined} className={styles.main}>

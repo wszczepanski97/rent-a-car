@@ -1,6 +1,8 @@
 import { SidebarContext } from "contexts/sidebar-context";
 import { AnimatePresence, motion } from "framer-motion";
+import Head from "next/head";
 import { useContext, useEffect } from "react";
+import { SidebarActivationButton } from "ui";
 import { PageTitle } from "ui/common/organisms/navbar/ui";
 import styles from "./sidebar.module.scss";
 
@@ -53,51 +55,91 @@ const Sidebar = () => {
   return (
     <AnimatePresence>
       {open ? (
-        <motion.aside
-          className={styles.sidebar}
-          initial={{ width: 0 }}
-          animate={{
-            width: "15rem",
-          }}
-          exit={{
-            width: 0,
-            opacity: 0,
-            transition: { duration: 0.2 },
-          }}
-        >
-          <PageTitle />
-          <motion.div initial="closed" animate="open" variants={sideVariants}>
-            <ol>
-              {Array.from(document.querySelectorAll("nav li[id]")).map(
-                (listitem) => (
-                  <li key={`listitem-${listitem.id}`}>
-                    <motion.a
-                      href={`#${listitem.id}`}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      {listitem.id}
-                    </motion.a>
-                  </li>
-                )
-              )}
-              {Array.from(document.querySelectorAll("section[id]")).map(
-                (section) => (
-                  <li key={`section-${section.id}`}>
-                    <motion.a
-                      href={`#${section.id}`}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      {section.id}
-                    </motion.a>
-                  </li>
-                )
-              )}
-            </ol>
-          </motion.div>
-        </motion.aside>
-      ) : null}
+        <>
+          <Head>
+            <link
+              href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+              rel="stylesheet"
+            />
+          </Head>
+          <motion.aside
+            className={styles.sidebar}
+            initial={{ width: 0 }}
+            animate={{
+              width: "auto",
+            }}
+            exit={{
+              width: 0,
+              opacity: 0,
+              transition: { duration: 0.2 },
+            }}
+          >
+            <div className={styles.pageTitleContainer}>
+              <i className="bx bxl-c-plus-plus icon"></i>
+              <PageTitle />
+            </div>
+            <motion.div initial="closed" animate="open" variants={sideVariants}>
+              <ol>
+                <div>
+                  <h4
+                    style={{
+                      textAlign: "center",
+                      color: "#ffffff",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
+                    }}
+                  >
+                    Akcje
+                  </h4>
+                  {Array.from(document.querySelectorAll("nav li[id]")).map(
+                    (item) => (
+                      <li key={`sidebar-item-${item.id}`}>
+                        <motion.a
+                          href={item.getAttribute("data-link")}
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          <i
+                            className={`bx ${item.getAttribute("data-icon")}`}
+                          ></i>
+                          <span className="links_name">{item.id}</span>
+                        </motion.a>
+                      </li>
+                    )
+                  )}
+                </div>
+                <div>
+                  <h4
+                    style={{
+                      textAlign: "center",
+                      color: "#ffffff",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
+                    }}
+                  >
+                    Strona
+                  </h4>
+                  {Array.from(document.querySelectorAll("section[id]")).map(
+                    (item) => (
+                      <li key={`sidebar-item-${item.id}`}>
+                        <motion.a
+                          href={`#${item.id}`}
+                          variants={itemVariants}
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          <i className="bx bx-hash"></i>
+                          <span className="links_name">{item.id}</span>
+                        </motion.a>
+                      </li>
+                    )
+                  )}
+                </div>
+              </ol>
+            </motion.div>
+            <SidebarActivationButton />
+          </motion.aside>
+        </>
+      ) : (
+        <SidebarActivationButton />
+      )}
     </AnimatePresence>
   );
 };
