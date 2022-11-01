@@ -1,12 +1,16 @@
 import { SidebarContext } from "contexts/sidebar-context";
 import { AnimatePresence, motion } from "framer-motion";
 import Head from "next/head";
-import { useContext, useEffect } from "react";
-import { SidebarActivationButton } from "ui";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { Link, SidebarActivationButton } from "ui";
 import { PageTitle } from "ui/common/organisms/navbar/ui";
 import styles from "./sidebar.module.scss";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const [pageLinks, setPageLinks] = useState<Element[]>();
+  let [hashLinks, setHashLinks] = useState<Element[]>();
   const itemVariants = {
     closed: {
       opacity: 0,
@@ -30,26 +34,9 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    window.addEventListener("DOMContentLoaded", () => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const id = entry.target.getAttribute("id");
-          if (entry.intersectionRatio > 0) {
-            document
-              ?.querySelector(`nav li a[href="#${id}"]`)
-              ?.parentElement?.classList.add("active");
-          } else {
-            document
-              ?.querySelector(`nav li a[href="#${id}"]`)
-              ?.parentElement?.classList.remove("active");
-          }
-        });
-      });
-      document.querySelectorAll("section[id]").forEach((section) => {
-        observer.observe(section);
-      });
-    });
-  });
+    setPageLinks(Array.from(document.querySelectorAll("nav li[id]")));
+    setHashLinks(Array.from(document.querySelectorAll("section[id]")));
+  }, [router.pathname]);
 
   const { open } = useContext(SidebarContext);
   return (
@@ -80,46 +67,51 @@ const Sidebar = () => {
             </div>
             <motion.div initial="closed" animate="open" variants={sideVariants}>
               <ol>
-                <div>
-                  <h4
-                    style={{
-                      textAlign: "center",
-                      color: "#ffffff",
-                      borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
-                    }}
-                  >
-                    Akcje
-                  </h4>
-                  {Array.from(document.querySelectorAll("nav li[id]")).map(
-                    (item) => (
-                      <li key={`sidebar-item-${item.id}`}>
-                        <motion.a
-                          href={item.getAttribute("data-link")}
-                          variants={itemVariants}
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          <i
-                            className={`bx ${item.getAttribute("data-icon")}`}
-                          ></i>
-                          <span className="links_name">{item.id}</span>
-                        </motion.a>
-                      </li>
-                    )
-                  )}
-                </div>
-                <div>
-                  <h4
-                    style={{
-                      textAlign: "center",
-                      color: "#ffffff",
-                      borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
-                    }}
-                  >
-                    Strona
-                  </h4>
-                  {Array.from(document.querySelectorAll("section[id]")).map(
-                    (item) => (
-                      <li key={`sidebar-item-${item.id}`}>
+                {pageLinks?.length ? (
+                  <>
+                    <div>
+                      <h4
+                        style={{
+                          textAlign: "center",
+                          color: "#ffffff",
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
+                        }}
+                      >
+                        Akcje
+                      </h4>
+                      {pageLinks.map((item) => (
+                        <li key={`sidebar-page-link-${item.id}`}>
+                          <motion.div
+                            variants={itemVariants}
+                            whileHover={{ scale: 1.1 }}
+                            style={{ display: "flex" }}
+                          >
+                            <i
+                              className={`bx ${item.getAttribute("data-icon")}`}
+                            ></i>
+                            <Link
+                              href={item.getAttribute("data-link")}
+                              name={item.id}
+                            />
+                          </motion.div>
+                        </li>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+                {hashLinks?.length ? (
+                  <div>
+                    <h4
+                      style={{
+                        textAlign: "center",
+                        color: "#ffffff",
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
+                      }}
+                    >
+                      Strona
+                    </h4>
+                    {hashLinks.map((item) => (
+                      <li key={`sidebar-hash-link-${item.id}`}>
                         <motion.a
                           href={`#${item.id}`}
                           variants={itemVariants}
@@ -129,9 +121,9 @@ const Sidebar = () => {
                           <span className="links_name">{item.id}</span>
                         </motion.a>
                       </li>
-                    )
-                  )}
-                </div>
+                    ))}
+                  </div>
+                ) : null}
               </ol>
             </motion.div>
             <SidebarActivationButton />

@@ -1,8 +1,9 @@
 import SlideAnimation from "animations/slide.animation";
+import { SidebarContextProvider } from "contexts/sidebar-context";
 import { ReactElement } from "react";
 import { Cars } from "templates/common/types";
 import { NextPageWithLayout } from "types/next";
-import { ContactSection, Footer, Navbar } from "ui";
+import { ContactSection, Footer, Main, Navbar, Sidebar } from "ui";
 import { PricingPageContext } from "../contexts";
 import CarsCardSection from "./carscardsection/carscardsection.component";
 
@@ -20,11 +21,14 @@ const PricingPage: NextPageWithLayout<PricingPageProps> = ({ cars }) => (
 );
 
 PricingPage.getLayout = (page: ReactElement) => (
-  <>
-    <Navbar />
-    {page}
-    <Footer />
-  </>
+  <SidebarContextProvider>
+    <Main>
+      <Sidebar />
+      <Navbar />
+      {page}
+      <Footer />
+    </Main>
+  </SidebarContextProvider>
 );
 
 export default PricingPage;

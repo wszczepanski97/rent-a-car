@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { SidebarContext } from "contexts/sidebar-context";
+import { FC, useContext } from "react";
 import { Link, LinkProps } from "ui";
 import styles from "./navbarlistitem.module.scss";
 
@@ -11,15 +12,18 @@ const NavbarListItem: FC<NavbarListItemProps> = ({
   dataIcon,
   href,
   ...rest
-}) => (
-  <li
-    id={name}
-    className={styles.navbarListItem}
-    data-icon={dataIcon}
-    data-link={href}
-  >
-    <Link name={name} href={href} {...rest} />
-  </li>
-);
+}) => {
+  const { open } = useContext(SidebarContext);
+  return (
+    <li
+      id={name}
+      className={styles.navbarListItem}
+      data-icon={dataIcon}
+      data-link={href}
+    >
+      {open ? null : <Link name={name} href={href} {...rest} />}
+    </li>
+  );
+};
 
 export default NavbarListItem;

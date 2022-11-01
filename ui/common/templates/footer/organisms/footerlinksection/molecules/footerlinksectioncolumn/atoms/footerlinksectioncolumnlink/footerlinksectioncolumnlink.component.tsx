@@ -9,10 +9,10 @@ const FooterLinkSectionColumnLink: FC<FooterLinkSectionColumnLinkProps> = ({
   photoProps ? (
     <div className={styles.columnLinkWithPhoto}>
       <Photo size={{ height: "24", width: "24" }} {...photoProps} />
-      <Link href={""} name={text} />
+      <Link href="" name={text} />
     </div>
   ) : (
-    <Link href={""} name={text} />
+    <Link href="" name={text} />
   );
 
 export type FooterLinkSectionColumnLinkProps = {

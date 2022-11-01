@@ -1,5 +1,5 @@
-import { FC } from "react";
 import Image from "next/image";
+import { FC } from "react";
 
 const Photo: FC<PhotoProps> = ({ size, ...rest }) => {
   return <Image {...size} {...rest} />;

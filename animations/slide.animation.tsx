@@ -5,6 +5,7 @@ const SlideAnimation: FC = ({ children }) => {
   return typeof window !== "undefined" ? (
     <AnimatePresence>
       <motion.div
+        id="slide-animation"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

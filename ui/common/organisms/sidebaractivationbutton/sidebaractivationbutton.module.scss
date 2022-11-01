@@ -5,6 +5,7 @@
   left: -35px;
   width: 80px;
   background-color: var(--dark-background-color);
+  z-index: 1;
   text-align: right;
   .sidebarActivationButton {
     animation-duration: 3s;

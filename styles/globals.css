@@ -37,7 +37,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--dark-background-color);
 }
 
 html,
@@ -63,7 +62,6 @@ html,
   transform: none !important;
   margin: 0px !important;
   overflow-y: auto;
-  background-color: var(--dark-background-color);
 }
 
 h1 {
