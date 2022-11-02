@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { HeaderGroup } from "react-table";
 import { Cars } from "templates/common/types";
+import styles from "../../carstable.module.scss";
 
 const CarsTableHeader: FC<{ headerGroups: HeaderGroup<Cars>[] }> = ({
   headerGroups,
@@ -10,7 +11,7 @@ const CarsTableHeader: FC<{ headerGroups: HeaderGroup<Cars>[] }> = ({
       {headerGroups.map((headerGroup) => (
         <tr {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map((column) => (
-            <th>
+            <th className={styles.carsCard_Table_Heading}>
               <span {...column.getHeaderProps(column.getSortByToggleProps())}>
                 {column.render("Header")}
               </span>

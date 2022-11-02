@@ -3,7 +3,7 @@ import { SidebarContextProvider } from "contexts/sidebar-context";
 import { ReactElement } from "react";
 import { Cars } from "templates/common/types";
 import { NextPageWithLayout } from "types/next";
-import { ContactSection, Footer, Main, Navbar, Sidebar } from "ui";
+import { Layout, Main, Navbar, Sidebar } from "ui";
 import { PricingPageContext } from "../contexts";
 import CarsCardSection from "./carscardsection/carscardsection.component";
 
@@ -15,7 +15,6 @@ const PricingPage: NextPageWithLayout<PricingPageProps> = ({ cars }) => (
   <PricingPageContext.Provider value={cars}>
     <SlideAnimation>
       <CarsCardSection />
-      <ContactSection />
     </SlideAnimation>
   </PricingPageContext.Provider>
 );
@@ -24,9 +23,10 @@ PricingPage.getLayout = (page: ReactElement) => (
   <SidebarContextProvider>
     <Main>
       <Sidebar />
-      <Navbar />
-      {page}
-      <Footer />
+      <Layout>
+        <Navbar />
+        {page}
+      </Layout>
     </Main>
   </SidebarContextProvider>
 );

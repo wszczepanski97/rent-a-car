@@ -3,9 +3,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, FormEvent, MouseEventHandler, useRef, useState } from "react";
 import { UserRole, UserRoleKey } from "templates/common";
-import styles from "./loginform.module.scss";
+import styles from "./registerform.module.scss";
 
-const LoginForm: FC = () => {
+const RegisterForm: FC = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [activeDataItem, setActiveDataItem] = useState<UserRoleKey>("CLIENT");
@@ -119,7 +119,7 @@ const LoginForm: FC = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.title}>
-          Zaloguj się jako {UserRole[activeDataItem].toLowerCase()}
+          Zarejestruj się jako {UserRole[activeDataItem].toLowerCase()}
         </div>
         <form action="#" onSubmit={onSubmit}>
           <div className={styles["user-details"]}>
@@ -134,7 +134,7 @@ const LoginForm: FC = () => {
           </div>
           <input name="role" type="hidden" value={UserRole[activeDataItem]} />
           <div className={styles["button"]}>
-            <input type="submit" value="Zaloguj się" />
+            <input type="submit" value="Zarejestruj się" />
           </div>
         </form>
       </div>
@@ -151,4 +151,4 @@ const LoginForm: FC = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

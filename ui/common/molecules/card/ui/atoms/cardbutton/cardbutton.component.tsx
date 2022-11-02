@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { CSSProperties, FC } from "react";
 import { Heading, Link } from "ui";
 import styles from "./cardbutton.module.scss";
 
@@ -19,6 +19,7 @@ const CardButton: FC<CardButtonProps> = (props) => {
       className={styles.cardButton}
       style={{
         ...buttonStyle,
+        ...props.style,
         pointerEvents: props.href ? "auto" : "none",
         cursor: props.href ? "pointer" : "none",
       }}
@@ -47,6 +48,7 @@ type CardButtonWithBGProps = {
   bgColor: string;
   color: string;
   href?: string;
+  style?: CSSProperties;
 };
 
 type CardButtonWithoutBGProps = {
@@ -54,6 +56,7 @@ type CardButtonWithoutBGProps = {
   buttonText: string;
   color?: string;
   href?: string;
+  style?: CSSProperties;
 };
 
 export type CardButtonProps = CardButtonWithBGProps | CardButtonWithoutBGProps;

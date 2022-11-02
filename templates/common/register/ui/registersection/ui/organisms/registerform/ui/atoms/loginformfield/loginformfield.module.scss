@@ -1,0 +1,6 @@
+@import "mixins";
+
+.loginFormField {
+  @include flexColumn;
+  gap: 10px;
+}

@@ -1,7 +1,11 @@
 @import "mixins";
 
 .carsCardSection {
-  @include flexColumnVerticallySpaceAround();
-  height: calc(100vh - var(--navbar-height));
-  position: relative;
+  @include flexColumnDoubleCentered();
+  .carsCardSectionContainer {
+    @include flexColumnVerticallySpaceBetween();
+    height: 85vh;
+    background-color: var(--dark-background-color);
+    border-radius: 10px;
+  }
 }

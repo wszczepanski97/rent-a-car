@@ -2,23 +2,32 @@
 
 .carsCard {
   &_Container {
-    height: 711px;
-    width: 90%;
     background-color: var(--light-background-color);
     padding: 30px 20px;
-    border-radius: 10px;
+    border-radius: 0 0 10px 10px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 20px;
+    flex-grow: 1;
   }
   &_Table {
+    height: 100%;
     width: 100%;
     margin: 0 auto;
-    border-spacing: 0 5px;
-    &_Row {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    &_Heading {
+      text-align: center;
+      white-space: nowrap;
       padding: 0 10px;
+      vertical-align: top;
+    }
+
+    &_Row {
+      height: 1px;
       border-radius: 5px;
       cursor: pointer;
       &:hover {
@@ -31,9 +40,8 @@
         background-color: #afafaf;
       }
       &_Cell {
+        height: inherit;
         text-align: center;
-        max-height: 10px;
-        height: 10px;
       }
     }
   }

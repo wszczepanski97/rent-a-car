@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Row } from "react-table";
 import { Cars } from "templates/common/types";
 import { Photo } from "ui";
@@ -35,6 +35,8 @@ const CarsTableBody: FC<CarsTableBodyProps> = ({ page, prepareRow }) => {
                   {...cell.getCellProps()}
                   style={{
                     backgroundColor: isPhotoCell ? "white" : undefined,
+                    paddingLeft: isPhotoCell ? "10px" : undefined,
+                    borderRadius: isPhotoCell ? "10px" : undefined,
                   }}
                 >
                   {isPhotoCell ? (
@@ -55,13 +57,17 @@ const CarsTableBody: FC<CarsTableBodyProps> = ({ page, prepareRow }) => {
                 </td>
               );
             })}
-            <td>
+            <td
+              className={styles.carsCard_Table_Row_Cell}
+              style={{ borderRadius: "0 10px 10px 0" }}
+            >
               <CardButton
                 type={CardButtonType.CardButtonWithBG}
                 buttonText="Wypożycz"
                 bgColor="var(--primary-color)"
                 color="var(--light-text-color)"
                 href={`/client/rent/${row.values.IdSamochody}`}
+                style={{ height: "100%" }}
               />
             </td>
           </tr>

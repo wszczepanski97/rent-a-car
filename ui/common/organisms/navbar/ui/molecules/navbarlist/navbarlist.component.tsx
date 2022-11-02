@@ -90,12 +90,12 @@ const NavbarList: FC = () => {
               <>
                 <NavbarListItem
                   name="Zarejestruj się"
-                  href="/"
+                  href="/register"
                   dataIcon="bx-user-plus"
                 />
                 <NavbarListItem
                   name="Zaloguj się"
-                  href="/login?role=client"
+                  href="/login"
                   dataIcon="bxs-log-in"
                   // options={[
                   //   {
