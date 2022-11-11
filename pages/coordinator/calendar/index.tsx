@@ -16,12 +16,15 @@ import {
   uzytkownicy,
   wypozyczenia,
 } from "@prisma/client";
-import { SidebarContextProvider } from "contexts/sidebar-context";
+import { SidebarContextProvider } from "contexts/sidebar.context";
 import type { GetServerSideProps } from "next";
 import { ReactElement } from "react";
-import { CalendarSection } from "templates/coordinator/calendar/ui";
+import CalendarSection from "templates/coordinator/calendar/ui/calendarsection/calendarsection.component";
 import { NextPageWithLayout } from "types/next";
-import { Layout, Main, Navbar, Sidebar } from "ui";
+import Navbar from "ui/organisms/navbar/navbar.component";
+import Sidebar from "ui/organisms/sidebar/sidebar.component";
+import Layout from "ui/templates/layout";
+import Main from "ui/templates/main";
 import { prisma } from "../../../db";
 
 export type CalendarCoordinatorPageProps = {
@@ -101,7 +104,7 @@ CalendarCoordinatorPage.getLayout = (page: ReactElement) => (
 const getServices: GetServerSideProps<
   CalendarCoordinatorPageProps
 > = async () => {
-  const services: Service[] = await prisma.uslugi.findMany({
+  const services = await prisma.uslugi.findMany({
     include: {
       mycie: true,
       uszkodzenia: true,

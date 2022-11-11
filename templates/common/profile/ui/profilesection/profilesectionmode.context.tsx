@@ -6,7 +6,7 @@ import {
   useContext,
   useState,
 } from "react";
-import { Profile } from "templates/common/types";
+import { Profile } from "types/profile/profile.type";
 
 export enum ProfileSectionMode {
   DEFAULT = "DEFAULT",

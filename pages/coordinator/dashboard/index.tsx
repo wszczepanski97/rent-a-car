@@ -5,19 +5,47 @@ import {
   pracownicy,
   stanowiska,
 } from "@prisma/client";
-import { SidebarContextProvider } from "contexts/sidebar-context";
+import { SidebarContextProvider } from "contexts/sidebar.context";
 import type { GetServerSideProps } from "next";
-import { createContext, ReactElement } from "react";
-import {
-  DeptEmpsSection,
-  MyDepartmentCarousel,
-} from "templates/coordinator/mydepartment/ui";
-import DeptCarsSection from "templates/coordinator/mydepartment/ui/deptcarsssection/deptcarssection.component";
-import DeptClientsSection from "templates/coordinator/mydepartment/ui/deptclientssection/deptclientssection.component";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import type { ReactElement } from "react";
+import { createContext } from "react";
 import { NextPageWithLayout } from "types/next";
-import { Layout, Main, Navbar, Sidebar } from "ui";
+import Navbar from "ui/organisms/navbar/navbar.component";
+import Sidebar from "ui/organisms/sidebar/sidebar.component";
+import Layout from "ui/templates/layout";
+import Main from "ui/templates/main";
 import { prisma } from "../../../db";
 import styles from "../../../templates/coordinator/mydepartment/ui/mydepartment.module.scss";
+
+const MyDepartmentCarousel = dynamic(
+  () =>
+    import(
+      "templates/coordinator/mydepartment/ui/mydepartmentcarousel/mydepartmentcarousel.component"
+    )
+);
+
+const DeptClientsSection = dynamic(
+  () =>
+    import(
+      "templates/coordinator/mydepartment/ui/deptclientssection/deptclientssection.component"
+    )
+);
+
+const DeptCarsSection = dynamic(
+  () =>
+    import(
+      "templates/coordinator/mydepartment/ui/deptcarsssection/deptcarssection.component"
+    )
+);
+
+const DeptEmpsSection = dynamic(
+  () =>
+    import(
+      "templates/coordinator/mydepartment/ui/deptempssection/deptempssection.component"
+    )
+);
 
 export type EmployeesContextInterface = {
   employees: pracownicy[] | null;
@@ -81,17 +109,29 @@ type MyDepartmentPageProps = {
 const MyDepartmentCoordinatorPage: NextPageWithLayout<
   MyDepartmentPageProps
 > = ({ employeesContext, carsContext, clientsContext }) => (
-  <MyDepartmentCarousel>
-    <EmployeesContext.Provider value={{ ...employeesContext }}>
-      <DeptEmpsSection />
-    </EmployeesContext.Provider>
-    <CarsContext.Provider value={{ ...carsContext }}>
-      <DeptCarsSection />
-    </CarsContext.Provider>
-    <ClientsContext.Provider value={{ ...clientsContext }}>
-      <DeptClientsSection />
-    </ClientsContext.Provider>
-  </MyDepartmentCarousel>
+  <>
+    <Head>
+      <link
+        href="https://cdn.syncfusion.com/ej2/bootstrap5.css"
+        rel="stylesheet"
+      />
+      <link
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        rel="stylesheet"
+      />
+    </Head>
+    <MyDepartmentCarousel>
+      <EmployeesContext.Provider value={{ ...employeesContext }}>
+        <DeptEmpsSection />
+      </EmployeesContext.Provider>
+      <CarsContext.Provider value={{ ...carsContext }}>
+        <DeptCarsSection />
+      </CarsContext.Provider>
+      <ClientsContext.Provider value={{ ...clientsContext }}>
+        <DeptClientsSection />
+      </ClientsContext.Provider>
+    </MyDepartmentCarousel>
+  </>
 );
 
 MyDepartmentCoordinatorPage.getLayout = (page: ReactElement) => (

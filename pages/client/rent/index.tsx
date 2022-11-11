@@ -1,8 +1,8 @@
+import { prisma } from "db";
 import { GetStaticProps } from "next";
-import { Cars } from "templates/common/types";
-import { prisma } from "../../../db";
+import { Car } from "types/car/car.type";
 
-export const getStaticProps: GetStaticProps<{ cars: Cars[] }> = async () => {
+export const getStaticProps: GetStaticProps<{ cars: Car[] }> = async () => {
   const cars = (
     await prisma.samochody.findMany({
       include: {
@@ -30,4 +30,4 @@ export const getStaticProps: GetStaticProps<{ cars: Cars[] }> = async () => {
   };
 };
 
-export { default } from "templates/common/pricing";
+export { default } from "templates/common/pricing/pricing.page";

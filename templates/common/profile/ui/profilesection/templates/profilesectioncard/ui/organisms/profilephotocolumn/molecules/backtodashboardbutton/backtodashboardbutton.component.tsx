@@ -1,5 +1,5 @@
-import { CardButton } from "ui/common/molecules/card/ui";
-import { CardButtonType } from "ui/common/molecules/card/ui/atoms/cardbutton/cardbutton.component";
+import CardButton from "ui/molecules/card/components/cardbutton/cardbutton.component";
+import { CardButtonType } from "ui/molecules/card/components/cardbutton/cardbuttontype.enum";
 
 const BackToDashboardButton = () => (
   <CardButton

@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useContext } from "react";
+import classnames from "classnames";
+import { FC, useCallback, useContext } from "react";
 import { AddEventContext } from "../../contexts/addevent.context";
 import styles from "../styles.module.scss";
-import classnames from "classnames";
 
 const cx = classnames.bind(styles);
 

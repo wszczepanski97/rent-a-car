@@ -1,9 +1,9 @@
+import { prisma } from "db";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { ProfileSection } from "templates";
-import { ProfileClient } from "templates/common/types";
-import { UserRole } from "ui";
-import { prisma } from "../../../db";
+import ProfileSection from "templates/common/profile/ui/profilesection/profilesection.component";
+import { ProfileClient } from "types/profile/profileclient.type";
+import { UserRole } from "types/userrole/userrole.type";
 
 type ProfilClientPageProps = {
   profile: ProfileClient;

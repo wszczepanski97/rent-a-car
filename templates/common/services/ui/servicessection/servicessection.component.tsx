@@ -1,6 +1,6 @@
 import { Service } from "pages/mechanic/dashboard";
-import { FC } from "react";
-import { ServicesCard } from "./templates";
+import type { FC } from "react";
+import ServicesCard from "templates/common/services/ui/servicessection/templates/servicescard/servicescard.component";
 
 export type ServicesSectionProps = {
   services?: Service[] | Service;

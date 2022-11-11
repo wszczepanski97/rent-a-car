@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import styles from "./profiledatacolumnbutton.module.scss";
 
 export enum ProfileDataColumnButtonType {

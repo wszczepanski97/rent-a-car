@@ -20,7 +20,7 @@ import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
-import { FullScreenContext } from "contexts/full-screen-context";
+import { FullScreenContext } from "contexts/full-screen.context";
 import { CalendarCoordinatorPageProps, Car } from "pages/coordinator/calendar";
 import { FC, memo, useCallback, useContext, useState } from "react";
 import { AddEvent, UslugaType } from "./add-event.component";

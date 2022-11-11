@@ -1,7 +1,7 @@
 import { dodatkoweopcje } from "@prisma/client";
+import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { UslugaType } from "templates/coordinator/calendar/ui/calendarsection/organisms/add-event.component";
-import { prisma } from "../../../../db";
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,11 +1,11 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { DashboardPageContext } from "templates/client/dashboard/contexts";
-import { Cars } from "templates/common/types";
-import { CarCard } from "ui";
+import { Car } from "types/car/car.type";
+import CarCard from "ui/molecules/carcard";
 import styles from "./dashboardcarousel.module.scss";
 
-function spliceIntoChunks(arr: Cars[], chunkSize: number) {
+function spliceIntoChunks(arr: Car[], chunkSize: number) {
   const res = [];
   while (arr.length > 0) {
     const chunk = arr.splice(0, chunkSize);

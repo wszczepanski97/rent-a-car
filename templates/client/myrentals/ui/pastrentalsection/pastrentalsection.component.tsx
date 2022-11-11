@@ -1,6 +1,6 @@
 import { PastRental } from "pages/client/myrentals";
-import { FC } from "react";
-import { PastRentalCard } from "./templates";
+import type { FC } from "react";
+import PastRentalCard from "templates/client/myrentals/ui/pastrentalsection/templates/pastrentalcard/pastrentalcard.component";
 
 export type PastRentalSectionProps = {
   rentals: PastRental[];

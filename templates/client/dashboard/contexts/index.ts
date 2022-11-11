@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { Cars } from "templates/common/types";
+import { Car } from "types/car/car.type";
 
-export const DashboardPageContext = createContext([] as Cars[]);
+export const DashboardPageContext = createContext([] as Car[]);

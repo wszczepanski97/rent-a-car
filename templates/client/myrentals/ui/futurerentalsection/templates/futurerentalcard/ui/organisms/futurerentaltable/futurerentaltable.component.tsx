@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FutureRental } from "pages/client/myrentals";
-import React, { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useGlobalFilter,
   Column,
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
 } from "react-table";
 import { FutureRentalSectionProps } from "templates/client/myrentals/ui/futurerentalsection/futurerentalsection.component";
-import { Photo } from "ui";
+import Photo from "ui/atoms/photo";
 import styles from "./futurerentaltable.module.scss";
 
 const FutureRentalTable: FC<FutureRentalSectionProps> = ({ rentals }) => {

@@ -28,7 +28,7 @@ export default NextAuth({
       id: "credentials",
       name: "credentials",
       type: "credentials",
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         try {
           const user = await prisma.uzytkownicy.findFirst({
             where: {
@@ -56,10 +56,11 @@ export default NextAuth({
             },
           });
           return (
-            user && {
+            user &&
+            ({
               id: user.IdUzytkownicy,
               role: user.role_uzytkownik[0].role.Nazwa,
-            }
+            } as User)
           );
         } catch (e: any) {
           const errorMessage = e.message;

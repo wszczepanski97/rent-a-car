@@ -9,9 +9,9 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { ServicesGrid } from "templates/common/services";
+import ServicesGrid from "templates/common/services/ui/servicesgrid/servicesgrid.component";
 import { NextPageWithLayout } from "types/next";
-import { Navbar } from "ui";
+import Navbar from "ui/organisms/navbar/navbar.component";
 import { prisma } from "../../../db";
 
 export type Service = {

@@ -1,0 +1,12 @@
+@import "mixins";
+
+.paychecksSection {
+  @include flexColumnDoubleCentered();
+  .paychecksCard {
+    @include flexColumnHorizontallyCentered;
+    background-color: var(--light-background-color);
+    border-radius: 10px;
+    gap: 20px;
+    padding-bottom: 23px;
+  }
+}

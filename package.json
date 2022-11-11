@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^13.0.3",
     "@prisma/client": "^3.11.1",
     "@syncfusion/ej2-calendars": "^20.1.56",
     "@syncfusion/ej2-react-base": "20.1.47",

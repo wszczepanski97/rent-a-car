@@ -5,7 +5,7 @@ import {
   ToolbarComponent,
 } from "@syncfusion/ej2-react-navigations";
 import { ScheduleComponent, View } from "@syncfusion/ej2-react-schedule";
-import { FC } from "react";
+import type { FC } from "react";
 
 const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
   const updateLiveTime = () => {

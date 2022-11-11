@@ -1,13 +1,11 @@
-import { FC } from "react";
+import type { FC } from "react";
 import {
   ProfileSectionMode,
   useProfileSectionContext,
 } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
-import {
-  BackToDashboardButton,
-  DeleteUserButton,
-  ProfilePhotoColumnPhoto,
-} from "./molecules";
+import BackToDashboardButton from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profilephotocolumn/molecules/backtodashboardbutton/backtodashboardbutton.component";
+import DeleteUserButton from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profilephotocolumn/molecules/deleteuserbutton/deleteuserbutton.component";
+import ProfilePhotoColumnPhoto from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profilephotocolumn/molecules/profilephotocolumnphoto/profilephotocolumnphoto.component";
 import styles from "./profilephotocolumn.module.scss";
 
 const ProfilePhotoColumn: FC = () => {

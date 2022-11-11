@@ -1,9 +1,9 @@
-import { FC } from "react";
+import type { FC } from "react";
+import ProfileSectionCard from "templates/common/profile/ui/profilesection/templates/profilesectioncard/profilesectioncard.component";
 import {
   ProfileSectionProvider,
   ProfileSectionProviderProps,
 } from "./profilesectionmode.context";
-import { ProfileSectionCard } from "./templates";
 
 const ProfileSection: FC<ProfileSectionProviderProps> = ({ profile }) => {
   return (

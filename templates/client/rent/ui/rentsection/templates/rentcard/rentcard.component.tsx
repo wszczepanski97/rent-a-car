@@ -1,10 +1,12 @@
+import { useSession } from "next-auth/react";
 import { FC, FormEventHandler, useState } from "react";
-import { Car } from "templates/client";
-import { CarCard, Card, CardType } from "ui";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Car } from "templates/client/car/types";
+import CarCard from "ui/molecules/carcard";
+import Card from "ui/molecules/card";
+import { CardType } from "ui/molecules/card/cardtype.enum";
 import styles from "./rentcard.module.scss";
-import { useSession } from "next-auth/react";
 
 type RentCardProps = {
   car: Car;

@@ -4,9 +4,8 @@ import {
   ProfileSectionMode,
   useProfileSectionContext,
 } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
-import { UserRole } from "ui";
+import { UserRole } from "types/userrole/userrole.type";
 import styles from "./profiledatacolumncontainer.module.scss";
-
 type SubmitFormType = {
   Imie: { value: string };
   Nazwisko: { value: string };

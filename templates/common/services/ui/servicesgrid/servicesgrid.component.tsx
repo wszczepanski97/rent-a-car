@@ -1,8 +1,8 @@
-import { FullScreenContext } from "contexts/full-screen-context";
+import { FullScreenContext } from "contexts/full-screen.context";
 import { ServicesContext } from "pages/mechanic/dashboard";
 import { FC, useContext } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import { PaychecksSection } from "templates/common/paychecks";
+import PaychecksSection from "templates/common/paychecks/paycheckssection/paychecksection.component";
 import "../../../../../node_modules/react-grid-layout/css/styles.css";
 import "../../../../../node_modules/react-resizable/css/styles.css";
 import ServicesSection from "../servicessection/servicessection.component";

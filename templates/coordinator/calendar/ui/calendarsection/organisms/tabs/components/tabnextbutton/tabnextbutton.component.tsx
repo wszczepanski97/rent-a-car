@@ -1,3 +1,6 @@
+import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { TabComponent } from "@syncfusion/ej2-react-navigations";
+import classnames from "classnames";
 import React, {
   Dispatch,
   FC,
@@ -6,11 +9,8 @@ import React, {
   useCallback,
   useContext,
 } from "react";
-import styles from "../styles.module.scss";
-import classnames from "classnames";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { AddEventContext } from "../../contexts/addevent.context";
-import { TabComponent } from "@syncfusion/ej2-react-navigations";
+import styles from "../styles.module.scss";
 
 const cx = classnames.bind(styles);
 

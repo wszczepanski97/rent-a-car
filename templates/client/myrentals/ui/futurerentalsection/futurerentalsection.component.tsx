@@ -1,6 +1,6 @@
 import { FutureRental } from "pages/client/myrentals";
-import { FC } from "react";
-import { FutureRentalCard } from "./templates";
+import type { FC } from "react";
+import FutureRentalCard from "templates/client/myrentals/ui/futurerentalsection/templates/futurerentalcard/futurerentalcard.component";
 
 export type FutureRentalSectionProps = {
   rentals: FutureRental[];

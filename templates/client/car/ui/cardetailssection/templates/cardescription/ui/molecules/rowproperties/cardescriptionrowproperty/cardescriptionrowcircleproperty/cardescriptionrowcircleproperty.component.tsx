@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { CarDescriptionRowPropertyType } from "../cardescriptionrowproperty.component";
 import styles from "./cardescriptionrowcircleproperty.module.scss";
 

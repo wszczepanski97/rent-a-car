@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Photo } from "ui";
+import type { FC } from "react";
+import Photo from "ui/atoms/photo";
 import styles from "./profilephotocolumnphoto.module.scss";
 
 const ProfilePhotoColumnPhoto: FC = () => (

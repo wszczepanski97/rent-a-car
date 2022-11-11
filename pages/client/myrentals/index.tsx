@@ -1,9 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import {
-  FutureRentalSection,
-  PastRentalSection,
-} from "templates/client/myrentals";
+import FutureRentalSection from "templates/client/myrentals/ui/futurerentalsection/futurerentalsection.component";
+import PastRentalSection from "templates/client/myrentals/ui/pastrentalsection/pastrentalsection.component";
 import { prisma } from "../../../db";
 
 const MyRentalsPage: NextPage<MyRentalsPageProps> = ({

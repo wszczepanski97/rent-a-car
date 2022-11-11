@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { Service } from "pages/mechanic/dashboard";
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useGlobalFilter,
   Column,
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
 } from "react-table";
 import { ServicesSectionProps } from "templates/common/services/ui/servicessection/servicessection.component";
-import { Photo } from "ui";
+import Photo from "ui/atoms/photo";
 import styles from "./servicestable.module.scss";
 
 type ServicesTableProps = Pick<

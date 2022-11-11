@@ -1,5 +1,5 @@
 import "next-auth";
-import { UserRole } from "../ui";
+import { UserRole } from "types/userrole/userrole.type";
 declare module "next-auth" {
   interface User {
     id: number;

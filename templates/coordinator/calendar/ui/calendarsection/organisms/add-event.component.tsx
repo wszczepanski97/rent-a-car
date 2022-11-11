@@ -1,27 +1,67 @@
-import * as React from "react";
+import type { SelectEventArgs } from "@syncfusion/ej2-react-navigations";
 import {
-  SelectEventArgs,
   TabComponent,
-  TabItemsDirective,
   TabItemDirective,
+  TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
-import { CalendarCoordinatorPageProps } from "pages/coordinator/calendar";
+import dynamic from "next/dynamic";
+import type { CalendarCoordinatorPageProps } from "pages/coordinator/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
-import {
-  AdditionalRentOptionsTab,
-  CarTab,
-  ClientTab,
-  DescriptionTab,
-  EmployeeAssigneeTab,
-  RepairTypeTab,
-  ServiceTypeTab,
-  SummaryTab,
-  TimeRangeTab,
-  TimeRangeWashingTab,
-  WashingTypeTab,
-} from "./tabs/tabcomponents";
-import EmployeeRentTab from "./tabs/tabcomponents/employeerenttab/employeerenttab.component";
+
+const AdditionalRentOptionsTab = dynamic(
+  () =>
+    import(
+      "./tabs/tabcomponents/additionalrentoptionstab/additionalrentoptionstab.component"
+    )
+);
+const CarTab = dynamic(
+  () => import("./tabs/tabcomponents/cartab/cartab.component")
+);
+const ClientTab = dynamic(
+  () => import("./tabs/tabcomponents/clienttab/clienttab.component")
+);
+const DescriptionTab = dynamic(
+  () => import("./tabs/tabcomponents/descriptiontab/descriptiontab.component")
+);
+
+const EmployeeAssigneeTab = dynamic(
+  () =>
+    import(
+      "./tabs/tabcomponents/employeeassigneetab/employeeassigneetab.component"
+    )
+);
+
+const EmployeeRentTab = dynamic(
+  () => import("./tabs/tabcomponents/employeerenttab/employeerenttab.component")
+);
+
+const RepairTypeTab = dynamic(
+  () => import("./tabs/tabcomponents/repairtypetab/repairtypetab.component")
+);
+
+const ServiceTypeTab = dynamic(
+  () => import("./tabs/tabcomponents/servicetypetab/servicetypetab.component")
+);
+
+const SummaryTab = dynamic(
+  () => import("./tabs/tabcomponents/summarytab/summarytab.component")
+);
+
+const TimeRangeTab = dynamic(
+  () => import("./tabs/tabcomponents/timerangetab/timerangetab.component")
+);
+
+const TimeRangeWashingTab = dynamic(
+  () =>
+    import(
+      "./tabs/tabcomponents/timerangewashingtab/timerangewashingtab.component"
+    )
+);
+
+const WashingTypeTab = dynamic(
+  () => import("./tabs/tabcomponents/washingtypetab/washingtypetab.component")
+);
 
 export enum UslugaType {
   WYPOŻYCZENIE = "Wypożyczenie",

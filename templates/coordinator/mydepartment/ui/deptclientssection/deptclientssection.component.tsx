@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { DeptClientsSectionTable } from "./organisms";
+import type { FC } from "react";
+import DeptClientsSectionTable from "templates/coordinator/mydepartment/ui/deptclientssection/organisms/deptclientssectiontable/deptclientssectiontable.component";
+import Article from "ui/molecules/article";
 import styles from "./deptclientssection.module.scss";
-import { Article } from "ui";
 
 const DeptClientsSection: FC = () => (
   <section

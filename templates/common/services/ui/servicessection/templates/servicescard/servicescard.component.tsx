@@ -1,10 +1,11 @@
 import { Service } from "pages/mechanic/dashboard";
-import { FC } from "react";
-import { Card, CardType } from "ui";
+import type { FC } from "react";
+import { ServicesCardTitle } from "templates/common/services/ui/servicessection/templates/servicescard/ui/atoms";
+import ServicesTable from "templates/common/services/ui/servicessection/templates/servicescard/ui/organisms/servicestable/servicestable.component";
+import Card from "ui/molecules/card";
+import { CardType } from "ui/molecules/card/cardtype.enum";
 import { ServicesSectionProps } from "../../servicessection.component";
 import styles from "./servicescard.module.scss";
-import { ServicesCardTitle } from "./ui";
-import { ServicesTable } from "./ui/organisms";
 import CurrentService from "./ui/organisms/currentservice/currentservice.component";
 import NoServicesPanel from "./ui/organisms/servicestable/noservicestable.component";
 

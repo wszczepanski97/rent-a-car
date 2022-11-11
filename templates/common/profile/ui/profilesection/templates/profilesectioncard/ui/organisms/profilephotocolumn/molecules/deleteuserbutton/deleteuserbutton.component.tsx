@@ -1,7 +1,7 @@
 import { signOut } from "next-auth/react";
-import { FC } from "react";
+import type { FC } from "react";
 import { useProfileSectionContext } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
-import { UserRole } from "ui";
+import { UserRole } from "types/userrole/userrole.type";
 import styles from "./deleteuserbutton.module.scss";
 
 const DeleteUserButton: FC = () => {

@@ -1,8 +1,8 @@
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-import React, { FC } from "react";
-import styles from "../calendar.module.scss";
-import classnames from "classnames";
 import { ScheduleComponent } from "@syncfusion/ej2-react-schedule";
+import classnames from "classnames";
+import type { FC } from "react";
+import styles from "../calendar.module.scss";
 
 const cx = classnames.bind(styles);
 

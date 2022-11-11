@@ -1,10 +1,11 @@
-import { FC } from "react";
-import { CarProps } from "templates/client";
-import { Card, CardType } from "ui";
-import { CarDescription } from "..";
-import { CarCarousel } from "../../organisms";
+import type { FC } from "react";
+import type { CarProps } from "templates/client/car/types/index";
+import Card from "ui/molecules/card";
+import { CardType } from "ui/molecules/card/cardtype.enum";
+import CarCarousel from "../../organisms/carcarousel/carcarousel.component";
+import CarDescription from "../cardescription/cardescription.component";
 import styles from "./carcard.module.scss";
-import { CarCardTitle } from "./ui";
+import CarCardTitle from "./ui/atoms/carcardtitle/carcardtitle.component";
 
 const CarCard: FC<CarProps> = ({ car }) => (
   <Card type={CardType.CUSTOM} className={styles.carCard}>

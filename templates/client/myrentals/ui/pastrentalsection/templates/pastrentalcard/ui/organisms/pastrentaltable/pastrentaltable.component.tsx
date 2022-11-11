@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { PastRental } from "pages/client/myrentals";
-import React, { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import {
-  useTable,
-  useSortBy,
-  usePagination,
-  useGlobalFilter,
   Column,
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
 } from "react-table";
 import { PastRentalSectionProps } from "templates/client/myrentals/ui/pastrentalsection/pastrentalsection.component";
-import { Photo } from "ui";
+import Photo from "ui/atoms/photo";
 import styles from "./pastrentaltable.module.scss";
 
 const PastRentalTable: FC<PastRentalSectionProps> = ({ rentals }) => {

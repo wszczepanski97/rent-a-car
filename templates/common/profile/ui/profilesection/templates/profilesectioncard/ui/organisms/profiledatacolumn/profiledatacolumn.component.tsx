@@ -1,21 +1,20 @@
-import { FC } from "react";
+import type { FC } from "react";
 import {
   ProfileSectionMode,
   useProfileSectionContext,
 } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
-import { UserRole } from "ui";
-import {
-  ProfileDataColumnButton,
+import ProfileDataColumnButton, {
   ProfileDataColumnButtonType,
-  ProfileDataColumnContainer,
-  ProfileDataColumnProperty,
-} from "./ui";
+} from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profiledatacolumn/ui/profiledatacolumnbutton/profiledatacolumnbutton.component";
+import ProfileDataColumnContainer from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profiledatacolumn/ui/profiledatacolumncontainer/profiledatacolumncontainer.component";
+import ProfileDataColumnProperty from "templates/common/profile/ui/profilesection/templates/profilesectioncard/ui/organisms/profiledatacolumn/ui/profiledatacolumnproperty/profiledatacolumnproperty.component";
+import { ProfileClient } from "types/profile/profileclient.type";
+import { UserRole } from "types/userrole/userrole.type";
 
 const ProfileDataColumn: FC = () => {
   const { mode, toggleMode, profile } = useProfileSectionContext();
-  console.log(profile.type);
   if (profile.type === UserRole.CLIENT) {
-    const { user } = profile;
+    const { user } = profile as ProfileClient;
     return user ? (
       <ProfileDataColumnContainer>
         <ProfileDataColumnProperty label="Imię" name="Imie" prop={user.Imie} />
