@@ -6,9 +6,9 @@ import {
   ServicesSection,
   SolutionsSection,
   StatsSection,
-  UserRole,
 } from "templates/common";
 import { NextPageWithLayout } from "types/next";
+import { UserRole } from "ui";
 
 const HomePage: NextPageWithLayout<{}> = () => {
   const router = useRouter();

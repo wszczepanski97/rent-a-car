@@ -1,0 +1,6 @@
+@import "mixins";
+
+.userForm {
+  @include flexColumn;
+  height: 70vh;
+}

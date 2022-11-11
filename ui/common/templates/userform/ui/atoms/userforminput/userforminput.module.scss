@@ -1,0 +1,22 @@
+.userFormInput {
+  .userFormInputName {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+    &:focus,
+    &:valid {
+      border-color: #9b59b6;
+    }
+  }
+}

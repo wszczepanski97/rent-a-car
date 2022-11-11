@@ -1,5 +1,5 @@
 import { klienci, pracownicy, uzytkownicy } from "@prisma/client";
-import { UserRole } from "templates";
+import { UserRole } from "ui";
 
 // CARS
 export type Cars = {

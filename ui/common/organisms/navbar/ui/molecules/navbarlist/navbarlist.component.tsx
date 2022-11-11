@@ -1,7 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
-import { UserRole } from "templates";
+import { UserRole } from "ui";
 import LogoutButton from "ui/common/atoms/logoutbutton/logoutbutton.component";
 import { NavbarListItem } from "./atoms";
 import styles from "./navbarlist.module.scss";

@@ -1,0 +1,11 @@
+.userFormMenuBorder {
+  left: 0;
+  bottom: 99%;
+  width: 10.9em;
+  height: 2.4em;
+  position: absolute;
+  clip-path: url(#menu);
+  will-change: transform;
+  background-color: #1d1d27;
+  transition: transform var(--timeOut, var(--duration));
+}

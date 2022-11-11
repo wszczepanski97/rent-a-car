@@ -16,11 +16,12 @@ import {
   uzytkownicy,
   wypozyczenia,
 } from "@prisma/client";
+import { SidebarContextProvider } from "contexts/sidebar-context";
 import type { GetServerSideProps } from "next";
 import { ReactElement } from "react";
 import { CalendarSection } from "templates/coordinator/calendar/ui";
 import { NextPageWithLayout } from "types/next";
-import { Navbar } from "ui";
+import { Layout, Main, Navbar, Sidebar } from "ui";
 import { prisma } from "../../../db";
 
 export type CalendarCoordinatorPageProps = {
@@ -78,18 +79,23 @@ const CalendarCoordinatorPage: NextPageWithLayout<
 > = (props) => <CalendarSection {...props} />;
 
 CalendarCoordinatorPage.getLayout = (page: ReactElement) => (
-  <>
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        margin: "0 auto",
-      }}
-    >
-      <Navbar />
-      {page}
-    </div>
-  </>
+  <SidebarContextProvider>
+    <Main>
+      <Sidebar />
+      <Layout>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            margin: "0 auto",
+          }}
+        >
+          <Navbar />
+          {page}
+        </div>
+      </Layout>
+    </Main>
+  </SidebarContextProvider>
 );
 
 const getServices: GetServerSideProps<

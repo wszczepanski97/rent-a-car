@@ -1,7 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
-import { ProfileSection, UserRole } from "templates";
+import { ProfileSection } from "templates";
 import { ProfileEmployee } from "templates/common/types";
+import { UserRole } from "ui";
 import { prisma } from "../../../db";
 
 type ProfileMechanicPageProps = {

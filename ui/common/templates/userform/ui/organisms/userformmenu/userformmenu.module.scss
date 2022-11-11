@@ -1,0 +1,22 @@
+.userFormMenu {
+  --duration: 0.7s;
+  margin: 0;
+  display: flex;
+  width: 32.05em;
+  font-size: 1.5em;
+  padding: 0 2.85em;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background-color: #1d1d27;
+
+  i {
+    color: #cccccc;
+    height: 60px;
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+    transition: transform var(--timeOut, var(--duration));
+  }
+}

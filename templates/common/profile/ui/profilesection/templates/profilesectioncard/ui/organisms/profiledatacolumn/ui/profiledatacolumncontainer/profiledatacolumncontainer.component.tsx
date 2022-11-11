@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { FC, FormEventHandler } from "react";
-import { UserRole } from "templates";
 import {
   ProfileSectionMode,
   useProfileSectionContext,
 } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
+import { UserRole } from "ui";
 import styles from "./profiledatacolumncontainer.module.scss";
 
 type SubmitFormType = {

@@ -1,11 +1,22 @@
-import * as React from "react";
 import {
-  GridComponent,
-  ColumnsDirective,
   ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
   Inject,
 } from "@syncfusion/ej2-react-grids";
+import { ClientsContext } from "pages/coordinator/dashboard";
 import { useContext } from "react";
+import {
+  drivingLicenseNumberValidationRule,
+  emailValidationRule,
+  IDNumberValidationRule,
+  peselNumberValidationRule,
+  phoneNumberValidationRule,
+} from "templates/coordinator/mydepartment/ui/deptempssection/organisms/deptempssectiontable/validations";
+import {
+  nameValidationRule,
+  requiredFieldRule,
+} from "../../../deptcarsssection/organisms/deptcarssectiontable/validations";
 import {
   actionBegin,
   commands,
@@ -14,16 +25,6 @@ import {
   editparams,
   toolbarClick,
 } from "../../../gridutils";
-import { ClientsContext } from "pages/coordinator/dashboard";
-import {
-  drivingLicenseNumberValidationRule,
-  emailValidationRule,
-  IDNumberValidationRule,
-  nameValidationRule,
-  peselNumberValidationRule,
-  phoneNumberValidationRule,
-} from "../../../deptempssection/organisms/deptempssectiontable/validations";
-import { requiredFieldRule } from "../../../deptcarsssection/organisms/deptcarssectiontable/validations";
 
 const DeptClientsSectionTable = () => {
   let gridInstance: GridComponent;

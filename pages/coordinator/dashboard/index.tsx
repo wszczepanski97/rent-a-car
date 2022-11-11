@@ -5,6 +5,7 @@ import {
   pracownicy,
   stanowiska,
 } from "@prisma/client";
+import { SidebarContextProvider } from "contexts/sidebar-context";
 import type { GetServerSideProps } from "next";
 import { createContext, ReactElement } from "react";
 import {
@@ -14,7 +15,7 @@ import {
 import DeptCarsSection from "templates/coordinator/mydepartment/ui/deptcarsssection/deptcarssection.component";
 import DeptClientsSection from "templates/coordinator/mydepartment/ui/deptclientssection/deptclientssection.component";
 import { NextPageWithLayout } from "types/next";
-import { Navbar } from "ui";
+import { Layout, Main, Navbar, Sidebar } from "ui";
 import { prisma } from "../../../db";
 import styles from "../../../templates/coordinator/mydepartment/ui/mydepartment.module.scss";
 
@@ -94,10 +95,16 @@ const MyDepartmentCoordinatorPage: NextPageWithLayout<
 );
 
 MyDepartmentCoordinatorPage.getLayout = (page: ReactElement) => (
-  <>
-    <Navbar />
-    <div className={styles.myDepartmentLayout}>{page}</div>
-  </>
+  <SidebarContextProvider>
+    <Main>
+      <Sidebar />
+      <Layout>
+        <Navbar />
+        <div className={styles.myDepartmentLayout}>{page}</div>
+        {page}
+      </Layout>
+    </Main>
+  </SidebarContextProvider>
 );
 
 const getDeptEmps: GetServerSideProps<MyDepartmentPageProps> = async () => {

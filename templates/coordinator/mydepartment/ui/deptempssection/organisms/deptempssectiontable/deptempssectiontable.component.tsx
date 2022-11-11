@@ -1,19 +1,9 @@
-import * as React from "react";
 import {
-  GridComponent,
-  ColumnsDirective,
   ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
   Inject,
 } from "@syncfusion/ej2-react-grids";
-import {
-  nameValidationRule,
-  emailValidationRule,
-  IDNumberValidationRule,
-  drivingLicenseNumberValidationRule,
-  phoneNumberValidationRule,
-  peselNumberValidationRule,
-  endOfContractValidationRule,
-} from "./validations";
 import { EmployeesContext } from "pages/coordinator/dashboard";
 import { useContext } from "react";
 import {
@@ -24,6 +14,15 @@ import {
   editparams,
   toolbarClick,
 } from "../../../gridutils";
+import {
+  drivingLicenseNumberValidationRule,
+  emailValidationRule,
+  endOfContractValidationRule,
+  IDNumberValidationRule,
+  nameValidationRule,
+  peselNumberValidationRule,
+  phoneNumberValidationRule,
+} from "./validations";
 
 const DeptEmpsSectionTable = () => {
   let gridInstance: GridComponent;

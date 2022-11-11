@@ -16,27 +16,22 @@ const HeaderSection: FC = () => {
     >
       <UserActionArticle />
       <div className={styles["right-sec"]}>
-        <div className={styles["my-car"]}>
-          <Carousel
-            autoPlay
-            showThumbs={false}
-            showArrows={false}
-            showStatus={false}
-            showIndicators={false}
-            infiniteLoop
-            interval={5000}
-          >
-            {[
-              "/images/Car-1.webp",
-              "/images/Car-3.webp",
-              "/images/Car-4.png",
-            ].map((photo, index) => (
-              <div key={`photo-${index}`}>
-                <img alt="" src={photo} />
-              </div>
-            ))}
-          </Carousel>
-        </div>
+        <Carousel
+          autoPlay
+          dynamicHeight
+          infiniteLoop
+          interval={500}
+          showThumbs={false}
+          showArrows={false}
+          showStatus={false}
+          showIndicators={false}
+          swipeable
+          width="60%"
+        >
+          <img alt="" src="/images/Car-1.webp" className={styles.carPhoto} />
+          <img alt="" src="/images/Car-3.webp" className={styles.carPhoto} />
+          <img alt="" src="/images/Car-4.png" className={styles.carPhoto} />
+        </Carousel>
       </div>
     </section>
   );

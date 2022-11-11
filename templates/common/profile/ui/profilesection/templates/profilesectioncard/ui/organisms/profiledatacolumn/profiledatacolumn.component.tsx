@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { UserRole } from "templates/common/login";
 import {
   ProfileSectionMode,
   useProfileSectionContext,
 } from "templates/common/profile/ui/profilesection/profilesectionmode.context";
+import { UserRole } from "ui";
 import {
   ProfileDataColumnButton,
   ProfileDataColumnButtonType,

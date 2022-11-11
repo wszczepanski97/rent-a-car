@@ -1,11 +1,10 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useSession } from "next-auth/react";
-import { CarProps, Params } from "templates/client";
-import { UserRole } from "templates/common";
-import { RentSection } from "templates/client";
-import { prisma } from "../../../db";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { CarProps, Params, RentSection } from "templates/client";
+import { UserRole } from "ui";
+import { prisma } from "../../../db";
 
 const RentPage: NextPage<CarProps> = ({ car }) => {
   const { data: session } = useSession();
