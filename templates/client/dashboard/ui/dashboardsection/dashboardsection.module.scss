@@ -1,8 +1,0 @@
-@import "mixins";
-
-.carsCardSection {
-  @include flexColumnDoubleCentered();
-  height: calc(100vh - var(--navbar-height));
-  gap: 20px;
-  width: 100%;
-}

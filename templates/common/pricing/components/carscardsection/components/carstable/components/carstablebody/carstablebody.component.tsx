@@ -38,7 +38,7 @@ const CarsTableBody: FC<CarsTableBodyProps> = ({ page, prepareRow }) => {
                   }}
                 >
                   {isPhotoCell ? (
-                    <Link href={`/cars/${row.values.IdSamochody}`}>
+                    <Link href={`/car/${row.values.IdSamochody}`}>
                       <Photo
                         src={cell.value}
                         alt="Photo"
@@ -46,7 +46,7 @@ const CarsTableBody: FC<CarsTableBodyProps> = ({ page, prepareRow }) => {
                       />
                     </Link>
                   ) : isSamochodCell ? (
-                    <Link href={`/cars/${row.values.IdSamochody}`}>
+                    <Link href={`/car/${row.values.IdSamochody}`}>
                       {cell.row.values.Samochod}
                     </Link>
                   ) : (

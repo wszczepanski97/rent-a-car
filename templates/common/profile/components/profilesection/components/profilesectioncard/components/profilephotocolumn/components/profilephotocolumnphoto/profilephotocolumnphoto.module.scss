@@ -1,0 +1,6 @@
+@import "_mixins";
+
+.profilePhotoColumnPhoto {
+  @include flexColumnHorizontallyCentered;
+  gap: 20px;
+}

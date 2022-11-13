@@ -1,0 +1,8 @@
+@import "mixins";
+
+.dashboardSection {
+  @include flexColumnDoubleCentered();
+  height: calc(100vh - var(--navbar-height));
+  gap: 20px;
+  width: 100%;
+}

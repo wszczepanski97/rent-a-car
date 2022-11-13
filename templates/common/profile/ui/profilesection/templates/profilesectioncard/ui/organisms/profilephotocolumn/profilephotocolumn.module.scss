@@ -1,6 +1,0 @@
-@import "_mixins";
-
-.ProfilePhotoColumnContainer {
-  @include flexColumnVerticallySpaceBetween;
-  width: 250px;
-}

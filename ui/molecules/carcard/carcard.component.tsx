@@ -49,7 +49,7 @@ const CarCard: FC<CarCardProps> = ({
             type: CardButtonType.CardButtonWithoutBG,
             buttonText: "Szczegóły",
             color: "var(--primary-color)",
-            href: `/cars/${carId}`,
+            href: `/car/${carId}`,
           }
         : undefined
     }

@@ -123,7 +123,7 @@ const ServicesTable: FC<ServicesTableProps> = ({
                       {...cell.getCellProps()}
                     >
                       {isSamochodCell ? (
-                        <Link href={`/cars/${row.values.IdSamochod}`}>
+                        <Link href={`/car/${row.values.IdSamochod}`}>
                           {cell.row.values.Samochod}
                         </Link>
                       ) : (

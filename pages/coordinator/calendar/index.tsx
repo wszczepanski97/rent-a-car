@@ -17,6 +17,7 @@ import {
   wypozyczenia,
 } from "@prisma/client";
 import { SidebarContextProvider } from "contexts/sidebar.context";
+import { prisma } from "db";
 import type { GetServerSideProps } from "next";
 import { ReactElement } from "react";
 import CalendarSection from "templates/coordinator/calendar/ui/calendarsection/calendarsection.component";
@@ -25,7 +26,6 @@ import Navbar from "ui/organisms/navbar/navbar.component";
 import Sidebar from "ui/organisms/sidebar/sidebar.component";
 import Layout from "ui/templates/layout";
 import Main from "ui/templates/main";
-import { prisma } from "../../../db";
 
 export type CalendarCoordinatorPageProps = {
   services: Service[];

@@ -1,0 +1,6 @@
+@import "_mixins";
+
+.profileSectionCardContainer {
+  @include flexRowVerticallySpaceAround;
+  width: 100%;
+}

@@ -6,6 +6,7 @@ import {
   stanowiska,
 } from "@prisma/client";
 import { SidebarContextProvider } from "contexts/sidebar.context";
+import { prisma } from "db";
 import type { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -16,7 +17,6 @@ import Navbar from "ui/organisms/navbar/navbar.component";
 import Sidebar from "ui/organisms/sidebar/sidebar.component";
 import Layout from "ui/templates/layout";
 import Main from "ui/templates/main";
-import { prisma } from "../../../db";
 import styles from "../../../templates/coordinator/mydepartment/ui/mydepartment.module.scss";
 
 const MyDepartmentCarousel = dynamic(
