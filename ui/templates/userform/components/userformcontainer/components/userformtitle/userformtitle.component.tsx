@@ -4,10 +4,10 @@ import { UserFormContext } from "../../../../contexts/userform.context";
 import styles from "./userformtitle.module.scss";
 
 const UserFormTitle = () => {
-  const { activeDataItem } = useContext(UserFormContext);
+  const { activeDataItem, userFormActionText } = useContext(UserFormContext);
   return (
     <div className={styles.userFormTitle}>
-      Zaloguj się jako {UserRole[activeDataItem].toLowerCase()}
+      {userFormActionText} jako {UserRole[activeDataItem].toLowerCase()}
     </div>
   );
 };

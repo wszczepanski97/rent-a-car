@@ -1,9 +1,9 @@
 import { SidebarContext } from "contexts/sidebar.context";
 import { useContext } from "react";
+import ClientRegistrationForm from "templates/common/register/components/registersection/components/clientregistrationform/clientregistrationform.component";
 import UserForm from "ui/templates/userform";
-import UserFormInput from "ui/templates/userform/components/userformcontainer/components/userforminput";
-import UserFormInputGroup from "ui/templates/userform/components/userformcontainer/components/userforminputgroup";
 import { UserFormContextProvider } from "ui/templates/userform/contexts/userform.context";
+import { UserFormContextEnum } from "ui/templates/userform/contexts/userform.enum";
 import styles from "./registersection.module.scss";
 
 const RegisterSection = () => {
@@ -11,24 +11,13 @@ const RegisterSection = () => {
   return (
     <section
       className={styles.registerSection}
-      style={{ height: open ? "100vh" : "calc(100vh - var(--navbar-height))" }}
+      style={{
+        height: open ? "100vh" : "calc(100vh - var(--navbar-height))",
+      }}
     >
-      <UserFormContextProvider>
+      <UserFormContextProvider type={UserFormContextEnum.REGISTER}>
         <UserForm>
-          <UserFormInputGroup>
-            <UserFormInput
-              required
-              placeholder="Wprowadź login"
-              type="text"
-              name="Login"
-            />
-            <UserFormInput
-              required
-              placeholder="Wprowadź hasło"
-              type="password"
-              name="Hasło"
-            />
-          </UserFormInputGroup>
+          <ClientRegistrationForm />
         </UserForm>
       </UserFormContextProvider>
     </section>

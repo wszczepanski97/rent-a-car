@@ -9,13 +9,13 @@ import Main from "ui/templates/main";
 export const WithoutFooterLayout = (page: ReactElement) => (
   <SidebarContextProvider>
     <Main>
-      <SlideAnimation>
-        <Sidebar />
-        <Layout>
+      <Sidebar />
+      <Layout>
+        <SlideAnimation>
           <Navbar />
           {page}
-        </Layout>
-      </SlideAnimation>
+        </SlideAnimation>
+      </Layout>
     </Main>
   </SidebarContextProvider>
 );

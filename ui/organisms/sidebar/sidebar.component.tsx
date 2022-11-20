@@ -11,7 +11,7 @@ import styles from "./sidebar.module.scss";
 const Sidebar = () => {
   const router = useRouter();
   const [pageLinks, setPageLinks] = useState<Element[]>();
-  let [hashLinks, setHashLinks] = useState<Element[]>();
+  const [hashLinks, setHashLinks] = useState<Element[]>();
   const itemVariants = {
     closed: {
       opacity: 0,
@@ -34,12 +34,12 @@ const Sidebar = () => {
     },
   };
 
+  const { open } = useContext(SidebarContext);
   useEffect(() => {
     setPageLinks(Array.from(document.querySelectorAll("nav li[id]")));
     setHashLinks(Array.from(document.querySelectorAll("section[id]")));
-  }, [router.pathname]);
+  }, [open, router.route]);
 
-  const { open } = useContext(SidebarContext);
   return (
     <AnimatePresence>
       {open ? (

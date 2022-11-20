@@ -4,6 +4,7 @@ import UserForm from "ui/templates/userform";
 import UserFormInput from "ui/templates/userform/components/userformcontainer/components/userforminput";
 import UserFormInputGroup from "ui/templates/userform/components/userformcontainer/components/userforminputgroup";
 import { UserFormContextProvider } from "ui/templates/userform/contexts/userform.context";
+import { UserFormContextEnum } from "ui/templates/userform/contexts/userform.enum";
 import LoginCarPhoto from "./components/logincarphoto";
 import styles from "./loginsection.module.scss";
 
@@ -15,7 +16,7 @@ const LoginSection = () => {
       style={{ height: open ? "100vh" : "calc(100vh - var(--navbar-height))" }}
     >
       <LoginCarPhoto />
-      <UserFormContextProvider>
+      <UserFormContextProvider type={UserFormContextEnum.LOGIN}>
         <UserForm>
           <UserFormInputGroup>
             <UserFormInput

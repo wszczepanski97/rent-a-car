@@ -11,14 +11,14 @@ import Main from "ui/templates/main";
 const DefaultLayout = (page: ReactElement) => (
   <SidebarContextProvider>
     <Main>
-      <SlideAnimation>
-        <Sidebar />
-        <Layout>
+      <Sidebar />
+      <Layout>
+        <SlideAnimation>
           <Navbar />
           {page}
-        </Layout>
-        <Footer />
-      </SlideAnimation>
+        </SlideAnimation>
+      </Layout>
+      <Footer />
     </Main>
   </SidebarContextProvider>
 );

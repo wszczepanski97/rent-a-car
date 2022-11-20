@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import type { FC, MouseEventHandler } from "react";
 import { useContext } from "react";
+import { UserRole } from "types/userrole/userrole.type";
 import { UserRoleKey } from "types/userrole/userrolekey.type";
 import { UserFormContext } from "ui/templates/userform/contexts/userform.context";
 import styles from "./userformmenubutton.module.scss";
@@ -11,8 +12,13 @@ const UserFormMenuButton: FC<UserFormMenuButtonProps> = ({
   dataItem,
   iconClass,
 }) => {
-  const { activeDataItem, setActiveDataItem, menuRef, menuBorderRef } =
-    useContext(UserFormContext);
+  const {
+    activeDataItem,
+    setActiveDataItem,
+    menuRef,
+    menuBorderRef,
+    setError,
+  } = useContext(UserFormContext);
 
   const clickItem: MouseEventHandler<HTMLButtonElement> = (e) => {
     menuRef.current?.style.removeProperty("--timeOut");
@@ -25,6 +31,7 @@ const UserFormMenuButton: FC<UserFormMenuButtonProps> = ({
     e.currentTarget.classList.add(styles.active);
     setActiveDataItem(e.currentTarget.getAttribute("data-item") as UserRoleKey);
     addOffsetMenuBorder(e.currentTarget);
+    setError("");
   };
 
   const addOffsetMenuBorder = (element: HTMLElement) => {
@@ -45,11 +52,22 @@ const UserFormMenuButton: FC<UserFormMenuButtonProps> = ({
       className={classNames(styles.userFormMenuButton, {
         [styles.active]: activeDataItem === dataItem,
       })}
-      style={{ "--bgColorItem": color } as React.CSSProperties}
+      style={
+        {
+          "--bgColorItem": color,
+          display: "flex",
+          flexDirection: "column",
+        } as React.CSSProperties
+      }
       data-item={dataItem}
       onClick={clickItem}
     >
       <i className={iconClass}></i>
+      {activeDataItem === dataItem && (
+        <h6 style={{ color: "#cccccc", fontSize: 9 }}>
+          {UserRole[activeDataItem]}
+        </h6>
+      )}
     </button>
   );
 };

@@ -21,8 +21,8 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       credentials: {
-        name: { type: "text" },
-        password: { type: "password" },
+        Login: { type: "text" },
+        Hasło: { type: "password" },
         role: { type: "hidden" },
       },
       id: "credentials",
@@ -32,8 +32,8 @@ export default NextAuth({
         try {
           const user = await prisma.uzytkownicy.findFirst({
             where: {
-              Login: credentials?.name,
-              Haslo: credentials?.password,
+              Login: credentials?.Login,
+              Haslo: credentials?.Hasło,
               role_uzytkownik: {
                 every: {
                   role: {

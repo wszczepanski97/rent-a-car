@@ -1,6 +1,8 @@
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import HeaderSection from "templates/common/home/components/headersection/headersection.component";
 import { NextPageWithLayout } from "types/next";
 import ServicesSection from "./components/servicessection";
@@ -19,6 +21,9 @@ const HomePage: NextPageWithLayout<{}> = () => {
 
   return (
     <>
+      <Head>
+        <title>Wypożyczalnia - Rent a car</title>
+      </Head>
       <HeaderSection />
       <ServicesSection />
       <StatsSection />
