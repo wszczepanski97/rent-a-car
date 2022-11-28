@@ -23,7 +23,7 @@ const SolutionsCard: FC<SolutionsCardProps> = ({
     )}
     photoProps={{
       ...photoProps,
-      size: { height: "159", width: "230" },
+      size: { height: "118", width: "180" },
     }}
     paragraphProps={{
       ...paragraphProps,

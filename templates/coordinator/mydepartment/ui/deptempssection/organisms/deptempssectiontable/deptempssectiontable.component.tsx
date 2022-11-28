@@ -15,13 +15,13 @@ import {
   toolbarClick,
 } from "../../../gridutils";
 import {
-  drivingLicenseNumberValidationRule,
-  emailValidationRule,
   endOfContractValidationRule,
-  IDNumberValidationRule,
-  nameValidationRule,
-  peselNumberValidationRule,
-  phoneNumberValidationRule,
+  syncfusionDrivingLicenseNumberValidationRule,
+  syncfusionEmailValidationRule,
+  syncfusionIDNumberValidationRule,
+  syncfusionNameValidationRule,
+  syncfusionPeselNumberValidationRule,
+  syncfusionPhoneNumberValidationRule,
 } from "./validations";
 
 const DeptEmpsSectionTable = () => {
@@ -49,42 +49,42 @@ const DeptEmpsSectionTable = () => {
             <ColumnDirective
               field="uzytkownicy.Imie"
               headerText="Imię"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Nazwisko"
               headerText="Nazwisko"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Email"
               headerText="Email"
-              validationRules={emailValidationRule}
+              validationRules={syncfusionEmailValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerDowodu"
               headerText="Numer Dowodu"
-              validationRules={IDNumberValidationRule}
+              validationRules={syncfusionIDNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerPrawaJazdy"
               headerText="Numer Prawa Jazdy"
-              validationRules={drivingLicenseNumberValidationRule}
+              validationRules={syncfusionDrivingLicenseNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerTelefonu"
               headerText="Numer Telefonu"
-              validationRules={phoneNumberValidationRule}
+              validationRules={syncfusionPhoneNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Pesel"
               headerText="Pesel"
-              validationRules={peselNumberValidationRule}
+              validationRules={syncfusionPeselNumberValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="lokalizacje.IdLokalizacje"

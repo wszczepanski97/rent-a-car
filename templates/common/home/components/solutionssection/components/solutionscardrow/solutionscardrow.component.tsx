@@ -26,7 +26,7 @@ const SolutionsCardRow: FC = () => (
       titleProps={{ title: `Najszybszy sposób na podjęcie działań` }}
     />
     <SolutionsCard
-      photoProps={{ src: "/images/Car-4.png", alt: "Car 4" }}
+      photoProps={{ src: "/images/Car-4.webp", alt: "Car 4" }}
       paragraphProps={{
         paragraphText: `W końcu uzyskali spójny opis zachowania poruszających się ciał we wszechświecie.`,
       }}

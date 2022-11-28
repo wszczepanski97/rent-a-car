@@ -12,7 +12,7 @@ export const RentPage: NextPage<CarPageProps> = ({ car }) => {
   const role: UserRole | undefined = session?.user.role;
   useEffect(() => {
     if (role !== "KLIENT") {
-      router.push("/login?role=client");
+      router.push("/login");
     }
   }, [role, router]);
   return <RentSection car={car} />;

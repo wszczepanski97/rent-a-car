@@ -19,7 +19,7 @@ const UserActionArticle: FC = () => {
             text: "Wypożycz teraz",
             active: true,
             onClick: () => {
-              router.push("/login?role=client");
+              router.push("/login");
             },
           },
           {

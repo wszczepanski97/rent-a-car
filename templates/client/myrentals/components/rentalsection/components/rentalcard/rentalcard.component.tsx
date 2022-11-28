@@ -1,7 +1,7 @@
 import type { FC } from "react";
+import { RentalSectionProps } from "templates/client/myrentals/components/rentalsection/rentalsection.props";
 import Card from "ui/molecules/card";
 import { CardType } from "ui/molecules/card/cardtype.enum";
-import { RentalSectionProps } from "../../rentalsection.props";
 import RentalCardTitle from "./components/rentalcardtitle";
 import RentalTable from "./components/rentaltable";
 import styles from "./rentalcard.module.scss";

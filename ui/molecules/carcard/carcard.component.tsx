@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { FC } from "react";
 import Card from "ui/molecules/card";
 import { CardType } from "ui/molecules/card/cardtype.enum";
 import { CardButtonType } from "ui/molecules/card/components/cardbutton/cardbuttontype.enum";

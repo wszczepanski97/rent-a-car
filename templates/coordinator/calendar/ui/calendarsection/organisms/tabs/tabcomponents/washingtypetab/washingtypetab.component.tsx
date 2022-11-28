@@ -1,16 +1,14 @@
-import { FC, useContext, useRef, useState } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { FC, useContext, useRef } from "react";
 import {
-  TabBackButton,
   TabButtonContainer,
   TabContainer,
   TabDropdown,
   TabError,
-  TabNextButton,
   TabTitle,
 } from "../../components";
-import { AddEventContext } from "../../contexts/addevent.context";
 import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 
 export enum WashingType {
   Bezdotykowa = "Myjnia bezdotykowa",

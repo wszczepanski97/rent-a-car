@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { Service, ServicesContext } from "pages/mechanic/dashboard";
-import React, { FC, useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import useSWR from "swr";
 
 const CurrentService: FC<{ service: Service }> = ({

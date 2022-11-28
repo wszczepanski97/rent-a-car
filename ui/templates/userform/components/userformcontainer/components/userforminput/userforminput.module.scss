@@ -8,17 +8,19 @@
     margin-bottom: 5px;
   }
   input {
-    height: 45px;
+    height: 35px;
     outline: none;
     font-size: 16px;
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #ccc;
     transition: all 0.3s ease;
-    width: 285px;
     &:focus,
     &:valid {
       border-color: #9b59b6;
+    }
+    &.error {
+      border-color: red;
     }
   }
 }

@@ -1,5 +1,6 @@
+import BoxiconSvgs from "boxiconsvgs";
 import { LinkProps } from "ui/atoms/link/link.props";
 
 export type NavbarListItemProps = LinkProps & {
-  dataIcon?: string;
+  dataIcon?: keyof typeof BoxiconSvgs;
 };

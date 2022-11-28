@@ -1,5 +1,6 @@
 import { SidebarContext } from "contexts/sidebar.context";
 import { useContext } from "react";
+import { inputRequiredFieldRule } from "templates/coordinator/mydepartment/ui/deptcarsssection/organisms/deptcarssectiontable/validations";
 import UserForm from "ui/templates/userform";
 import UserFormInput from "ui/templates/userform/components/userformcontainer/components/userforminput";
 import UserFormInputGroup from "ui/templates/userform/components/userformcontainer/components/userforminputgroup";
@@ -20,16 +21,16 @@ const LoginSection = () => {
         <UserForm>
           <UserFormInputGroup>
             <UserFormInput
-              required
               placeholder="Wprowadź login"
               type="text"
               name="Login"
+              validations={inputRequiredFieldRule}
             />
             <UserFormInput
-              required
               placeholder="Wprowadź hasło"
               type="password"
               name="Hasło"
+              validations={inputRequiredFieldRule}
             />
           </UserFormInputGroup>
         </UserForm>

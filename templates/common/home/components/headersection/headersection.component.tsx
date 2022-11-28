@@ -2,6 +2,7 @@ import classnames from "classnames";
 import { SidebarContext } from "contexts/sidebar.context";
 import { FC, useContext } from "react";
 import { Carousel } from "react-responsive-carousel";
+import Photo from "ui/atoms/photo";
 import UserActionArticle from "./components/useractionarticle/useractionarticle.component";
 import styles from "./headersection.module.scss";
 
@@ -29,10 +30,14 @@ const HeaderSection: FC = () => {
             {[
               "/images/Car-1.webp",
               "/images/Car-3.webp",
-              "/images/Car-4.png",
+              "/images/Car-4.webp",
             ].map((photo, index) => (
               <div key={`photo-${index}`}>
-                <img alt="" src={photo} />
+                <Photo
+                  alt=""
+                  src={photo}
+                  size={{ height: "470", width: "720" }}
+                />
               </div>
             ))}
           </Carousel>

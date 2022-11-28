@@ -10,7 +10,7 @@ import { UserFormMenuButtonProps } from "./userformmenubutton.props";
 const UserFormMenuButton: FC<UserFormMenuButtonProps> = ({
   color,
   dataItem,
-  iconClass,
+  Icon,
 }) => {
   const {
     activeDataItem,
@@ -61,8 +61,9 @@ const UserFormMenuButton: FC<UserFormMenuButtonProps> = ({
       }
       data-item={dataItem}
       onClick={clickItem}
+      aria-label={activeDataItem}
     >
-      <i className={iconClass}></i>
+      {Icon}
       {activeDataItem === dataItem && (
         <h6 style={{ color: "#cccccc", fontSize: 9 }}>
           {UserRole[activeDataItem]}

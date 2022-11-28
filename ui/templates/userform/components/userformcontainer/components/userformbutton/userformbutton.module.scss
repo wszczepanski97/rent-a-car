@@ -1,6 +1,6 @@
 .userFormButton {
   height: 45px;
-  margin: 35px 0;
+  margin: 30px 0;
   input {
     height: 100%;
     width: 100%;
@@ -15,6 +15,10 @@
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
     &:hover {
       background: linear-gradient(-135deg, #71b7e6, #9b59b6);
+    }
+    &:disabled {
+      background: grey;
+      cursor: default;
     }
   }
 }

@@ -1,6 +1,8 @@
+import BoxiconSvgs from "boxiconsvgs";
+import CPlusPlusSVG from "boxiconsvgs/CPlusPlusSVG.component";
+import HashSVG from "boxiconsvgs/HashSVG.component";
 import { SidebarContext } from "contexts/sidebar.context";
 import { AnimatePresence, m as motion } from "framer-motion";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import Link from "ui/atoms/link";
@@ -44,12 +46,6 @@ const Sidebar = () => {
     <AnimatePresence>
       {open ? (
         <>
-          <Head>
-            <link
-              href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
-              rel="stylesheet"
-            />
-          </Head>
           <motion.aside
             className={styles.sidebar}
             initial={{ width: 0 }}
@@ -63,7 +59,7 @@ const Sidebar = () => {
             }}
           >
             <div className={styles.pageTitleContainer}>
-              <i className="bx bxl-c-plus-plus icon"></i>
+              <CPlusPlusSVG />
               <PageTitle />
             </div>
             <motion.div initial="closed" animate="open" variants={sideVariants}>
@@ -80,23 +76,31 @@ const Sidebar = () => {
                       >
                         Akcje
                       </h4>
-                      {pageLinks.map((item) => (
-                        <li key={`sidebar-page-link-${item.id}`}>
-                          <motion.div
-                            variants={itemVariants}
-                            whileHover={{ scale: 1.1 }}
-                            style={{ display: "flex" }}
-                          >
-                            <i
-                              className={`bx ${item.getAttribute("data-icon")}`}
-                            ></i>
-                            <Link
-                              href={item.getAttribute("data-link") || ""}
-                              name={item.id}
-                            />
-                          </motion.div>
-                        </li>
-                      ))}
+                      {pageLinks.map((item) => {
+                        console.log(`${item.getAttribute("data-icon")}`);
+                        const Icon =
+                          BoxiconSvgs[
+                            `${item.getAttribute(
+                              "data-icon"
+                            )}` as keyof typeof BoxiconSvgs
+                          ];
+                        console.log(Icon);
+                        return (
+                          <li key={`sidebar-page-link-${item.id}`}>
+                            <motion.div
+                              variants={itemVariants}
+                              whileHover={{ scale: 1.1 }}
+                              style={{ display: "flex" }}
+                            >
+                              {Icon && <Icon />}
+                              <Link
+                                href={item.getAttribute("data-link") || ""}
+                                name={item.id}
+                              />
+                            </motion.div>
+                          </li>
+                        );
+                      })}
                     </div>
                   </>
                 ) : null}
@@ -118,7 +122,7 @@ const Sidebar = () => {
                           variants={itemVariants}
                           whileHover={{ scale: 1.1 }}
                         >
-                          <i className="bx bx-hash"></i>
+                          <HashSVG />
                           <span className="links_name">{item.id}</span>
                         </motion.a>
                       </li>

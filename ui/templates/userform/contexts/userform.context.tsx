@@ -12,6 +12,7 @@ export const UserFormContextProvider: FC<{
 }> = ({ children, type }) => {
   const [error, setError] = useState("");
   const [activeDataItem, setActiveDataItem] = useState<UserRoleKey>("CLIENT");
+  const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuBorderRef = useRef<HTMLDivElement>(null);
   console.log(type);
@@ -29,6 +30,8 @@ export const UserFormContextProvider: FC<{
           type === UserFormContextEnum.LOGIN
             ? "Zaloguj się"
             : "Zarejestruj się",
+        disabledSubmitButton,
+        setDisabledSubmitButton,
       }}
     >
       {children}

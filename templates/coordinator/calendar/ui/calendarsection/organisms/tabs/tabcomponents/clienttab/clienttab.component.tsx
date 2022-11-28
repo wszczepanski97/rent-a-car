@@ -1,18 +1,18 @@
-import { FC, useContext, useRef, useState } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { Client } from "pages/coordinator/calendar";
+import { FC, useContext, useRef, useState } from "react";
 import {
   TabContainer,
   TabDropdown,
   TabError,
   TabTitle,
 } from "../../components";
-import { AddEventContext } from "../../contexts/addevent.context";
 import TabButtonContainer from "../../components/tabbuttoncontainer/tabbuttoncontainer.component";
 import {
   removeItem,
   TabNextButtonType,
 } from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 
 type ClientTabProps = { clients: Client[] };
 

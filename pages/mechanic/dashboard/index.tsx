@@ -1,5 +1,6 @@
 import { wyplaty } from "@prisma/client";
-import type { GetServerSideProps } from "next";
+import { prisma } from "db";
+import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import {
   createContext,
@@ -12,7 +13,6 @@ import {
 import ServicesGrid from "templates/common/services/ui/servicesgrid/servicesgrid.component";
 import { NextPageWithLayout } from "types/next";
 import Navbar from "ui/organisms/navbar/navbar.component";
-import { prisma } from "../../../db";
 
 export type Service = {
   IdUszkodzenia: number;

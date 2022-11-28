@@ -8,6 +8,8 @@ export type UserFormContextValues = {
   setError: Dispatch<SetStateAction<string>>;
   activeDataItem: UserRoleKey;
   setActiveDataItem: Dispatch<SetStateAction<UserRoleKey>>;
+  disabledSubmitButton: boolean;
+  setDisabledSubmitButton: Dispatch<SetStateAction<boolean>>;
   menuRef: RefObject<HTMLDivElement>;
   menuBorderRef: RefObject<HTMLDivElement>;
   userFormActionText: "Zaloguj się" | "Zarejestruj się";

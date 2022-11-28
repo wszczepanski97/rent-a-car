@@ -8,9 +8,9 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
+import { RentalSectionProps } from "templates/client/myrentals/components/rentalsection/rentalsection.props";
 import { Rental } from "types/rental/rental.type";
 import Photo from "ui/atoms/photo";
-import { RentalSectionProps } from "../../../../rentalsection.props";
 import styles from "./rentaltable.module.scss";
 
 const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {

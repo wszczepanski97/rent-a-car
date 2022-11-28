@@ -1,18 +1,10 @@
-import * as React from "react";
 import {
-  GridComponent,
-  ColumnsDirective,
   ColumnDirective,
+  ColumnsDirective,
+  GridComponent,
   Inject,
 } from "@syncfusion/ej2-react-grids";
-import {
-  carMileageValidationRule,
-  nameValidationRule,
-  priceForDayValidationRule,
-  requiredFieldRule,
-  vehicleRegistrationNumberValidationRule,
-  VINNumberValidationRule,
-} from "./validations";
+import { CarsContext } from "pages/coordinator/dashboard";
 import { useContext } from "react";
 import {
   actionBegin,
@@ -22,7 +14,14 @@ import {
   editparams,
   toolbarClick,
 } from "../../../gridutils";
-import { CarsContext } from "pages/coordinator/dashboard";
+import {
+  carMileageValidationRule,
+  priceForDayValidationRule,
+  requiredFieldRule,
+  syncfusionNameValidationRule,
+  syncfusionRegistrationNumberValidationRule,
+  syncfusionVINNumberValidationRule,
+} from "./validations";
 
 const DeptCarsSectionTable = () => {
   let gridInstance: GridComponent;
@@ -72,25 +71,25 @@ const DeptCarsSectionTable = () => {
               field="Marka"
               headerText="Marka"
               defaultValue="fiat"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="Model"
               headerText="Model"
               defaultValue="punto"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="NumerRejestracyjny"
               headerText="Numer rejestracyjny"
               defaultValue="CA23232"
-              validationRules={vehicleRegistrationNumberValidationRule}
+              validationRules={syncfusionRegistrationNumberValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="NumerVIN"
               headerText="Numer VIN"
               defaultValue="fdfdfdfdfdfdfdfd7"
-              validationRules={VINNumberValidationRule}
+              validationRules={syncfusionVINNumberValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="CzyUmyty"

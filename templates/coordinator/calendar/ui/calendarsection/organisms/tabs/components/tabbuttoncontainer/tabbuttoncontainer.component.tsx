@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { TabBackButton, TabNextButton } from "..";
-import { TabNextButtonProps } from "../tabnextbutton/tabnextbutton.component";
 import styles from "../styles.module.scss";
+import { TabNextButtonProps } from "../tabnextbutton/tabnextbutton.component";
 
 type TabButtonContainerProps = TabNextButtonProps & {
   onBackClick: () => void | undefined;

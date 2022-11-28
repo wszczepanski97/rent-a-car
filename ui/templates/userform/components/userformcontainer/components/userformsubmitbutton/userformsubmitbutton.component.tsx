@@ -3,7 +3,8 @@ import UserFormButton from "ui/templates/userform/components/userformcontainer/c
 import { UserFormContext } from "ui/templates/userform/contexts/userform.context";
 
 const UserFormSubmitButton = () => {
-  const { userFormActionText } = useContext(UserFormContext);
+  const { userFormActionText, setDisabledSubmitButton } =
+    useContext(UserFormContext);
   return <UserFormButton text={userFormActionText} type="submit" />;
 };
 

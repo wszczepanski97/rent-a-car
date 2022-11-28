@@ -1,5 +1,6 @@
-import { FC, useContext, useRef, useState } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { FC, useContext, useRef } from "react";
+import { UslugaType } from "../../../add-event.component";
 import {
   TabContainer,
   TabDropdown,
@@ -7,9 +8,8 @@ import {
   TabNextButton,
   TabTitle,
 } from "../../components";
-import { AddEventContext } from "../../contexts/addevent.context";
-import { UslugaType } from "../../../add-event.component";
 import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 
 const ServiceTypeTab: FC = () => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);

@@ -1,12 +1,3 @@
-import { FC, memo, useCallback, useContext, useRef, useState } from "react";
-import { Car } from "pages/coordinator/calendar";
-import {
-  TabButtonContainer,
-  TabContainer,
-  TabError,
-  TabTitle,
-} from "../../components";
-import { AddEventContext } from "../../contexts/addevent.context";
 import {
   ColumnDirective,
   ColumnsDirective,
@@ -17,11 +8,20 @@ import {
   RowSelectEventArgs,
   Sort,
 } from "@syncfusion/ej2-react-grids";
+import { Car } from "pages/coordinator/calendar";
+import { FC, memo, useContext, useRef, useState } from "react";
+import { UslugaType } from "../../../add-event.component";
+import {
+  TabButtonContainer,
+  TabContainer,
+  TabError,
+  TabTitle,
+} from "../../components";
 import {
   removeItem,
   TabNextButtonType,
 } from "../../components/tabnextbutton/tabnextbutton.component";
-import { UslugaType } from "../../../add-event.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 
 type CarTabProps = { cars: Car[] };
 

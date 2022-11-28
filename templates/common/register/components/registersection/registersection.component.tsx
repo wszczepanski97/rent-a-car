@@ -1,12 +1,13 @@
 import { SidebarContext } from "contexts/sidebar.context";
-import { useContext } from "react";
-import ClientRegistrationForm from "templates/common/register/components/registersection/components/clientregistrationform/clientregistrationform.component";
+import { FC, useContext } from "react";
+import RegisterSectionForm from "templates/common/register/components/registersection/components/registersectionform/registersectionform.component";
+import { RegisterPageProps } from "templates/common/register/register.props";
 import UserForm from "ui/templates/userform";
 import { UserFormContextProvider } from "ui/templates/userform/contexts/userform.context";
 import { UserFormContextEnum } from "ui/templates/userform/contexts/userform.enum";
 import styles from "./registersection.module.scss";
 
-const RegisterSection = () => {
+const RegisterSection: FC<RegisterPageProps> = (props) => {
   const { open } = useContext(SidebarContext);
   return (
     <section
@@ -17,7 +18,7 @@ const RegisterSection = () => {
     >
       <UserFormContextProvider type={UserFormContextEnum.REGISTER}>
         <UserForm>
-          <ClientRegistrationForm />
+          <RegisterSectionForm {...props} />
         </UserForm>
       </UserFormContextProvider>
     </section>

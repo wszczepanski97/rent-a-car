@@ -1,15 +1,11 @@
-import { FC, useCallback, useContext, useMemo, useState } from "react";
 import {
   DatePickerComponent,
   ItemEventArgs,
   RenderDayCellEventArgs,
   TimePickerComponent,
 } from "@syncfusion/ej2-react-calendars";
-import {
-  removeItem,
-  TabNextButtonType,
-} from "../../components/tabnextbutton/tabnextbutton.component";
-import { AddEventContext } from "../../contexts/addevent.context";
+import { FC, useCallback, useContext, useMemo, useState } from "react";
+import { UslugaType } from "../../../add-event.component";
 import {
   TabButtonContainer,
   TabContainer,
@@ -17,13 +13,17 @@ import {
   TabTitle,
 } from "../../components";
 import {
+  removeItem,
+  TabNextButtonType,
+} from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
+import {
   getBlockedDates,
   getBlockedPeriods,
   getNextHalfHourDate,
   getNextHalfHourDateForToday,
   getPrevHalfHourDate,
 } from "../../helpers/date-helper";
-import { UslugaType } from "../../../add-event.component";
 export type DateRange = {
   startDateValue: Date;
   endDateValue: Date;

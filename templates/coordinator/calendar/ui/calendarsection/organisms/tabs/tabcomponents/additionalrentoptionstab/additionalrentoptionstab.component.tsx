@@ -1,6 +1,6 @@
 import { dodatkoweopcje, ubezpieczenia } from "@prisma/client";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { FC, useCallback, useContext, useRef, useState } from "react";
+import { FC, useCallback, useContext, useRef } from "react";
 import {
   TabButtonContainer,
   TabContainer,

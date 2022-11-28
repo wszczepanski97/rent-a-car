@@ -1,6 +1,6 @@
 import type { FC } from "react";
+import { RentalSectionProps } from "templates/client/myrentals/components/rentalsection/rentalsection.props";
 import RentalCard from "./components/rentalcard";
-import { RentalSectionProps } from "./rentalsection.props";
 
 const RentalSection: FC<RentalSectionProps> = ({ rentals }) => (
   <RentalCard rentals={rentals} />

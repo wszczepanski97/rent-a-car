@@ -55,6 +55,7 @@ export default NextAuth({
               },
             },
           });
+          console.log(user);
           return (
             user &&
             ({

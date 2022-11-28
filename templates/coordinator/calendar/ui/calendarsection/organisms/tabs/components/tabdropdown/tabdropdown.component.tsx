@@ -1,5 +1,5 @@
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import React, {
+import {
   Dispatch,
   FC,
   memo,

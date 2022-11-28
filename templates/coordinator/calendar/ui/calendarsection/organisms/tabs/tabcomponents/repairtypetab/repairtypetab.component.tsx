@@ -1,5 +1,5 @@
-import { FC, useContext, useRef } from "react";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
+import { FC, useContext, useRef } from "react";
 import {
   TabButtonContainer,
   TabContainer,
@@ -7,8 +7,8 @@ import {
   TabError,
   TabTitle,
 } from "../../components";
-import { AddEventContext } from "../../contexts/addevent.context";
 import { TabNextButtonType } from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 
 export enum RepairType {
   AutoryzowanySerwis = "Autoryzowany serwis",

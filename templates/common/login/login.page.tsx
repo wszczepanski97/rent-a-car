@@ -8,7 +8,7 @@ const LoginPage: NextPageWithLayout<undefined> = () => (
     <Head>
       <title>Logowanie</title>
     </Head>
-    <LoginSection />;
+    <LoginSection />
   </>
 );
 

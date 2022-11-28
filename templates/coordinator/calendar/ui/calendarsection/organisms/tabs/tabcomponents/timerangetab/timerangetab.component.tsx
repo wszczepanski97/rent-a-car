@@ -1,21 +1,21 @@
-import { FC, useCallback, useContext, useMemo, useState } from "react";
 import {
   DatePickerComponent,
   ItemEventArgs,
   RenderDayCellEventArgs,
   TimePickerComponent,
 } from "@syncfusion/ej2-react-calendars";
-import {
-  removeItem,
-  TabNextButtonType,
-} from "../../components/tabnextbutton/tabnextbutton.component";
-import { AddEventContext } from "../../contexts/addevent.context";
+import { FC, useCallback, useContext, useMemo, useState } from "react";
 import {
   TabButtonContainer,
   TabContainer,
   TabError,
   TabTitle,
 } from "../../components";
+import {
+  removeItem,
+  TabNextButtonType,
+} from "../../components/tabnextbutton/tabnextbutton.component";
+import { AddEventContext } from "../../contexts/addevent.context";
 import {
   getBlockedDates,
   getBlockedPeriods,

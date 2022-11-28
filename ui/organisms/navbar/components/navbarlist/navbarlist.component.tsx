@@ -91,39 +91,17 @@ const NavbarList: FC = () => {
                 <NavbarListItem
                   name="Zarejestruj się"
                   href="/register"
-                  dataIcon="bx-user-plus"
+                  dataIcon="UserPlus"
                 />
                 <NavbarListItem
                   name="Zaloguj się"
                   href="/login"
-                  dataIcon="bxs-log-in"
-                  // options={[
-                  //   {
-                  //     name: "Zaloguj się jako klient",
-                  //     href: "/login?role=client",
-                  //   },
-                  //   {
-                  //     name: "Zaloguj się jako koordynator",
-                  //     href: "/login?role=coordinator",
-                  //   },
-                  //   {
-                  //     name: "Zaloguj się jako pracownik myjni",
-                  //     href: "/login?role=cleaner",
-                  //   },
-                  //   {
-                  //     name: "Zaloguj się jako mechanik",
-                  //     href: "/login?role=mechanic",
-                  //   },
-                  //   {
-                  //     name: "Zaloguj się jako kierowca",
-                  //     href: "/login?role=driver",
-                  //   },
-                  // ]}
+                  dataIcon="LogIn"
                 />
                 <NavbarListItem
                   name="Wyszukaj auto"
                   href="/pricing"
-                  dataIcon="bx-search"
+                  dataIcon="Search"
                 />
               </>
             )}

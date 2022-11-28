@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { TableProps } from "react-table";
 import styles from "../../carstable.module.scss";
 

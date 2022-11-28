@@ -7,15 +7,15 @@ import {
 import { ClientsContext } from "pages/coordinator/dashboard";
 import { useContext } from "react";
 import {
-  drivingLicenseNumberValidationRule,
-  emailValidationRule,
-  IDNumberValidationRule,
-  peselNumberValidationRule,
-  phoneNumberValidationRule,
+  syncfusionDrivingLicenseNumberValidationRule,
+  syncfusionEmailValidationRule,
+  syncfusionIDNumberValidationRule,
+  syncfusionPeselNumberValidationRule,
+  syncfusionPhoneNumberValidationRule,
 } from "templates/coordinator/mydepartment/ui/deptempssection/organisms/deptempssectiontable/validations";
 import {
-  nameValidationRule,
   requiredFieldRule,
+  syncfusionNameValidationRule,
 } from "../../../deptcarsssection/organisms/deptcarssectiontable/validations";
 import {
   actionBegin,
@@ -54,14 +54,14 @@ const DeptClientsSectionTable = () => {
             <ColumnDirective
               field="uzytkownicy.Imie"
               headerText="Imię"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
               defaultValue="fdnslkafnd"
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Nazwisko"
               headerText="Nazwisko"
-              validationRules={nameValidationRule}
+              validationRules={syncfusionNameValidationRule}
               defaultValue="fdnslkafnd"
               autoFit
             ></ColumnDirective>
@@ -69,34 +69,34 @@ const DeptClientsSectionTable = () => {
               field="uzytkownicy.Email"
               headerText="Email"
               defaultValue="wszczepanski97@gmail.com"
-              validationRules={emailValidationRule}
+              validationRules={syncfusionEmailValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerDowodu"
               headerText="Numer Dowodu"
               defaultValue="cas432143"
-              validationRules={IDNumberValidationRule}
+              validationRules={syncfusionIDNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerPrawaJazdy"
               headerText="Numer Prawa Jazdy"
               defaultValue="43213/43/34321"
-              validationRules={drivingLicenseNumberValidationRule}
+              validationRules={syncfusionDrivingLicenseNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerTelefonu"
               headerText="Numer Telefonu"
               defaultValue="584939993"
-              validationRules={phoneNumberValidationRule}
+              validationRules={syncfusionPhoneNumberValidationRule}
               autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Pesel"
               headerText="Pesel"
               defaultValue="97060902391"
-              validationRules={peselNumberValidationRule}
+              validationRules={syncfusionPeselNumberValidationRule}
             ></ColumnDirective>
             <ColumnDirective
               field="lokalizacje.IdLokalizacje"

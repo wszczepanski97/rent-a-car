@@ -1,6 +1,6 @@
 import { lokalizacje } from "@prisma/client";
 import { Employee } from "pages/coordinator/calendar";
-import { FC, useCallback, useContext, useRef, useState } from "react";
+import { FC, useCallback, useContext, useRef } from "react";
 import { TabButtonContainer, TabContainer, TabTitle } from "../../components";
 import {
   removeItem,
