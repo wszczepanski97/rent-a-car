@@ -61,13 +61,12 @@ model lokalizacje {
 }
 
 model mycie {
-  IdMycie            Int         @id @default(autoincrement())
-  MyjniaBezdotykowa  Boolean?    @db.Bit(1)
-  MyjniaAutomatyczna Boolean?    @db.Bit(1)
-  MyjniaPrywatna     Boolean?    @db.Bit(1)
+  IdMycie            Int      @id @default(autoincrement())
+  MyjniaBezdotykowa  Boolean? @db.Bit(1)
+  MyjniaAutomatyczna Boolean? @db.Bit(1)
+  MyjniaPrywatna     Boolean? @db.Bit(1)
   IdUslugi           Int
-  uslugi             uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Mycie_Usluga")
-  relokacje          relokacje[]
+  uslugi             uslugi   @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Mycie_Usluga")
 
   @@index([IdUslugi], map: "Mycie_Usluga")
   @@index([IdMycie, IdUslugi], map: "Mycie_idx_1")
@@ -147,25 +146,19 @@ model relokacje {
   IdLokalizacje_Odbior                                          Int?
   CzasDojazdu_Odbior                                            Float?                  @db.Float
   IdWypozyczenia                                                Int?
-  IdUszkodzenia                                                 Int?
-  IdMycie                                                       Int?
   Typ_Relokacja                                                 relokacje_Typ_Relokacja
   DataOd                                                        DateTime                @db.Timestamp(0)
   DataDo                                                        DateTime                @db.Timestamp(0)
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior       lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Odbior", fields: [IdLokalizacje_Odbior], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Odbior")
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Podstawienie", fields: [IdLokalizacje_Podstawienie], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Podstawienie")
-  mycie                                                         mycie?                  @relation(fields: [IdMycie], references: [IdMycie], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Mycie")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior          pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Odbior", fields: [IdPracownicy_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Odbior")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie    pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Podstawienie", fields: [IdPracownicy_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Podstawienie")
-  uszkodzenia                                                   uszkodzenia?            @relation(fields: [IdUszkodzenia], references: [IdUszkodzenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Uszkodzenia")
   wypozyczenia                                                  wypozyczenia?           @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
 
   @@index([IdLokalizacje_Odbior], map: "Relokacje_Lokalizacje_Odbior")
   @@index([IdLokalizacje_Podstawienie], map: "Relokacje_Lokalizacje_Podstawienie")
-  @@index([IdMycie], map: "Relokacje_Mycie")
   @@index([IdPracownicy_Odbior], map: "Relokacje_Pracownicy_Odbior")
   @@index([IdPracownicy_Podstawienie], map: "Relokacje_Pracownicy_Podstawienie")
-  @@index([IdUszkodzenia], map: "Relokacje_Uszkodzenia")
   @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
 }
 
@@ -288,13 +281,12 @@ model uslugistatus {
 }
 
 model uszkodzenia {
-  IdUszkodzenia      Int         @id @default(autoincrement())
-  AutoryzowanySerwis Boolean?    @db.Bit(1)
-  SamodzielnaNaprawa Boolean?    @db.Bit(1)
-  Warsztat           Boolean?    @db.Bit(1)
+  IdUszkodzenia      Int      @id @default(autoincrement())
+  AutoryzowanySerwis Boolean? @db.Bit(1)
+  SamodzielnaNaprawa Boolean? @db.Bit(1)
+  Warsztat           Boolean? @db.Bit(1)
   IdUslugi           Int
-  uslugi             uslugi      @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Uszkodzenia_Usluga")
-  relokacje          relokacje[]
+  uslugi             uslugi   @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Uszkodzenia_Usluga")
 
   @@index([IdUslugi], map: "Uszkodzenia_Usluga")
   @@index([IdUszkodzenia, IdUslugi], map: "Uszkodzenia_idx_1")
@@ -311,7 +303,6 @@ model uzytkownicy {
   NumerTelefonu   String            @db.VarChar(20)
   Login           String            @db.VarChar(50)
   Haslo           String            @db.VarChar(50)
-  Salt            String            @db.VarChar(100)
   Aktywny         Boolean           @db.Bit(1)
   klienci         klienci[]
   pracownicy      pracownicy[]

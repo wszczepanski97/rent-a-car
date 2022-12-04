@@ -24,7 +24,6 @@ export default async function handler(
                 numbers: true,
               }),
               Login: `s${Math.floor(Math.random() * 100000)}`,
-              Salt: "salt",
             },
           },
         },
