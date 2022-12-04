@@ -84,13 +84,15 @@ const Sidebar = () => {
                               "data-icon"
                             )}` as keyof typeof BoxiconSvgs
                           ];
-                        console.log(Icon);
                         return (
                           <li key={`sidebar-page-link-${item.id}`}>
                             <motion.div
                               variants={itemVariants}
                               whileHover={{ scale: 1.1 }}
-                              style={{ display: "flex" }}
+                              style={{
+                                display: "flex",
+                                gap: 10,
+                              }}
                             >
                               {Icon && <Icon />}
                               <Link

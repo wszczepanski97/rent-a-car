@@ -101,8 +101,8 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
           <ColumnDirective field="Kategoria" headerText="Kategoria" autoFit />
           <ColumnDirective field="Przebieg" headerText="Przebieg" autoFit />
           <ColumnDirective
-            field="CenaZaDzien"
-            headerText="Cena za dzień"
+            field="CenaZaGodzine"
+            headerText="Cena za godzinę"
             autoFit
           />
         </ColumnsDirective>

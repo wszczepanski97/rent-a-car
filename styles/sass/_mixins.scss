@@ -28,6 +28,11 @@
   justify-content: space-between;
 }
 
+@mixin flexColumnHorizontallyCenteredVerticallySpaceAround {
+  @include flexColumnHorizontallyCentered();
+  justify-content: space-around;
+}
+
 @mixin flexColumnDoubleCentered {
   @include flexColumn();
   justify-content: center;
@@ -51,6 +56,11 @@
 @mixin flexRowVerticallySpaceAround {
   @include flexRow();
   justify-content: space-around;
+}
+
+@mixin flexRowHorizontallyCenteredVerticallySpaceAround {
+  @include flexRowVerticallySpaceAround();
+  align-items: center;
 }
 
 @mixin flexRowHorizontallyCenteredVerticallySpaceBetween {

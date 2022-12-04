@@ -11,7 +11,7 @@ const UserFormMenuBorder = () => {
       ref={menuBorderRef}
       style={
         type === UserFormContextEnum.REGISTER
-          ? { transform: "translate3d(139px, 0px, 0px)" }
+          ? { transform: "translate3d(165px, 0px, 0px)" }
           : undefined
       }
     ></div>

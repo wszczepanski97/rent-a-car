@@ -70,6 +70,7 @@ const inputIsPeselChecksumValidRule = (input: string) => {
 };
 const isEndOfContractNotBeforeBegin = (args: any) => {
   const doKiedyValue = getValue("value", args);
+  console.log(doKiedyValue);
   if (!doKiedyValue) return true;
   const odKiedyValue = (
     document.querySelector('[name="oddzialy_hist___OdKiedy"]') as HTMLElement

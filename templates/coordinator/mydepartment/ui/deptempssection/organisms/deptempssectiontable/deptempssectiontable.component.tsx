@@ -44,7 +44,7 @@ const DeptEmpsSectionTable = () => {
             <ColumnDirective
               headerText="Operations"
               commands={commands}
-              width="130"
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.Imie"
@@ -62,6 +62,7 @@ const DeptEmpsSectionTable = () => {
               field="uzytkownicy.Email"
               headerText="Email"
               validationRules={syncfusionEmailValidationRule}
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="uzytkownicy.NumerDowodu"
@@ -85,6 +86,7 @@ const DeptEmpsSectionTable = () => {
               field="uzytkownicy.Pesel"
               headerText="Pesel"
               validationRules={syncfusionPeselNumberValidationRule}
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="lokalizacje.IdLokalizacje"
@@ -94,6 +96,7 @@ const DeptEmpsSectionTable = () => {
               headerText="Lokalizacja"
               edit={editparams}
               editType="dropdownedit"
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="stanowiska.IdStanowiska"
@@ -103,6 +106,7 @@ const DeptEmpsSectionTable = () => {
               headerText="Stanowisko"
               edit={editparams}
               editType="dropdownedit"
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="oddzialy.IdOddzialy"
@@ -112,16 +116,19 @@ const DeptEmpsSectionTable = () => {
               headerText="Oddział"
               edit={editparams}
               editType="dropdownedit"
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="oddzialy_hist.OdKiedy"
               headerText="Początek umowy"
               editType="datepickeredit"
+              autoFit
             ></ColumnDirective>
             <ColumnDirective
               field="oddzialy_hist.DoKiedy"
               headerText="Koniec umowy"
               editType="datepickeredit"
+              autoFit
               validationRules={endOfContractValidationRule}
             ></ColumnDirective>
           </ColumnsDirective>

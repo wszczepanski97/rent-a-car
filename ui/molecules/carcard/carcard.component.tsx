@@ -17,7 +17,7 @@ const CarCard: FC<CarCardProps> = ({
     className={styles.carCard}
     photoProps={{
       ...photoProps,
-      size: { height: "159", width: "230" },
+      size: { height: "240", width: "320" },
     }}
     detailsProps={{
       ...detailsProps,

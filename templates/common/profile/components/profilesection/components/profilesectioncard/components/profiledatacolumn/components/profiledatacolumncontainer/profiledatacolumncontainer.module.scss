@@ -2,5 +2,7 @@
 
 .profileDataColumnContainer {
   @include flexColumn;
-  gap: 20px;
+  gap: 50px;
+  justify-content: space-between;
+  width: 40%;
 }

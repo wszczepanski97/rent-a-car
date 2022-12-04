@@ -1,5 +1,5 @@
-import { Service } from "pages/coordinator/calendar";
 import { extend } from "@syncfusion/ej2-base";
+import { Service } from "pages/coordinator/calendar";
 
 const getNameOfService = (service: Service) =>
   !!service.wypozyczenia.length
@@ -49,12 +49,12 @@ export const getData = (services: Service[]) => {
               : "#b5a32d",
           StartTime: new Date(
             new Date(service.DataOd).setHours(
-              new Date(service.DataOd).getHours() - 2
+              new Date(service.DataOd).getHours() - 1
             )
           ),
           EndTime: new Date(
             new Date(service.DataDo).setHours(
-              new Date(service.DataDo).getHours() - 2
+              new Date(service.DataDo).getHours() - 1
             )
           ),
           Description: service.Opis,
@@ -73,12 +73,12 @@ export const getData = (services: Service[]) => {
         CategoryColor: "#b5a32d",
         StartTime: new Date(
           new Date(relokacja.DataOd).setHours(
-            new Date(relokacja.DataOd).getHours() - 2
+            new Date(relokacja.DataOd).getHours() - 1
           )
         ),
         EndTime: new Date(
           new Date(relokacja.DataDo).setHours(
-            new Date(relokacja.DataDo).getHours() - 2
+            new Date(relokacja.DataDo).getHours() - 1
           )
         ),
         Description: relokacja.wypozyczenia.uslugi.Opis,

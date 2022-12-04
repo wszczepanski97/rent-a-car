@@ -12,7 +12,7 @@ export const carsTableColumns: Column<Car>[] = [
   },
   { Header: "Samochód", accessor: "Nazwa" },
   {
-    Header: "Cena za dzień",
+    Header: "Cena",
     accessor: "CenaZaGodzine",
     // Filter: SliderColumnFilter,
     // filter: "equals",

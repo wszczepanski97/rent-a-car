@@ -34,6 +34,7 @@ const Dot: FC<DotProps> = memo((props) => {
         opacity: props.selected ? "1" : "0.3",
         transitionDuration: "300ms",
         padding: 20,
+        cursor: "pointer",
       }}
       onClick={() => {
         setClicked(true);

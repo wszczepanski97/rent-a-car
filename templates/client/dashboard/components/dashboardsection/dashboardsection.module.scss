@@ -1,7 +1,7 @@
 @import "mixins";
 
 .dashboardSection {
-  @include flexColumnDoubleCentered();
+  @include flexColumnHorizontallyCentered();
   height: calc(100vh - var(--navbar-height));
   gap: 20px;
   width: 100%;

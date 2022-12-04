@@ -24,11 +24,23 @@ const CardButton: FC<CardButtonProps> = (props) => {
         ...buttonStyle,
         ...props.style,
         pointerEvents: props.href ? "auto" : "none",
-        cursor: props.href ? "pointer" : "none",
+        cursor: props.href ? "pointer" : "default",
+        padding: props.href ? 0 : "10px 20px",
       }}
     >
       {props.href ? (
-        <Link name={props.buttonText} href={props.href} color={props.color} />
+        <Link
+          name={props.buttonText}
+          href={props.href}
+          color={props.color}
+          style={{
+            height: "100%",
+            padding: "10px 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        />
       ) : (
         <Heading
           text={props.buttonText}

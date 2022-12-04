@@ -9,7 +9,7 @@ const CarsCardSection: FC = () => {
   return (
     <section
       className={styles.carsCardSection}
-      style={{ height: open ? "100vh" : "85vh" }}
+      style={{ height: open ? "100vh" : "85vh", paddingTop: open ? 50 : 0 }}
     >
       <div className={styles.carsCardSectionContainer}>
         <LendArticle />

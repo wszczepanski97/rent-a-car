@@ -41,7 +41,7 @@ const CarsTableBody: FC<CarsTableBodyProps> = ({ page, prepareRow }) => (
                     <Photo
                       src={cell.value}
                       alt="Photo"
-                      size={{ height: "80", width: "80" }}
+                      size={{ height: "60", width: "60" }}
                     />
                   </Link>
                 ) : isSamochodCell ? (

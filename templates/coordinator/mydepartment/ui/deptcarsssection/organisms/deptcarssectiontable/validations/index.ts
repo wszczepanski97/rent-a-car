@@ -96,9 +96,9 @@ export const inputVINNumberValidationRule: Object = {
   ],
 };
 
-const priceForDayValidationRule: Object = {
+const priceForHourValidationRule: Object = {
   ...requiredFieldRule,
-  min: [isBiggerThan(1), "Cena za dzień musi być większa niż 0"],
+  min: [isBiggerThan(1), "Cena za godzinę musi być większa niż 0"],
 };
 
 const carMileageValidationRule: Object = {
@@ -111,6 +111,6 @@ export {
   syncfusionNameValidationRule,
   syncfusionRegistrationNumberValidationRule,
   syncfusionVINNumberValidationRule,
-  priceForDayValidationRule,
+  priceForHourValidationRule,
   carMileageValidationRule,
 };

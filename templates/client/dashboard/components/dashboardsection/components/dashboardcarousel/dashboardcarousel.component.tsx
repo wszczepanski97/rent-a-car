@@ -25,17 +25,20 @@ const DashboardCarousel: FC = () => {
           key={`dashboard-carousel-item-${index}`}
         >
           {group.map(
-            ({
-              Nadwozie,
-              RodzajPaliwa,
-              IloscMiejsc,
-              Zdjecie,
-              Nazwa,
-              CenaZaGodzine,
-              IdSamochody,
-            }) => (
+            (
+              {
+                Nadwozie,
+                RodzajPaliwa,
+                IloscMiejsc,
+                Zdjecie,
+                Nazwa,
+                CenaZaGodzine,
+                IdSamochody,
+              },
+              cardIndex
+            ) => (
               <CarCard
-                key={`dashboard-carousel-item-carcard-${index}`}
+                key={`dashboard-carousel-item-${index}-carcard-${cardIndex}`}
                 detailsProps={{
                   carBody: Nadwozie,
                   fuelType: RodzajPaliwa,

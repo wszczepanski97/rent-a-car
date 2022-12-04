@@ -16,7 +16,7 @@ import {
 } from "../../../gridutils";
 import {
   carMileageValidationRule,
-  priceForDayValidationRule,
+  priceForHourValidationRule,
   requiredFieldRule,
   syncfusionNameValidationRule,
   syncfusionRegistrationNumberValidationRule,
@@ -170,10 +170,10 @@ const DeptCarsSectionTable = () => {
             ></ColumnDirective>
             <ColumnDirective
               field="CenaZaGodzine"
-              headerText="Cena za dzień"
+              headerText="Cena za godzinę"
               editType="numericedit"
               defaultValue="100"
-              validationRules={priceForDayValidationRule}
+              validationRules={priceForHourValidationRule}
             ></ColumnDirective>
           </ColumnsDirective>
           <Inject services={defaultInjectServices} />

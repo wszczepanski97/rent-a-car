@@ -7,7 +7,11 @@ import styles from "./navbar.module.scss";
 const Navbar: FC = () => {
   const { open } = useContext(SidebarContext);
   return (
-    <nav className={styles.Navbar} style={{ display: open ? "none" : "flex" }}>
+    <nav
+      className={styles.Navbar}
+      style={{ display: open ? "none" : "flex" }}
+      id="navbar"
+    >
       <PageTitle />
       <NavbarList />
     </nav>

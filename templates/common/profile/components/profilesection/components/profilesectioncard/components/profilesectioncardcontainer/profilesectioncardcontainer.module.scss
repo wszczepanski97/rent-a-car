@@ -3,4 +3,5 @@
 .profileSectionCardContainer {
   @include flexRowVerticallySpaceAround;
   width: 100%;
+  flex: 1;
 }

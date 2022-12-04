@@ -13,7 +13,11 @@ import { Rental } from "types/rental/rental.type";
 import Photo from "ui/atoms/photo";
 import styles from "./rentaltable.module.scss";
 
-const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {
+const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
+  rentals,
+  past,
+}) => {
+  console.log(past);
   const router = useRouter();
   const columns = useMemo<Column<Rental>[]>(
     () => [
@@ -35,7 +39,7 @@ const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {
         accessor: "Kwota",
       },
       {
-        Header: "Cena za dzień",
+        Header: "Cena",
         accessor: "CenaZaGodzine",
       },
     ],
@@ -61,7 +65,7 @@ const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {
       data: rentals,
       initialState: {
         pageIndex: 0,
-        pageSize: 3,
+        pageSize: 4,
         hiddenColumns: ["IdSamochod", "IdUslugi", "IdWypozyczenia"],
       },
     },
@@ -135,7 +139,7 @@ const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {
                           <Photo
                             src={cell.value}
                             alt="Photo"
-                            size={{ height: "80", width: "80" }}
+                            size={{ height: "60", width: "60" }}
                           />
                         </Link>
                       ) : isSamochodCell ? (
@@ -148,25 +152,27 @@ const RentalTable: FC<RentalSectionProps> = ({ rentals }) => {
                     </td>
                   );
                 })}
-                <td>
-                  <button
-                    className={styles.deleteRentButton}
-                    onClick={async () => {
-                      const response = await fetch(`/api/client/rent`, {
-                        method: "DELETE",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          IdWypozyczenia: row.values.IdWypozyczenia,
-                          IdUslugi: row.values.IdUslugi,
-                        }),
-                      });
-                      router.replace("/client/myrentals");
-                      return await response.json();
-                    }}
-                  >
-                    Usuń wypożyczenie
-                  </button>
-                </td>
+                {!past && (
+                  <td style={{ textAlign: "right" }}>
+                    <button
+                      className={styles.deleteRentButton}
+                      onClick={async () => {
+                        const response = await fetch(`/api/client/rent`, {
+                          method: "DELETE",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            IdWypozyczenia: row.values.IdWypozyczenia,
+                            IdUslugi: row.values.IdUslugi,
+                          }),
+                        });
+                        router.replace("/client/myrentals");
+                        return await response.json();
+                      }}
+                    >
+                      Usuń wypożyczenie
+                    </button>
+                  </td>
+                )}
               </tr>
             );
           })}

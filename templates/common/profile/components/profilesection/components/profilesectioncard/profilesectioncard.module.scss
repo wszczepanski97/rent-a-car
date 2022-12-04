@@ -4,7 +4,9 @@
   @include flexColumnHorizontallyCentered;
   background-color: var(--light-background-color);
   border-radius: 10px;
-  margin-bottom: 50px;
+  min-height: 85vh;
+  max-height: 85vh;
+  width: 100%;
   padding: 30px 0 50px 0;
   gap: 20px;
 }

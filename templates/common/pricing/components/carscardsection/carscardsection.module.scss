@@ -5,7 +5,9 @@
   .carsCardSectionContainer {
     @include flexColumnVerticallySpaceBetween();
     height: 85vh;
-    background-color: var(--dark-background-color);
+    background-color: var(--light-background-color);
     border-radius: 10px;
+    padding: 30px 20px 0px 20px;
+    width: 100%;
   }
 }

@@ -15,44 +15,76 @@ const ProfileDataColumn: FC = () => {
     const { user } = profile as ProfileClient;
     return user ? (
       <ProfileDataColumnContainer>
-        <ProfileDataColumnProperty label="Imię" name="Imie" prop={user.Imie} />
-        <ProfileDataColumnProperty
-          label="Nazwisko"
-          name="Nazwisko"
-          prop={user.Nazwisko}
-        />
-        <ProfileDataColumnProperty
-          label="Pesel"
-          name="Pesel"
-          prop={user.Pesel}
-        />
-        <ProfileDataColumnProperty
-          label="Numer dowodu"
-          name="NumerDowodu"
-          prop={user.NumerDowodu}
-        />
-        <ProfileDataColumnProperty
-          label="Numer prawa jazdy"
-          name="NumerPrawaJazdy"
-          prop={user.NumerPrawaJazdy}
-        />
-        <ProfileDataColumnProperty
-          label="Email"
-          name="Email"
-          prop={user.Email}
-          inputType="email"
-        />
-        <ProfileDataColumnProperty
-          label="Numer telefonu"
-          name="NumerTelefonu"
-          prop={user.NumerTelefonu}
-        />
-        <ProfileDataColumnProperty
-          label="Procent przyznanego rabatu"
-          name="ProcentRabatu"
-          prop={user.ProcentRabatu}
-          disabled
-        />
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <h3 style={{ textAlign: "center" }}>Dane osobowe</h3>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 50,
+                justifyContent: "space-between",
+              }}
+            >
+              <ProfileDataColumnProperty
+                label="Imię"
+                name="Imie"
+                prop={user.Imie}
+              />
+              <ProfileDataColumnProperty
+                label="Nazwisko"
+                name="Nazwisko"
+                prop={user.Nazwisko}
+              />
+              <ProfileDataColumnProperty
+                label="Pesel"
+                name="Pesel"
+                prop={user.Pesel}
+              />
+              <ProfileDataColumnProperty
+                label="Numer dowodu"
+                name="NumerDowodu"
+                prop={user.NumerDowodu}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 50,
+                justifyContent: "space-between",
+              }}
+            >
+              <ProfileDataColumnProperty
+                label="Numer prawa jazdy"
+                name="NumerPrawaJazdy"
+                prop={user.NumerPrawaJazdy}
+              />
+              <ProfileDataColumnProperty
+                label="Email"
+                name="Email"
+                prop={user.Email}
+                inputType="email"
+              />
+              <ProfileDataColumnProperty
+                label="Numer telefonu"
+                name="NumerTelefonu"
+                prop={user.NumerTelefonu}
+              />
+              <ProfileDataColumnProperty
+                label="Procent przyznanego rabatu"
+                name="ProcentRabatu"
+                prop={user.ProcentRabatu}
+                disabled
+              />
+            </div>
+          </div>
+        </div>
         {mode === ProfileMode.DEFAULT ? (
           <ProfileDataColumnButton
             bgColor="var(--login-button-background)"
@@ -61,7 +93,7 @@ const ProfileDataColumn: FC = () => {
             onClick={() => toggleMode(ProfileMode.EDITABLE)}
           />
         ) : (
-          <>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <ProfileDataColumnButton
               bgColor="var(--success-color)"
               color="var(--light-text-color)"
@@ -75,7 +107,7 @@ const ProfileDataColumn: FC = () => {
               btnText="Anuluj zmiany"
               onClick={() => toggleMode(ProfileMode.DEFAULT)}
             />
-          </>
+          </div>
         )}
       </ProfileDataColumnContainer>
     ) : null;
@@ -86,41 +118,72 @@ const ProfileDataColumn: FC = () => {
     profile.type === UserRole.DRIVER
   ) {
     const { user } = profile;
-    console.log(user);
     return user ? (
       <ProfileDataColumnContainer>
-        <ProfileDataColumnProperty label="Imię" name="Imie" prop={user.Imie} />
-        <ProfileDataColumnProperty
-          label="Nazwisko"
-          name="Nazwisko"
-          prop={user.Nazwisko}
-        />
-        <ProfileDataColumnProperty
-          label="Pesel"
-          name="Pesel"
-          prop={user.Pesel}
-        />
-        <ProfileDataColumnProperty
-          label="Numer dowodu"
-          name="NumerDowodu"
-          prop={user.NumerDowodu}
-        />
-        <ProfileDataColumnProperty
-          label="Numer prawa jazdy"
-          name="NumerPrawaJazdy"
-          prop={user.NumerPrawaJazdy}
-        />
-        <ProfileDataColumnProperty
-          label="Email"
-          name="Email"
-          prop={user.Email}
-          inputType="email"
-        />
-        <ProfileDataColumnProperty
-          label="Numer telefonu"
-          name="NumerTelefonu"
-          prop={user.NumerTelefonu}
-        />
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <h3 style={{ textAlign: "center" }}>Dane osobowe</h3>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 50,
+                justifyContent: "space-between",
+              }}
+            >
+              <ProfileDataColumnProperty
+                label="Imię"
+                name="Imie"
+                prop={user.Imie}
+              />
+              <ProfileDataColumnProperty
+                label="Nazwisko"
+                name="Nazwisko"
+                prop={user.Nazwisko}
+              />
+              <ProfileDataColumnProperty
+                label="Pesel"
+                name="Pesel"
+                prop={user.Pesel}
+              />
+              <ProfileDataColumnProperty
+                label="Numer dowodu"
+                name="NumerDowodu"
+                prop={user.NumerDowodu}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 50,
+                justifyContent: "space-between",
+              }}
+            >
+              <ProfileDataColumnProperty
+                label="Numer prawa jazdy"
+                name="NumerPrawaJazdy"
+                prop={user.NumerPrawaJazdy}
+              />
+              <ProfileDataColumnProperty
+                label="Email"
+                name="Email"
+                prop={user.Email}
+                inputType="email"
+              />
+              <ProfileDataColumnProperty
+                label="Numer telefonu"
+                name="NumerTelefonu"
+                prop={user.NumerTelefonu}
+              />
+            </div>
+          </div>
+        </div>
         {mode === ProfileMode.DEFAULT ? (
           <ProfileDataColumnButton
             bgColor="var(--login-button-background)"
@@ -129,7 +192,7 @@ const ProfileDataColumn: FC = () => {
             onClick={() => toggleMode(ProfileMode.EDITABLE)}
           />
         ) : (
-          <>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <ProfileDataColumnButton
               bgColor="var(--success-color)"
               color="var(--light-text-color)"
@@ -143,7 +206,7 @@ const ProfileDataColumn: FC = () => {
               btnText="Anuluj zmiany"
               onClick={() => toggleMode(ProfileMode.DEFAULT)}
             />
-          </>
+          </div>
         )}
       </ProfileDataColumnContainer>
     ) : null;

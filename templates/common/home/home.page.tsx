@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import HeaderSection from "templates/common/home/components/headersection/headersection.component";
 import { NextPageWithLayout } from "types/next";
+import { UserRole } from "types/userrole/userrole.type";
 import ServicesSection from "./components/servicessection";
 import SolutionsSection from "./components/solutionssection";
 import StatsSection from "./components/statssection";
@@ -15,7 +16,11 @@ const HomePage: NextPageWithLayout<{}> = () => {
 
   useEffect(() => {
     if (session?.user.role) {
-      router.replace(`/${session?.user.role.toLowerCase()}/dashboard`);
+      router.replace(
+        `/${Object.keys(UserRole)[
+          Object.values(UserRole).indexOf(session?.user.role)
+        ].toLowerCase()}/dashboard`
+      );
     }
   }, [session, router]);
 

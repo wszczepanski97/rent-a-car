@@ -8,44 +8,19 @@ import {
 import { SidebarContextProvider } from "contexts/sidebar.context";
 import { prisma } from "db";
 import type { GetServerSideProps } from "next";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import type { ReactElement } from "react";
 import { createContext } from "react";
+import DeptCarsSection from "templates/coordinator/mydepartment/ui/deptcarsssection/deptcarssection.component";
+import DeptClientsSection from "templates/coordinator/mydepartment/ui/deptclientssection/deptclientssection.component";
+import DeptEmpsSection from "templates/coordinator/mydepartment/ui/deptempssection/deptempssection.component";
+import MyDepartmentCarousel from "templates/coordinator/mydepartment/ui/mydepartmentcarousel/mydepartmentcarousel.component";
 import { NextPageWithLayout } from "types/next";
 import Navbar from "ui/organisms/navbar/navbar.component";
 import Sidebar from "ui/organisms/sidebar/sidebar.component";
 import Layout from "ui/templates/layout";
 import Main from "ui/templates/main";
 import styles from "../../../templates/coordinator/mydepartment/ui/mydepartment.module.scss";
-
-const MyDepartmentCarousel = dynamic(
-  () =>
-    import(
-      "templates/coordinator/mydepartment/ui/mydepartmentcarousel/mydepartmentcarousel.component"
-    )
-);
-
-const DeptClientsSection = dynamic(
-  () =>
-    import(
-      "templates/coordinator/mydepartment/ui/deptclientssection/deptclientssection.component"
-    )
-);
-
-const DeptCarsSection = dynamic(
-  () =>
-    import(
-      "templates/coordinator/mydepartment/ui/deptcarsssection/deptcarssection.component"
-    )
-);
-
-const DeptEmpsSection = dynamic(
-  () =>
-    import(
-      "templates/coordinator/mydepartment/ui/deptempssection/deptempssection.component"
-    )
-);
 
 export type EmployeesContextInterface = {
   employees: pracownicy[] | null;
