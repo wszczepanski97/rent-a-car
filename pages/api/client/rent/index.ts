@@ -35,14 +35,6 @@ export default async function handler(
                 IdSamochody: req.body.IdSamochody,
               },
             },
-            // wypozyczenia: {
-            //   create: {
-            //     Kwota: req.body.Kwota,
-            //     IdKlienci: klient.IdKlienci,
-            //     IdUbezpieczenia: req.body.IdUbezpieczenia,
-            //     KwotaPoRabacie: null,
-            //   },
-            // },
           },
         }),
       ]);

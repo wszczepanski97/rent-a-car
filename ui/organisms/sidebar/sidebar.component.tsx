@@ -77,7 +77,6 @@ const Sidebar = () => {
                         Akcje
                       </h4>
                       {pageLinks.map((item) => {
-                        console.log(`${item.getAttribute("data-icon")}`);
                         const Icon =
                           BoxiconSvgs[
                             `${item.getAttribute(

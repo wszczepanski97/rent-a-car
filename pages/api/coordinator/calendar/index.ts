@@ -1,4 +1,4 @@
-import { dodatkoweopcje } from "@prisma/client";
+import { dodatkoweopcje, relokacje_Typ_Relokacja } from "@prisma/client";
 import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { UslugaType } from "templates/coordinator/calendar/ui/calendarsection/organisms/add-event.component";
@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    let usluga;
+    let usluga, uslugaPodstawienie;
     if (req.body.type === UslugaType.WYPOŻYCZENIE) {
       const { service, rent, relocations, additionalOptions } = req.body;
       try {
@@ -31,14 +31,6 @@ export default async function handler(
               wypozyczenia: {
                 create: {
                   ...rent,
-                  relokacje: {
-                    createMany: {
-                      data: [
-                        relocations.Podstawienie,
-                        relocations.Odbior,
-                      ].filter((relocation) => !!relocation),
-                    },
-                  },
                   dodatkoweopcje_wypozyczenia: {
                     createMany: {
                       data: additionalOptions.map((option: dodatkoweopcje) => ({
@@ -49,12 +41,42 @@ export default async function handler(
                 },
               },
             },
+            include: {
+              wypozyczenia: true,
+            },
           }),
         ]);
+        if (relocations.Podstawienie) {
+          uslugaPodstawienie = await prisma.$transaction([
+            prisma.uslugi.create({
+              data: {
+                DataOd: relocations.Podstawienie.DataOd,
+                DataDo: relocations.Podstawienie.DataDo,
+                Opis: null,
+                uslugistatus: { connect: { IdUslugiStatus: 1 } },
+                samochody: {
+                  connect: { IdSamochody: service.IdSamochody },
+                },
+                relokacje: {
+                  create: {
+                    IdPracownicy_Podstawienie:
+                      relocations.Podstawienie.IdPracownicy_Podstawienie,
+                    IdLokalizacje_Podstawienie:
+                      relocations.Podstawienie.IdLokalizacje_Podstawienie,
+                    CzasDojazdu_Podstawienie:
+                      relocations.Podstawienie.CzasDojazdu_Podstawienie,
+                    IdWypozyczenia: usluga[0].wypozyczenia[0].IdWypozyczenia,
+                    Typ_Relokacja: relocations.Podstawienie.Typ_Relokacja,
+                  },
+                },
+              },
+            }),
+          ]);
+        }
       } catch (err) {
         console.log(err);
       }
-      return res.status(200).json({ data: { usluga } });
+      return res.status(200).json({ data: { usluga, uslugaPodstawienie } });
     } else if (req.body.type === UslugaType.MYCIE) {
       const { service, washing } = req.body;
       try {
@@ -281,7 +303,6 @@ export default async function handler(
     }
   } else if (req.method === "DELETE") {
     const { IdUslugi, type } = req.body;
-    console.log(req.body);
     if (type === UslugaType.WYPOŻYCZENIE) {
       try {
         const serviceByIdUslugi = await prisma.uslugi.findFirst({
@@ -297,13 +318,22 @@ export default async function handler(
               wypozyczenia: {
                 include: {
                   dodatkoweopcje_wypozyczenia: true,
-                  relokacje: true,
+                  relokacje: {
+                    include: {
+                      uslugi: true,
+                    },
+                  },
                 },
               },
             },
           }),
         ]);
-        return res.status(200).json({ data: { service } });
+        const [relocation] = await prisma.$transaction([
+          prisma.relokacje.deleteMany({
+            where: { IdWypozyczenia: service.wypozyczenia[0].IdWypozyczenia },
+          }),
+        ]);
+        return res.status(200).json({ data: { service, relocation } });
       } catch (err) {
         console.log(err);
       }

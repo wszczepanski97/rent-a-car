@@ -93,7 +93,6 @@ export default async function handler(
       const [samochod] = await prisma.$transaction([
         prisma.samochody.update({
           data: {
-            // ...rest,
             Marka: Marka.toUpperCase(),
             Model: Model.toUpperCase(),
             NumerVIN: NumerVIN.toUpperCase(),

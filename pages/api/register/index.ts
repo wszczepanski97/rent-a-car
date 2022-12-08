@@ -110,7 +110,6 @@ export default async function handler(
           NumerDowodu,
           NumerPrawaJazdy,
         } = rest;
-        console.log(role);
         const [uzytkownik, role_uzytkownik] = await prisma.$transaction([
           prisma.uzytkownicy.create({
             data: {

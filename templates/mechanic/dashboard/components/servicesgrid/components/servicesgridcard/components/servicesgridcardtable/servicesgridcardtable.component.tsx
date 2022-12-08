@@ -32,7 +32,6 @@ const ServicesGridCardTable: FC<ServicesGridCardTableProps> = ({
 }) => {
   const { data: session } = useSession();
   const { data: serviceData, isError, isLoading, mutate } = useRepair();
-  console.log(serviceData[dataProp]);
   const columns = useMemo<Column<Service>[]>(
     () => [
       { Header: "Nr naprawy", accessor: `IdUszkodzenia` },

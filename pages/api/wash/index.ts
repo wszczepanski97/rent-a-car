@@ -69,7 +69,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse) {
     })
   ).map(serviceParser);
   const mappedWasherServices = foundUser?.uslugi.map(serviceParser);
-  console.log(mappedWasherServices);
   const pastservices = mappedWasherServices?.filter(
     (service) => service?.Status === "ZAKONCZONE"
   );
@@ -119,7 +118,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse) {
 
 async function put(req: NextApiRequest, res: NextApiResponse) {
   try {
-    console.log(req.body);
     if (req.body.IdUslugi) {
       const [usluga] = await prisma.$transaction([
         prisma.uslugi.update({

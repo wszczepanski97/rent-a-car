@@ -15,7 +15,6 @@ export const UserFormContextProvider: FC<{
   const [disabledSubmitButton, setDisabledSubmitButton] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuBorderRef = useRef<HTMLDivElement>(null);
-  console.log(type);
   return (
     <UserFormContext.Provider
       value={{

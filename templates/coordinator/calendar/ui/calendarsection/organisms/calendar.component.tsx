@@ -79,12 +79,10 @@ export const Calendar: FC<CalendarCoordinatorPageProps> = memo(
     const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
     const dataSource = getData(services);
     const onActionComplete = async (args: ActionEventArgs) => {
-      console.log(args.requestType);
       if (
         args.requestType === "eventCreated" ||
         args.requestType === "eventChanged"
       ) {
-        console.log(selectedService);
         if (selectedService === UslugaType.WYPOŻYCZENIE) {
           const body = JSON.stringify({
             type: UslugaType.WYPOŻYCZENIE,
@@ -288,9 +286,6 @@ export const Calendar: FC<CalendarCoordinatorPageProps> = memo(
         );
       }
     };
-    // const onPopupOpen = (e) => {
-    //   console.log(e);
-    // };
     const onPopupClose = (e: PopupCloseEventArgs) => {
       if (e.type === "Editor" && !e.data) {
         resetContextData();

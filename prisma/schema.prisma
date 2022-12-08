@@ -146,13 +146,13 @@ model relokacje {
   IdLokalizacje_Odbior                                          Int?
   CzasDojazdu_Odbior                                            Float?                  @db.Float
   IdWypozyczenia                                                Int?
+  IdUslugi                                                      Int?
   Typ_Relokacja                                                 relokacje_Typ_Relokacja
-  DataOd                                                        DateTime                @db.Timestamp(0)
-  DataDo                                                        DateTime                @db.Timestamp(0)
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior       lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Odbior", fields: [IdLokalizacje_Odbior], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Odbior")
   lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie lokalizacje?            @relation("lokalizacjeTorelokacje_IdLokalizacje_Podstawienie", fields: [IdLokalizacje_Podstawienie], references: [IdLokalizacje], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Lokalizacje_Podstawienie")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior          pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Odbior", fields: [IdPracownicy_Odbior], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Odbior")
   pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie    pracownicy?             @relation("pracownicyTorelokacje_IdPracownicy_Podstawienie", fields: [IdPracownicy_Podstawienie], references: [IdPracownicy], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Pracownicy_Podstawienie")
+  uslugi                                                        uslugi?                 @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Uslugi")
   wypozyczenia                                                  wypozyczenia?           @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
 
   @@index([IdLokalizacje_Odbior], map: "Relokacje_Lokalizacje_Odbior")
@@ -160,6 +160,7 @@ model relokacje {
   @@index([IdPracownicy_Odbior], map: "Relokacje_Pracownicy_Odbior")
   @@index([IdPracownicy_Podstawienie], map: "Relokacje_Pracownicy_Podstawienie")
   @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
+  @@index([IdUslugi], map: "Relokacje_Uslugi")
 }
 
 model role {
@@ -264,6 +265,7 @@ model uslugi {
   samochody                samochody      @relation(fields: [IdSamochody], references: [IdSamochody], onUpdate: Restrict, map: "Uslugi_Samochody")
   uslugistatus             uslugistatus   @relation(fields: [IdUslugaStatus], references: [IdUslugiStatus], onUpdate: Restrict, map: "Usluga_Status")
   mycie                    mycie[]
+  relokacje                relokacje[]
   uszkodzenia              uszkodzenia[]
   wypozyczenia             wypozyczenia[]
 

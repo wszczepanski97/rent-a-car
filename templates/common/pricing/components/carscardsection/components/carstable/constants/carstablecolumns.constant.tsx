@@ -14,8 +14,6 @@ export const carsTableColumns: Column<Car>[] = [
   {
     Header: "Cena",
     accessor: "CenaZaGodzine",
-    // Filter: SliderColumnFilter,
-    // filter: "equals",
     disableFilters: true,
   },
   {

@@ -17,7 +17,6 @@ const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
   rentals,
   past,
 }) => {
-  console.log(past);
   const router = useRouter();
   const columns = useMemo<Column<Rental>[]>(
     () => [

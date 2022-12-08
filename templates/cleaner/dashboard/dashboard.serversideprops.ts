@@ -16,7 +16,6 @@ export const dashboardServerSideProps: GetServerSideProps = async (context) => {
     { ...context.req, query: { id: session?.user.id.toString() } },
     context.res
   );
-  console.log(data);
   return {
     props: {
       session,

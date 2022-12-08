@@ -38,22 +38,15 @@ export type CalendarCoordinatorPageProps = {
 };
 
 export type Service = uslugi & {
-  wypozyczenia: (wypozyczenia & {
-    relokacje: (relokacje & {
-      wypozyczenia: wypozyczenia & {
-        klienci: klienci & {
-          uzytkownicy: uzytkownicy;
-        };
-        uslugi: uslugi & {
-          samochody: samochody;
-        };
-      };
-    })[];
-  })[];
   mycie: mycie[];
-  uszkodzenia: uszkodzenia[];
+  relokacje: (relokacje & {
+    uslugi: uslugi | null;
+    wypozyczenia: wypozyczenia | null;
+  })[];
   samochody: samochody;
   uslugistatus: uslugistatus;
+  uszkodzenia: uszkodzenia[];
+  wypozyczenia: wypozyczenia[];
 };
 
 export type Client = klienci & {
@@ -108,26 +101,11 @@ const getServices: GetServerSideProps<
     include: {
       mycie: true,
       uszkodzenia: true,
-      wypozyczenia: {
+      wypozyczenia: true,
+      relokacje: {
         include: {
-          relokacje: {
-            include: {
-              wypozyczenia: {
-                include: {
-                  klienci: {
-                    include: {
-                      uzytkownicy: true,
-                    },
-                  },
-                  uslugi: {
-                    include: {
-                      samochody: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
+          uslugi: true,
+          wypozyczenia: true,
         },
       },
       uslugistatus: true,

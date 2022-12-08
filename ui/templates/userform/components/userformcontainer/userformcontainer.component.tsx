@@ -37,7 +37,6 @@ const UserFormContainer: FC = ({ children }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     };
-    console.log(body);
     const res = await fetch("/api/register", options);
     if (!res?.ok) {
       setError(res.statusText);

@@ -118,7 +118,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse) {
 
 async function put(req: NextApiRequest, res: NextApiResponse) {
   try {
-    console.log(req.body);
     if (req.body.IdUslugi) {
       const [usluga] = await prisma.$transaction([
         prisma.uslugi.update({

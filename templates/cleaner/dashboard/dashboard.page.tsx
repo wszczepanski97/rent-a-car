@@ -19,11 +19,9 @@ const DashboardPage: NextPageWithLayout<DashboardPageProps> = ({
   const { data: session } = useSession();
   return (
     <SWRConfig
-      value={
-        {
-          // refreshInterval: 180000
-        }
-      }
+      value={{
+        refreshInterval: 180000,
+      }}
     >
       <Head>
         <title>Panel główny - pracownik myjni</title>

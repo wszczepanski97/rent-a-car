@@ -150,7 +150,6 @@ export const TimeRangeWashingTab: FC = () => {
         (el) => el.getTime() < e.value.getTime()
       );
       if (firstBlockedDate) {
-        console.log(firstBlockedDate);
         setState({
           startDateValue: new Date(firstBlockedDate),
           endDateValue: new Date(e.value),
