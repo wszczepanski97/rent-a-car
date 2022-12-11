@@ -1,8 +1,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC, FormEventHandler, useState } from "react";
+import { FC, FormEventHandler, useMemo, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CarDescriptionRowProperty from "templates/common/car/components/cardetailssection/components/cardescription/components/cardescriptionrowproperty/cardescriptionrowproperty.component";
+import { CarDescriptionRowPropertyEnum } from "templates/common/car/components/cardetailssection/components/cardescription/components/cardescriptionrowproperty/cardescriptionrowproperty.enum";
 import { getNextHalfHourDateForToday } from "templates/coordinator/calendar/ui/calendarsection/organisms/tabs/helpers/date-helper";
 import CarCard from "ui/molecules/carcard";
 import Card from "ui/molecules/card";
@@ -18,14 +20,10 @@ const RentCard: FC<RentCardProps> = ({ car }) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const target = e.target as typeof e.target & RentCardSubmitFormType;
-    const [DataOd, DataDo] = target.timeRange.value
-      .split("-")
-      .map((date) => date.trim());
     const body = JSON.stringify({
-      DataOd,
-      DataDo,
+      DataOd: target.DataOd.value,
+      DataDo: target.DataDo.value,
       Opis: target.Opis.value,
-      IloscDni: parseInt(target.IloscDni.value),
       Kwota: parseInt(target.Kwota.value),
       IdUbezpieczenia: parseInt(target.IdUbezpieczenia.value),
       IdUzytkownicy: session?.user.id,
@@ -41,22 +39,40 @@ const RentCard: FC<RentCardProps> = ({ car }) => {
     const result = await response.json();
   };
 
-  const [startDate, setStartDate] = useState<Date | null>(
-    getNextHalfHourDateForToday(new Date())
+  const timeRangeStartMinDate = useMemo(
+    () => getNextHalfHourDateForToday(new Date()),
+    []
   );
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const filterPassedTime = (time: any) => {
-    const currentDate = new Date();
-    const selectedDate = new Date(time);
-    return currentDate.getTime() < selectedDate.getTime();
-  };
+  const timeRangeEndMinDate = useMemo(
+    () => getNextHalfHourDateForToday(timeRangeStartMinDate),
+    [timeRangeStartMinDate]
+  );
+
+  const filterPassedTimeStartMinDate = (time: any) =>
+    new Date(time).getTime() >= timeRangeStartMinDate.getTime();
+
+  const filterPassedTimeEndMinDate = (time: any) =>
+    new Date(time).getTime() >= timeRangeEndMinDate.getTime();
+
+  const [startDate, setStartDate] = useState<Date>(timeRangeStartMinDate);
+  const [endDate, setEndDate] = useState<Date>(timeRangeEndMinDate);
 
   return (
-    <Card type={CardType.CUSTOM} className={styles.carCard}>
+    <Card
+      type={CardType.CUSTOM}
+      className={styles.carCard}
+      style={{ width: "100%" }}
+    >
       <h2 style={{ textAlign: "center", color: "var(--text-color)" }}>
         Wypożycz auto
       </h2>
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          minHeight: 450,
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -87,33 +103,33 @@ const RentCard: FC<RentCardProps> = ({ car }) => {
                 <div>
                   <label htmlFor="DataOd">Data od</label>
                   <DatePicker
-                    id="timeRangeStart"
-                    name="timeRangeStart"
+                    id="DataOd"
+                    name="DataOd"
                     dateFormat="dd/MM/yyyy, h:mm aa"
                     selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    filterTime={filterPassedTime}
+                    onChange={(date: Date) => setStartDate(date)}
+                    filterTime={filterPassedTimeStartMinDate}
                     selectsStart
                     showTimeSelect
                     startDate={startDate}
                     endDate={endDate}
-                    minDate={startDate}
+                    minDate={timeRangeStartMinDate}
                   />
                 </div>
                 <div>
                   <label htmlFor="DataDo">Data do</label>
                   <DatePicker
-                    id="timeRangeEnd"
-                    name="timeRangeEnd"
+                    id="DataDo"
+                    name="DataDo"
                     dateFormat="dd/MM/yyyy, h:mm aa"
                     selected={endDate}
-                    onChange={(date) => setEndDate(date)}
-                    filterTime={filterPassedTime}
+                    onChange={(date: Date) => setEndDate(date)}
+                    filterTime={filterPassedTimeEndMinDate}
                     selectsEnd
                     showTimeSelect
                     startDate={startDate}
                     endDate={endDate}
-                    minDate={startDate}
+                    minDate={timeRangeEndMinDate}
                   />
                 </div>
               </div>
@@ -143,28 +159,49 @@ const RentCard: FC<RentCardProps> = ({ car }) => {
                 style={{ resize: "none" }}
               />
             </div>
-            {/* <div className={styles.rentCardFormField}>
-              <label htmlFor="IloscDni">Ilość dni</label>
-              <input
-                type="number"
-                id="IloscDni"
-                name="IloscDni"
-                required
-                disabled
-                value={iloscDni}
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-around",
+              }}
+            >
+              <CarDescriptionRowProperty
+                type={CarDescriptionRowPropertyEnum.CIRCLE}
+                title="Ilość godzin"
+                bgColor="var(--primary-color)"
+                color="var(--light-text-color)"
+                value={Math.abs(endDate.getTime() - startDate.getTime()) / 36e5}
               />
-            </div> */}
-            {/* <div className={styles.rentCardFormField}>
-              <label htmlFor="Kwota">Kwota</label>
-              <input
-                type="number"
-                id="Kwota"
-                name="Kwota"
-                required
-                disabled
-                value={car ? car.CenaZaGodzine * iloscDni : undefined}
+              <CarDescriptionRowProperty
+                type={CarDescriptionRowPropertyEnum.CIRCLE}
+                title="Kwota"
+                bgColor="var(--text-color)"
+                color="var(--light-text-color)"
+                value={
+                  car
+                    ? (car.CenaZaGodzine *
+                        Math.abs(endDate.getTime() - startDate.getTime())) /
+                      36e5
+                    : undefined
+                }
               />
-            </div> */}
+            </div>
+            <input
+              type="number"
+              id="Kwota"
+              name="Kwota"
+              required
+              disabled
+              value={
+                car
+                  ? (car.CenaZaGodzine *
+                      Math.abs(endDate.getTime() - startDate.getTime())) /
+                    36e5
+                  : undefined
+              }
+              hidden
+            />
             {error && <div>{error}</div>}
             <button
               type="submit"

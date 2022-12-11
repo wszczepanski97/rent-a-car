@@ -1,3 +1,4 @@
+import { equal } from "assert";
 import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -25,6 +26,7 @@ export default async function handler(
             DataOd: new Date(req.body.DataOd),
             DataDo: new Date(req.body.DataDo),
             Opis: req.body.Opis,
+            IdPracownicy_Przypisanie: undefined,
             uslugistatus: {
               connect: {
                 IdUslugiStatus: 1,
@@ -33,6 +35,27 @@ export default async function handler(
             samochody: {
               connect: {
                 IdSamochody: req.body.IdSamochody,
+              },
+            },
+            wypozyczenia: {
+              create: {
+                Kwota: req.body.Kwota,
+                KwotaPoRabacie: klient.ProcentRabatu
+                  ? req.body.Kwota -
+                    0.01 * klient.ProcentRabatu * req.body.Kwota
+                  : req.body.Kwota,
+                klienci: {
+                  connect: {
+                    IdKlienci: klient.IdKlienci,
+                  },
+                },
+                ubezpieczenia: {
+                  connect: {
+                    IdUbezpieczenia: req.body.IdUbezpieczenia,
+                  },
+                },
+                Czy_Odebrac_Auto: false,
+                Czy_Podstawic_Auto: false,
               },
             },
           },

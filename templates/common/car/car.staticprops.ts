@@ -25,7 +25,9 @@ export const carPageStaticProps: GetStaticProps<CarPageProps, Params> = async (
   });
   return {
     props: {
-      car: { ...car!, OstatniaAktualizacja: null },
+      car: car
+        ? { ...JSON.parse(JSON.stringify(car!)), OstatniaAktualizacja: null }
+        : null,
     },
   };
 };
