@@ -1,8 +1,0 @@
-@import "mixins";
-
-.property {
-  @include flexColumnHorizontallyCentered;
-  span {
-    font-weight: 700;
-  }
-}

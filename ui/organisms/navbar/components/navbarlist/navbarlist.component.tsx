@@ -71,13 +71,7 @@ const NavbarList: FC = () => {
                   href="/cleaner/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Moje zlecenia" href="/cleaner/jobs" />
-                <NavbarListItem
-                  name="Kalendarz zleceń"
-                  href="/cleaner/calendar"
-                />
-                <NavbarListItem name="Mapa dojazdu" href="/cleaner/map" />
-                <NavbarListItem name="Moje wypłaty" href="/cleaner/paychecks" />
+                <NavbarListItem name="Mój kalendarz" href="/cleaner/calendar" />
                 <NavbarListItem
                   name="Profil"
                   dataIcon="UserCircleWithBg"
@@ -97,13 +91,8 @@ const NavbarList: FC = () => {
                   href="/driver/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Moje zlecenia" href="/driver/jobs" />
-                <NavbarListItem
-                  name="Kalendarz zleceń"
-                  href="/driver/calendar"
-                />
+                <NavbarListItem name="Mój kalendarz" href="/driver/calendar" />
                 <NavbarListItem name="Mapa dojazdu" href="/driver/map" />
-                <NavbarListItem name="Moje wypłaty" href="/driver/paychecks" />
                 <NavbarListItem
                   name="Profil"
                   dataIcon="UserCircleWithBg"
@@ -123,9 +112,8 @@ const NavbarList: FC = () => {
                   href="/mechanic/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Stwórz naprawę" href="/mechanic/repair" />
                 <NavbarListItem
-                  name="Kalendarz zleceń"
+                  name="Mój kalendarz"
                   href="/mechanic/calendar"
                 />
                 <NavbarListItem

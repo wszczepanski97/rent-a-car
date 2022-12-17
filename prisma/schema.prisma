@@ -159,8 +159,8 @@ model relokacje {
   @@index([IdLokalizacje_Podstawienie], map: "Relokacje_Lokalizacje_Podstawienie")
   @@index([IdPracownicy_Odbior], map: "Relokacje_Pracownicy_Odbior")
   @@index([IdPracownicy_Podstawienie], map: "Relokacje_Pracownicy_Podstawienie")
-  @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
   @@index([IdUslugi], map: "Relokacje_Uslugi")
+  @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
 }
 
 model role {
@@ -279,7 +279,7 @@ model uslugistatus {
   Status         String   @db.VarChar(150)
   uslugi         uslugi[]
 
-  @@index([IdUslugiStatus], map: "UszkodzeniaStatus_idx_1")
+  @@index([IdUslugiStatus], map: "UslugiStatus_idx_1")
 }
 
 model uszkodzenia {

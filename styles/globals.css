@@ -156,5 +156,18 @@ button {
 }
 
 #scheduler_dialog_wrapper {
+  height: 600px;
   width: 1030px !important;
+}
+
+.e-form-container,
+.e-schedule-form,
+.e-schedule-form > div,
+.e-tab,
+.e-content,
+.e-item,
+.e-item > div,
+.e-item > div > div {
+  height: 99% !important;
+  max-height: 100% !important;
 }
