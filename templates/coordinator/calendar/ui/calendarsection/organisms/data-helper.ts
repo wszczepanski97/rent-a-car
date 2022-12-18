@@ -25,13 +25,6 @@ export type Data = {
 };
 
 export const getData = (services: Service[]) => {
-  // const relokacje = services
-  //   .map((service) => service.wypozyczenia)
-  //   .filter((service) => !!service.length)
-  //   .flat()
-  //   .map((service) => service.relokacje)
-  //   .filter((service) => !!service.length)
-  //   .flat();
   return extend(
     [],
     [
@@ -67,36 +60,6 @@ export const getData = (services: Service[]) => {
           IsReadonly: service.DataDo && new Date(service.DataDo) < new Date(),
         };
       }),
-      // ...relokacje.map((relokacja) => ({
-      //   Subject: `Relokacja ${relokacja.Typ_Relokacja} ${relokacja.uslugi.samochody.Marka} ${relokacja.uslugi.samochody.Model}`,
-      //   Client: `${relokacja.wypozyczenia.klienci.uzytkownicy.Imie} ${relokacja.wypozyczenia.klienci.uzytkownicy.Nazwisko}`,
-      //   CategoryColor: "#b5a32d",
-      //   StartTime: new Date(
-      //     new Date(relokacja.uslugi.DataOd).setHours(
-      //       new Date(relokacja.uslugi.DataOd).getHours() - 1
-      //     )
-      //   ),
-      //   EndTime: new Date(
-      //     new Date(relokacja.uslugi.DataDo).setHours(
-      //       new Date(relokacja.uslugi.DataDo).getHours() - 1
-      //     )
-      //   ),
-      //   Description: relokacja.uslugi.Opis,
-      //   Type: "Relokacja",
-      //   AssignedWorker:
-      //     relokacja.Typ_Relokacja === "Podstawienie"
-      //       ? relokacja.IdPracownicy_Podstawienie
-      //       : relokacja.IdPracownicy_Odbior,
-      //   Location:
-      //     relokacja.Typ_Relokacja === "Podstawienie"
-      //       ? relokacja.IdLokalizacje_Podstawienie
-      //       : relokacja.IdLokalizacje_Odbior,
-      //   StartTimezone: "Europe/Warsaw",
-      //   EndTimezone: "Europe/Warsaw",
-      //   IsReadonly:
-      //     relokacja.uslugi.DataDo &&
-      //     new Date(relokacja.uslugi.DataDo) < new Date(),
-      // })),
     ],
     undefined,
     true

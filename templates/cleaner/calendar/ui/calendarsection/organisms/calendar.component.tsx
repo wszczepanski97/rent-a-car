@@ -13,6 +13,8 @@ import {
   Print,
   Resize,
   ScheduleComponent,
+  ViewDirective,
+  ViewsDirective,
   Week,
   WorkWeek,
 } from "@syncfusion/ej2-react-schedule";
@@ -288,6 +290,7 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
       </div>
       <ScheduleComponent
         id="scheduler"
+        locale="pl"
         cssClass="schedule-overview"
         ref={setSchedule}
         eventSettings={{
@@ -321,7 +324,13 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
         }}
         allowKeyboardInteraction
       >
-        <ViewsDirectives />
+        <ViewsDirective>
+          <ViewDirective option="Day" displayName="Dzisiaj" />
+          <ViewDirective option="Week" displayName="Tydzień" />
+          <ViewDirective option="WorkWeek" displayName="Tydzień roboczy" />
+          <ViewDirective option="Month" displayName="Miesiąc" />
+          <ViewDirective option="Agenda" />
+        </ViewsDirective>
         <Inject
           services={[
             Day,
