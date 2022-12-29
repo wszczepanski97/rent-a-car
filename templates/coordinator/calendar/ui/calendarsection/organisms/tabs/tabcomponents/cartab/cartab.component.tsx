@@ -8,7 +8,7 @@ import {
   RowSelectEventArgs,
   Sort,
 } from "@syncfusion/ej2-react-grids";
-import { Car } from "pages/coordinator/calendar";
+import { Car } from "pages/api/coordinator/calendar";
 import { FC, memo, useContext, useRef, useState } from "react";
 import { UslugaType } from "../../../add-event.component";
 import {
@@ -31,6 +31,7 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
   const {
     currentTab,
     selectedService,
+    selectedCar,
     setSelectedCar,
     setSelectedClient,
     setSelectedService,
@@ -67,6 +68,9 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
       availableCarGrid.dataSource = [...cars];
     }
   };
+  const selectedRowIndex = cars.findIndex(
+    (car) => car.IdSamochody === selectedCar?.IdSamochody
+  );
   return (
     <TabContainer height={500}>
       <TabTitle title="Wybierz auto z listy poniżej" />
@@ -78,10 +82,21 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
         clipMode="EllipsisWithTooltip"
         filterSettings={{ type: "CheckBox" }}
         ref={(grid) => (availableCarGrid = grid)}
+        selectedRowIndex={
+          selectedRowIndex === -1
+            ? undefined
+            : selectedRowIndex > 5
+            ? selectedRowIndex - 5
+            : selectedRowIndex
+        }
         width={1000}
         rowSelected={onCarSelected}
         created={getAvailableCars}
-        pageSettings={{ pageSize: 5 }}
+        pageSettings={{
+          pageSize: 5,
+          currentPage:
+            selectedRowIndex === -1 ? 1 : Math.floor(selectedRowIndex / 5) + 1,
+        }}
       >
         <ColumnsDirective>
           <ColumnDirective
@@ -125,5 +140,7 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
     </TabContainer>
   );
 });
+
+CarTab.displayName = "CarTab";
 
 export default CarTab;

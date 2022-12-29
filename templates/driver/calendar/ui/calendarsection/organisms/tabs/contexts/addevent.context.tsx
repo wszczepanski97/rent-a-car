@@ -1,5 +1,6 @@
-import { lokalizacje } from "@prisma/client";
+import { lokalizacje, wypozyczenia } from "@prisma/client";
 import { TabComponent } from "@syncfusion/ej2-react-navigations";
+import { Service } from "pages/driver/calendar";
 import {
   createContext,
   Dispatch,
@@ -12,6 +13,8 @@ import { RelocationType } from "../tabcomponents/relocationtypetab/relocationtyp
 
 export type AddEventContextInterface = {
   currentTab: React.MutableRefObject<TabComponent | null>;
+  selectedRent?: Service;
+  setSelectedRent: Dispatch<React.SetStateAction<Service | undefined>>;
   selectedRentId?: string;
   setSelectedRentId: Dispatch<React.SetStateAction<string | undefined>>;
   selectedRelocationType?: RelocationType;
@@ -39,12 +42,14 @@ export const AddEventContext = createContext({} as AddEventContextInterface);
 
 const AddEventContextProvider: FC = ({ children }) => {
   let currentTab = useRef<TabComponent | null>(null);
+  const [selectedRent, setSelectedRent] = useState<Service>();
   const [selectedRentId, setSelectedRentId] = useState<string>();
   const [selectedRelocationType, setSelectedRelocationType] =
     useState<RelocationType>();
   const [deliveryEstimationTime, setDeliveryEstimationTime] =
-    useState<string>("0");
-  const [pickupEstimationTime, setPickupEstimationTime] = useState<string>("0");
+    useState<string>("0.5");
+  const [pickupEstimationTime, setPickupEstimationTime] =
+    useState<string>("0.5");
   const [selectedCarPickupLocation, setSelectedCarPickupLocation] =
     useState<lokalizacje>();
   const [selectedCarDeliverLocation, setSelectedCarDeliverLocation] =
@@ -64,6 +69,8 @@ const AddEventContextProvider: FC = ({ children }) => {
     <AddEventContext.Provider
       value={{
         currentTab,
+        selectedRent,
+        setSelectedRent,
         selectedRentId,
         setSelectedRentId,
         selectedRelocationType,

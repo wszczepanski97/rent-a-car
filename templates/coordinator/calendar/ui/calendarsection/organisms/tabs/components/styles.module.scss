@@ -22,8 +22,8 @@
   width: 100%;
   background-color: #5aad73;
   border: 0;
-  &:hover,
-  &:active {
+  &:not(&:disabled):hover,
+  &:not(&:disabled):active {
     background-color: #5aad73;
   }
 }
@@ -31,4 +31,8 @@
 .tabBackButton {
   background-color: #ff5757;
   border: 0;
+  &:not(&:disabled):hover,
+  &:not(&:disabled):active {
+    background-color: #ff5757;
+  }
 }

@@ -30,23 +30,28 @@ type RentTabProps = {
 
 const RentTab: FC<RentTabProps> = ({ rents }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
-  const { selectedRentId, setSelectedRentId } = useContext(AddEventContext);
+  const { selectedRentId, setSelectedRentId, setSelectedRent } =
+    useContext(AddEventContext);
   return (
     <TabContainer>
-      <TabTitle title="Wybierz wypozyczenie" />
+      <TabTitle title="Wybierz wypożyczenie" />
       <TabError index={0} />
       <TabDropdown
         dataSource={rents?.map((rent) => String(rent?.IdWypozyczenia)) ?? []}
         dropdownRef={dropdownRef}
-        placeholder="Wypozyczenie..."
-        setSelectedProperty={setSelectedRentId}
+        placeholder="Wypożyczenie..."
+        setSelectedProperty={(e) => {
+          setSelectedRentId(e);
+          //@ts-ignore
+          setSelectedRent(rents.find((rent) => rent?.IdWypozyczenia == e));
+        }}
         value={selectedRentId}
       />
       <TabButtonContainer
         type={TabNextButtonType.DEFAULT}
         disabled={!selectedRentId}
         dropdownRef={dropdownRef}
-        errorMsg="Proszę wybrać wypozyczenie"
+        errorMsg="Proszę wybrać wypożyczenie"
         index={0}
         setSelectedProperty={setSelectedRentId}
         onBackClick={() => undefined}

@@ -36,4 +36,6 @@ const TabDropdown: FC<TabDropdownProps> = memo(
   }
 );
 
+TabDropdown.displayName = "TabDropdown";
+
 export default TabDropdown;

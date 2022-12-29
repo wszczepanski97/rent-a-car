@@ -1,6 +1,7 @@
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { Client } from "pages/coordinator/calendar";
+import { Client } from "pages/api/coordinator/calendar";
 import { FC, useContext, useRef, useState } from "react";
+import { CalendarContext } from "templates/coordinator/calendar/contexts/calendar.context";
 import {
   TabContainer,
   TabDropdown,

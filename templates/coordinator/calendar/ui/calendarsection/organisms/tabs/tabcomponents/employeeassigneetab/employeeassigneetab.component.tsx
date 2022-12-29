@@ -1,6 +1,7 @@
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-import { Employee } from "pages/coordinator/calendar";
+import { Employee } from "pages/api/coordinator/calendar";
 import { FC, useContext, useRef } from "react";
+import { CalendarContext } from "templates/coordinator/calendar/contexts/calendar.context";
 import { UslugaType } from "../../../add-event.component";
 import {
   TabButtonContainer,

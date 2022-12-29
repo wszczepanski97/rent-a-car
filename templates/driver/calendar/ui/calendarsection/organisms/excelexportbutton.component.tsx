@@ -13,21 +13,25 @@ export const ExcelExportButton: FC<ExcelExportButtonProps> = ({
   scheduleComponent,
 }) => {
   const onClick = () => {
+    console.log(
+      scheduleComponent
+        .getEvents()
+        .filter((event) => event.Type === "Relokacja")
+    );
     scheduleComponent.exportToExcel({
       exportType: "xlsx",
-      customData: scheduleComponent.getEvents(),
+      customData: scheduleComponent
+        .getEvents()
+        .filter((event) => event.Type === "Relokacja"),
       fields: [
         "Id",
         "Subject",
-        "ServiceType",
+        "Client",
         "StartTime",
         "EndTime",
-        "PickLocation",
-        "ReturnLocation",
-        "PickEmployee",
-        "ReturnEmployee",
-        "OwnerEmployee",
-        "Description",
+        "Type",
+        "AssignedWorker",
+        "Location",
       ],
     });
   };

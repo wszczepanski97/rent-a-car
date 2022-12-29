@@ -85,42 +85,6 @@
   background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-.schedule-overview .overview-toolbar {
-  display: flex;
-  height: 70px;
-}
-
-.schedule-overview .overview-toolbar .e-toolbar {
-  border-radius: 0;
-}
-
-.schedule-overview
-  .overview-toolbar
-  .e-toolbar
-  .e-toolbar-item
-  .e-tbar-btn.e-tbtn-txt {
-  display: inline-grid;
-}
-
-.schedule-overview .overview-toolbar .e-toolbar .e-toolbar-item.e-template {
-  margin: 0 5px;
-}
-
-.schedule-overview .overview-toolbar .overview-toolbar-settings {
-  border-radius: 0;
-  background-color: #f8f9fa;
-  border-color: rgba(0, 0, 0, 0.15);
-  border-left-width: 0;
-  border-top-width: 0;
-  box-shadow: none;
-  color: #495057;
-  height: 72px;
-  line-height: 1.6;
-  outline: none;
-  text-transform: capitalize;
-  width: 100%;
-}
-
 .schedule-overview .overview-content {
   border: 1px solid #00000026;
   border-top: 0;
@@ -364,25 +328,6 @@
   margin: -20px 2px 0 0;
   width: 20px;
   height: 20px;
-}
-
-.schedule-overview
-  .overview-toolbar
-  .e-toolbar
-  .e-toolbar-item
-  .e-tbar-btn.e-btn {
-  height: 50px !important;
-}
-
-.schedule-overview
-  .overview-toolbar
-  .e-toolbar
-  .e-toolbar-item:not(.e-separator) {
-  padding: 3.5px;
-}
-
-.schedule-overview .overview-toolbar .e-toolbar .e-toolbar-item .e-tbar-btn {
-  padding: 1.5px;
 }
 
 .e-bigger

@@ -1,5 +1,4 @@
 import { lokalizacje } from "@prisma/client";
-import { Employee } from "pages/coordinator/calendar";
 import { FC, useCallback, useContext, useRef } from "react";
 import { TabButtonContainer, TabContainer, TabTitle } from "../../components";
 import {
@@ -7,7 +6,6 @@ import {
   TabNextButtonType,
 } from "../../components/tabnextbutton/tabnextbutton.component";
 import { AddEventContext } from "../../contexts/addevent.context";
-import styles from "./relocationdetailstab.module.scss";
 
 type RelocationDetailsTabProps = { locations: lokalizacje[] };
 
@@ -16,6 +14,7 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
   let carDeliverLocationDropdown = useRef<HTMLSelectElement | null>(null);
   const {
     currentTab,
+    selectedRent,
     selectedRelocationType,
     pickupEstimationTime,
     setPickupEstimationTime,
@@ -56,8 +55,8 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
       if (errPickLocElement) errPickLocElement.innerText = "";
       if (errDelLocElement) errDelLocElement.innerText = "";
       removeItem(currentTab);
-      currentTab?.current?.enableTab(2, true);
-      currentTab?.current?.enableTab(1, false);
+      currentTab?.current?.enableTab(3, true);
+      currentTab?.current?.enableTab(2, false);
     }
   };
 
@@ -77,10 +76,14 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
 
   return (
     <TabContainer height={500} width={600}>
-      <TabTitle title={"Wybierz pracowników do podstawienia/odbioru auta"} />
-      <div
-        style={{ display: "flex", width: 600, justifyContent: "space-between" }}
-      >
+      <TabTitle
+        title={
+          selectedRelocationType === "Podstawienie"
+            ? "Wybierz pracownika do podstawienia auta"
+            : "Wybierz pracownika do odbioru auta"
+        }
+      />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         {selectedRelocationType === "Podstawienie" && (
           <div style={{ display: "flex", flexDirection: "column" }}>
             <label className="e-textlabel" style={{ fontSize: 14 }}>
@@ -96,7 +99,7 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
               </label>
               <input
                 type="number"
-                min="0"
+                min="0.5"
                 max="4"
                 step="0.5"
                 value={pickupEstimationTime}
@@ -122,6 +125,13 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
                 ))}
               </select>
             </div>
+            <i style={{ fontSize: 14, textDecoration: "underline" }}>
+              Pamiętaj, wypożyczenie rozpoczyna się o godzinie:
+              {selectedRent?.uslugi.DataOd}
+            </i>
+            <i style={{ fontSize: 14, textDecoration: "underline" }}>
+              Jest to czas w którym powinieneś znaleźć się na miejscu.
+            </i>
           </div>
         )}
         {selectedRelocationType === "Odbior" && (
@@ -139,9 +149,10 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
               </label>
               <input
                 type="number"
-                min="0"
+                min="0.5"
                 max="4"
                 step="0.5"
+                defaultValue="0.5"
                 value={deliveryEstimationTime}
                 onChange={onDeliveryEstimationTimeChange}
               />

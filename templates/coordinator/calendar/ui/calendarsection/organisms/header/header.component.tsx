@@ -8,26 +8,61 @@ const cx = classnames.bind(styles);
 
 const Header: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
   const onPrint = () => {
-    schedule?.print();
+    schedule?.print({
+      cssClass: "e-print-schedule",
+      currentView: schedule.currentView,
+      height: "auto",
+      locale: schedule.locale,
+      rowAutoHeight: false,
+      showHeaderBar: false,
+      showTimeIndicator: false,
+      showWeekNumber: false,
+      timeScale: { enable: true },
+      width: "auto",
+      workHours: {
+        start: "00:00",
+        end: "23:30",
+      },
+    });
   };
 
   const onExportClick = () => {
     schedule?.exportToExcel({
+      fieldsInfo: [
+        { name: "Id", text: "Id" },
+        { name: "Subject", text: "Nazwa" },
+        { name: "Type", text: "Typ serwisu" },
+        { name: "AssignedWorker", text: "Przypisany pracownik" },
+        { name: "Client", text: "Klient" },
+        { name: "StartTime", text: "Czas startu" },
+        { name: "EndTime", text: "Czas zakończenia" },
+        { name: "Description", text: "Opis" },
+        { name: "PickLocation", text: "Miejsce podstawienia" },
+        { name: "ReturnLocation", text: "Miejsce odbioru" },
+        { name: "PickEmployee", text: "Pracownik do podstawienia" },
+        { name: "ReturnEmployee", text: "Pracownik do odbioru" },
+      ],
+      customData: schedule?.getEvents().map((event) => ({
+        ...event,
+        StartTime: event.StartTime.toLocaleString(),
+        EndTime: event.EndTime.toLocaleString(),
+      })),
       exportType: "xlsx",
-      customData: schedule?.getEvents(),
       fields: [
         "Id",
         "Subject",
-        "ServiceType",
+        "Type",
+        "Client",
         "StartTime",
         "EndTime",
+        "Description",
         "PickLocation",
         "ReturnLocation",
         "PickEmployee",
         "ReturnEmployee",
-        "OwnerEmployee",
-        "Description",
+        "AssignedWorker",
       ],
+      fileName: `Wykaz Koordynator ${new Date().toLocaleDateString()}`,
     });
   };
   return (

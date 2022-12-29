@@ -4,6 +4,7 @@ import { AddEventContext } from "../../contexts/addevent.context";
 import { RelocationType } from "../relocationtypetab/relocationtypetab.component";
 export const SummaryTab: FC = () => {
   const {
+    selectedRentId,
     serviceDescription,
     setServiceDescription,
     selectedRelocationType,
@@ -23,6 +24,24 @@ export const SummaryTab: FC = () => {
             flexDirection: "column",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              padding: "10px 0",
+              alignItems: "center",
+            }}
+          >
+            <label
+              className="e-textlabel"
+              style={{ fontSize: "16px", fontWeight: 700 }}
+            >
+              Id Wypożyczenia
+            </label>
+            <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
+              {selectedRentId}
+            </span>
+          </div>
           {selectedRelocationType === RelocationType.PODSTAWIENIE && (
             <div>
               <div
@@ -30,12 +49,16 @@ export const SummaryTab: FC = () => {
                   display: "flex",
                   flexDirection: "column",
                   padding: "10px 0",
+                  alignItems: "center",
                 }}
               >
-                <label className="e-textlabel">
+                <label
+                  className="e-textlabel"
+                  style={{ fontSize: "16px", fontWeight: 700 }}
+                >
                   Lokalizacja - podstawienie
                 </label>
-                <span>
+                <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
                   {selectedCarPickupLocation
                     ? `${selectedCarPickupLocation?.Miejscowosc} ${selectedCarPickupLocation?.Ulica} ${selectedCarPickupLocation?.NumerUlicy}`
                     : "-"}
@@ -46,12 +69,16 @@ export const SummaryTab: FC = () => {
                   display: "flex",
                   flexDirection: "column",
                   padding: "10px 0",
+                  alignItems: "center",
                 }}
               >
-                <label className="e-textlabel">
+                <label
+                  className="e-textlabel"
+                  style={{ fontSize: "16px", fontWeight: 700 }}
+                >
                   Szacowany czas dojazdu - podstawienie
                 </label>
-                <span>
+                <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
                   {pickupEstimationTime ? `${pickupEstimationTime}h` : "-"}
                 </span>
               </div>
@@ -64,12 +91,16 @@ export const SummaryTab: FC = () => {
                   display: "flex",
                   flexDirection: "column",
                   padding: "10px 0",
+                  alignItems: "center",
                 }}
               >
-                <label className="e-textlabel">
+                <label
+                  className="e-textlabel"
+                  style={{ fontSize: "16px", fontWeight: 700 }}
+                >
                   Lokalizacja - podstawienie
                 </label>
-                <span>
+                <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
                   {selectedCarDeliverLocation
                     ? `${selectedCarDeliverLocation?.Miejscowosc} ${selectedCarDeliverLocation?.Ulica} ${selectedCarDeliverLocation?.NumerUlicy}`
                     : "-"}
@@ -79,13 +110,17 @@ export const SummaryTab: FC = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
+                  alignItems: "center",
                   padding: "10px 0",
                 }}
               >
-                <label className="e-textlabel">
+                <label
+                  className="e-textlabel"
+                  style={{ fontSize: "16px", fontWeight: 700 }}
+                >
                   Szacowany czas dojazdu - odbiór
                 </label>
-                <span>
+                <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
                   {deliveryEstimationTime ? `${deliveryEstimationTime}h` : "-"}
                 </span>
               </div>

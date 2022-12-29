@@ -4,64 +4,23 @@ import {
   TabItemDirective,
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
-import dynamic from "next/dynamic";
-import type { CalendarCoordinatorPageProps } from "pages/coordinator/calendar";
+import { CalendarCoordinatorPageProps } from "pages/coordinator/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
-
-const AdditionalRentOptionsTab = dynamic(
-  () =>
-    import(
-      "./tabs/tabcomponents/additionalrentoptionstab/additionalrentoptionstab.component"
-    )
-);
-const CarTab = dynamic(
-  () => import("./tabs/tabcomponents/cartab/cartab.component")
-);
-const ClientTab = dynamic(
-  () => import("./tabs/tabcomponents/clienttab/clienttab.component")
-);
-const DescriptionTab = dynamic(
-  () => import("./tabs/tabcomponents/descriptiontab/descriptiontab.component")
-);
-
-const EmployeeAssigneeTab = dynamic(
-  () =>
-    import(
-      "./tabs/tabcomponents/employeeassigneetab/employeeassigneetab.component"
-    )
-);
-
-const EmployeeRentTab = dynamic(
-  () => import("./tabs/tabcomponents/employeerenttab/employeerenttab.component")
-);
-
-const RepairTypeTab = dynamic(
-  () => import("./tabs/tabcomponents/repairtypetab/repairtypetab.component")
-);
-
-const ServiceTypeTab = dynamic(
-  () => import("./tabs/tabcomponents/servicetypetab/servicetypetab.component")
-);
-
-const SummaryTab = dynamic(
-  () => import("./tabs/tabcomponents/summarytab/summarytab.component")
-);
-
-const TimeRangeTab = dynamic(
-  () => import("./tabs/tabcomponents/timerangetab/timerangetab.component")
-);
-
-const TimeRangeWashingTab = dynamic(
-  () =>
-    import(
-      "./tabs/tabcomponents/timerangewashingtab/timerangewashingtab.component"
-    )
-);
-
-const WashingTypeTab = dynamic(
-  () => import("./tabs/tabcomponents/washingtypetab/washingtypetab.component")
-);
+import {
+  AdditionalRentOptionsTab,
+  CarTab,
+  ClientTab,
+  DescriptionTab,
+  EmployeeAssigneeTab,
+  RepairTypeTab,
+  ServiceTypeTab,
+  SummaryTab,
+  TimeRangeTab,
+  TimeRangeWashingTab,
+  WashingTypeTab,
+} from "./tabs/tabcomponents";
+import EmployeeRentTab from "./tabs/tabcomponents/employeerenttab/employeerenttab.component";
 
 export enum UslugaType {
   WYPOŻYCZENIE = "Wypożyczenie",
@@ -69,7 +28,14 @@ export enum UslugaType {
   NAPRAWA = "Naprawa",
 }
 
-export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
+export const AddEvent: FC<CalendarCoordinatorPageProps> = ({
+  additionalRentOptions,
+  cars,
+  clients,
+  employees,
+  insurances,
+  locations,
+}) => {
   const { currentTab, selectedService } = useContext(AddEventContext);
   const tabSelecting = (e: SelectEventArgs) => {
     if (e.isSwiped) {
@@ -98,9 +64,9 @@ export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
           }
           content={() =>
             selectedService === UslugaType.WYPOŻYCZENIE ? (
-              <ClientTab clients={props.clients} />
+              <ClientTab clients={clients} />
             ) : (
-              <CarTab cars={props.cars} />
+              <CarTab cars={cars} />
             )
           }
           disabled={true}
@@ -113,7 +79,7 @@ export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
           }
           content={
             selectedService === UslugaType.WYPOŻYCZENIE
-              ? () => <CarTab cars={props.cars} />
+              ? () => <CarTab cars={cars} />
               : () => <TimeRangeWashingTab />
           }
           disabled={true}
@@ -127,7 +93,7 @@ export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
           content={
             selectedService === UslugaType.WYPOŻYCZENIE
               ? () => <TimeRangeTab />
-              : () => <EmployeeAssigneeTab employees={props.employees} />
+              : () => <EmployeeAssigneeTab employees={employees} />
           }
           disabled={true}
         />
@@ -143,8 +109,8 @@ export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
           content={() =>
             selectedService === UslugaType.WYPOŻYCZENIE ? (
               <AdditionalRentOptionsTab
-                insurances={props.insurances}
-                additionalOptions={props.additionalRentOptions}
+                additionalRentOptions={additionalRentOptions}
+                insurances={insurances}
               />
             ) : selectedService === UslugaType.MYCIE ? (
               <WashingTypeTab />
@@ -164,8 +130,8 @@ export const AddEvent: FC<CalendarCoordinatorPageProps> = (props) => {
             selectedService === UslugaType.WYPOŻYCZENIE
               ? () => (
                   <EmployeeRentTab
-                    employees={props.employees}
-                    locations={props.locations}
+                    employees={employees}
+                    locations={locations}
                   />
                 )
               : () => <DescriptionTab />

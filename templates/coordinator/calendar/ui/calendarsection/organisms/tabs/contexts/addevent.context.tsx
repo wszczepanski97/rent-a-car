@@ -1,6 +1,6 @@
 import { dodatkoweopcje, lokalizacje, ubezpieczenia } from "@prisma/client";
 import { TabComponent } from "@syncfusion/ej2-react-navigations";
-import { Car, Client, Employee } from "pages/coordinator/calendar";
+import { Car, Client, Employee } from "pages/api/coordinator/calendar";
 import {
   createContext,
   Dispatch,

@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { TabBackButton, TabNextButton } from "..";
+import { AddEventContext } from "../../contexts/addevent.context";
 import styles from "../styles.module.scss";
 import { TabNextButtonProps } from "../tabnextbutton/tabnextbutton.component";
 
@@ -11,11 +12,17 @@ const TabButtonContainer: FC<TabButtonContainerProps> = ({
   index,
   onBackClick,
   ...rest
-}) => (
-  <div className={styles.tabButtonContainer}>
-    <TabNextButton {...rest} index={index} />
-    <TabBackButton index={index} onBackClick={onBackClick} />
-  </div>
-);
+}) => {
+  const { currentTab } = useContext(AddEventContext);
+  console.log(currentTab?.current?.selectedItem);
+  return (
+    <div className={styles.tabButtonContainer}>
+      <TabNextButton {...rest} index={index} />
+      {currentTab?.current?.selectedItem !== 0 && (
+        <TabBackButton index={index} onBackClick={onBackClick} />
+      )}
+    </div>
+  );
+};
 
 export default TabButtonContainer;

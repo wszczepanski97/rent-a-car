@@ -329,7 +329,7 @@ export const Calendar: FC<CalendarMechanicPageProps> = memo(function Calendar({
         allowKeyboardInteraction
       >
         <ViewsDirective>
-          <ViewDirective option="Day" displayName="Dzisiaj" />
+          <ViewDirective option="Day" displayName="Dzień" />
           <ViewDirective option="Week" displayName="Tydzień" />
           <ViewDirective option="WorkWeek" displayName="Tydzień roboczy" />
           <ViewDirective option="Month" displayName="Miesiąc" />

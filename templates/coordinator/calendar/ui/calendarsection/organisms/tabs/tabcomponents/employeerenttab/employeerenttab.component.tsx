@@ -1,5 +1,5 @@
 import { lokalizacje } from "@prisma/client";
-import { Employee } from "pages/coordinator/calendar";
+import { Employee } from "pages/api/coordinator/calendar";
 import { FC, useCallback, useContext, useRef } from "react";
 import { TabButtonContainer, TabContainer, TabTitle } from "../../components";
 import {
@@ -30,13 +30,9 @@ const EmployeeRentTab: FC<EmployeeRentTabProps> = ({
     setSelectedCarDeliver,
     setPickupEstimationTime,
     setDeliveryEstimationTime,
-    selectedCarPickupLocation,
     setSelectedCarPickupLocation,
-    selectedCarDeliverLocation,
     setSelectedCarDeliverLocation,
-    selectedCarDeliverEmployee,
     setSelectedCarPickupEmployee,
-    selectedCarPickupEmployee,
     setSelectedCarDeliverEmployee,
     setSelectedAdditionalOptions,
     setSelectedInsurance,
@@ -50,11 +46,11 @@ const EmployeeRentTab: FC<EmployeeRentTabProps> = ({
         const eventsinDateTimeRange = employee.uslugi.filter((usluga) => {
           const dataOd = new Date(usluga.DataOd);
           const dataDo = new Date(usluga.DataDo);
-          const selectedEnd = new Date(selectedDateTimeRange.startDateValue);
           const selectedStart = new Date(
-            selectedDateTimeRange.startDateValue.getTime() -
+            new Date(selectedDateTimeRange.startDateValue).getTime() -
               Number(hoursTo) * 60 * 60 * 1000
           );
+          const selectedEnd = new Date(selectedDateTimeRange.endDateValue);
           return (
             (dataOd >= selectedStart &&
               dataOd < selectedEnd &&
@@ -73,11 +69,11 @@ const EmployeeRentTab: FC<EmployeeRentTabProps> = ({
         const eventsinDateTimeRange = employee.uslugi.filter((usluga) => {
           const dataOd = new Date(usluga.DataOd);
           const dataDo = new Date(usluga.DataDo);
-          const selectedEnd = new Date(selectedDateTimeRange.startDateValue);
           const selectedStart = new Date(
-            selectedDateTimeRange.startDateValue.getTime() -
+            new Date(selectedDateTimeRange.startDateValue).getTime() -
               Number(hoursTo) * 60 * 60 * 1000
           );
+          const selectedEnd = new Date(selectedDateTimeRange.endDateValue);
           return (
             (dataOd >= selectedStart &&
               dataOd < selectedEnd &&

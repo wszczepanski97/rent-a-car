@@ -41,12 +41,14 @@ export const TimeRangeRepairTab: FC = () => {
   } = useMemo(() => {
     const blockedPeriodsStartDate =
       selectedCar?.uslugi
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
+        ?.map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     const blockedPeriodsEndDate =
       selectedCar?.uslugi
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, false))
+        ?.map((usluga) =>
+          getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+        )
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };

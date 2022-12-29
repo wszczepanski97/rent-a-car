@@ -52,7 +52,6 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
     //   args.requestType === "eventChanged"
     // ) {
     //   const body = JSON.stringify({
-    //     type: UslugaType.MYCIE,
     //     service: {
     //       IdUslugi:
     //         args.requestType === "eventChanged"
@@ -311,10 +310,7 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
         }}
         editorTemplate={useCallback(
           () => (
-            <AddEvent
-              locations={locations}
-              rents={services.map((service) => service?.wypozyczenia).flat()}
-            />
+            <AddEvent locations={locations} rents={services} />
           ),
           [locations, services]
         )}
@@ -329,14 +325,13 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
           footer: footerTemplate,
         }}
         workHours={{
-          highlight: true,
           start: "00:00",
           end: "23:30",
         }}
         allowKeyboardInteraction
       >
         <ViewsDirective>
-          <ViewDirective option="Day" displayName="Dzisiaj" />
+          <ViewDirective option="Day" displayName="Dzień" />
           <ViewDirective option="Week" displayName="Tydzień" />
           <ViewDirective option="WorkWeek" displayName="Tydzień roboczy" />
           <ViewDirective option="Month" displayName="Miesiąc" />

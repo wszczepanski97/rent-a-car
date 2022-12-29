@@ -27,21 +27,25 @@ export type Driver =
     })
   | null;
 
-export type Service =
-  | (uslugi & {
-      wypozyczenia: (wypozyczenia & {
-        relokacje: (relokacje & {
-          wypozyczenia:
-            | (wypozyczenia & {
-                klienci: klienci & {
-                  uzytkownicy: uzytkownicy;
-                };
-              })
-            | null;
-        })[];
-      })[];
-    })
-  | null;
+export type Service = wypozyczenia & {
+  relokacje: (relokacje & {
+    uslugi:
+      | (uslugi & {
+          samochody: samochody;
+        })
+      | null;
+    wypozyczenia:
+      | (wypozyczenia & {
+          klienci: klienci & {
+            uzytkownicy: uzytkownicy;
+          };
+        })
+      | null;
+  })[];
+  uslugi: uslugi & {
+    samochody: samochody;
+  };
+};
 
 export type CalendarDriverPageProps = {
   driver: Driver;
@@ -106,50 +110,45 @@ const getServices: GetServerSideProps<CalendarDriverPageProps> = async (
       },
     };
 
-  const services: Service[] = await prisma.uslugi.findMany({
+  const services: Service[] = await prisma.wypozyczenia.findMany({
     where: {
-      wypozyczenia: {
+      relokacje: {
         some: {
-          relokacje: {
-            some: {
-              OR: [
-                {
-                  IdPracownicy_Odbior: driver?.pracownicy[0].IdPracownicy,
-                },
-                {
-                  IdPracownicy_Podstawienie: driver?.pracownicy[0].IdPracownicy,
-                },
-              ],
+          OR: [
+            {
+              IdPracownicy_Odbior: driver?.pracownicy[0].IdPracownicy,
             },
-          },
+            {
+              IdPracownicy_Podstawienie: driver?.pracownicy[0].IdPracownicy,
+            },
+          ],
         },
       },
     },
     include: {
-      wypozyczenia: {
+      relokacje: {
         include: {
-          relokacje: {
+          uslugi: {
             include: {
-              uslugi: {
+              samochody: true,
+            },
+          },
+          wypozyczenia: {
+            include: {
+              klienci: {
                 include: {
-                  samochody: true,
-                },
-              },
-              wypozyczenia: {
-                include: {
-                  klienci: {
-                    include: {
-                      uzytkownicy: true,
-                    },
-                  },
+                  uzytkownicy: true,
                 },
               },
             },
           },
         },
       },
-      uslugistatus: true,
-      samochody: true,
+      uslugi: {
+        include: {
+          samochody: true,
+        },
+      },
     },
   });
 

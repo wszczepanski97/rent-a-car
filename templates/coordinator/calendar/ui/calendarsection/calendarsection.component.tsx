@@ -1,12 +1,11 @@
 import { FullScreenContext } from "contexts/full-screen.context";
 import Head from "next/head";
-import { CalendarCoordinatorPageProps } from "pages/coordinator/calendar";
-import { FC, useContext } from "react";
+import { useContext } from "react";
 import { Calendar } from "./organisms/calendar.component";
 import styles from "./organisms/calendar.module.scss";
 import AddEventContextProvider from "./organisms/tabs/contexts/addevent.context";
 
-const CalendarSection: FC<CalendarCoordinatorPageProps> = (props) => {
+const CalendarSection = () => {
   const { screen } = useContext(FullScreenContext);
   return (
     <>
@@ -30,7 +29,7 @@ const CalendarSection: FC<CalendarCoordinatorPageProps> = (props) => {
         }
       >
         <AddEventContextProvider>
-          <Calendar {...props} />
+          <Calendar />
         </AddEventContextProvider>
       </section>
     </>

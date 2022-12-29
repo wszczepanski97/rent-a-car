@@ -34,6 +34,7 @@ export const TimeRangeTab: FC = () => {
     currentTab,
     selectedCar,
     selectedClient,
+    selectedDateTimeRange,
     setSelectedCar,
     setPriceForService,
     setSelectedDateTimeRange,
@@ -44,7 +45,7 @@ export const TimeRangeTab: FC = () => {
   } = useMemo(() => {
     const carBlockedPeriodsStartDate =
       selectedCar?.uslugi
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
+        ?.map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
         .flat() || [];
     const clientBlockedPeriodsStartDate =
       selectedClient?.wypozyczenia
@@ -56,7 +57,9 @@ export const TimeRangeTab: FC = () => {
     ).sort((a, b) => a.getTime() - b.getTime());
     const carBlockedPeriodsEndDate =
       selectedCar?.uslugi
-        .map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, false))
+        ?.map((usluga) =>
+          getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+        )
         .flat() || [];
     const clientBlockedPeriodsEndDate =
       selectedClient?.wypozyczenia
@@ -67,10 +70,10 @@ export const TimeRangeTab: FC = () => {
       new Set([...carBlockedPeriodsEndDate, ...clientBlockedPeriodsEndDate])
     ).sort((a, b) => a.getTime() - b.getTime());
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };
-  }, [getBlockedPeriods]);
+  }, [selectedCar?.uslugi, selectedClient?.wypozyczenia]);
   const blockedDates = useMemo(
     () => getBlockedDates(blockedPeriods.blockedPeriodsStartDate),
-    [blockedPeriods, getBlockedDates]
+    [blockedPeriods]
   );
 
   const onRenderCell = (args: RenderDayCellEventArgs) => {
@@ -83,7 +86,10 @@ export const TimeRangeTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsStartDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < new Date()
+    ) {
       args.isDisabled = true;
     }
   };
@@ -92,7 +98,10 @@ export const TimeRangeTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsEndDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < getNextHalfHourDate(new Date())
+    ) {
       args.isDisabled = true;
     }
   };
@@ -123,11 +132,27 @@ export const TimeRangeTab: FC = () => {
           )
         : getNextHalfHourDateForToday(new Date());
     } else return getNextHalfHourDateForToday(new Date());
-  }, [blockedDates]);
+  }, [blockedDates, blockedPeriods.blockedPeriodsStartDate]);
 
   const [state, setState] = useState({
-    startDateValue: minDate,
-    endDateValue: getNextHalfHourDate(minDate),
+    startDateValue: selectedDateTimeRange?.startDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.startDateValue).getTime() +
+            new Date(
+              selectedDateTimeRange?.startDateValue
+            ).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : minDate,
+    endDateValue: selectedDateTimeRange?.endDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.endDateValue).getTime() +
+            new Date(selectedDateTimeRange?.endDateValue).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : getNextHalfHourDate(minDate),
   });
 
   const onChangeStartDate = useCallback(
@@ -153,7 +178,7 @@ export const TimeRangeTab: FC = () => {
         setState({ ...state, startDateValue: new Date(e.value) });
       }
     },
-    [state, getNextHalfHourDate]
+    [state, blockedPeriods.blockedPeriodsStartDate]
   );
 
   const onChangeEndDate = useCallback(
@@ -177,7 +202,7 @@ export const TimeRangeTab: FC = () => {
         setState({ ...state, endDateValue: new Date(e.value) });
       }
     },
-    [state, blockedPeriods, getPrevHalfHourDate]
+    [state, blockedPeriods]
   );
 
   const onCustomOnNextButtonClick = (range: DateRange) => {

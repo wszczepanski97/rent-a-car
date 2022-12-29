@@ -1,6 +1,7 @@
 import { dodatkoweopcje, ubezpieczenia } from "@prisma/client";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { FC, useCallback, useContext, useRef } from "react";
+import { CalendarContext } from "templates/coordinator/calendar/contexts/calendar.context";
 import {
   TabButtonContainer,
   TabContainer,
@@ -17,7 +18,7 @@ import styles from "./additionalrentoptionstab.module.scss";
 
 type AdditionalRentTabOptionsTabProps = {
   insurances: ubezpieczenia[];
-  additionalOptions: dodatkoweopcje[];
+  additionalRentOptions: dodatkoweopcje[];
 };
 
 const getDataNames = (id: string) => {
@@ -32,8 +33,8 @@ const getDataNames = (id: string) => {
 };
 
 const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
+  additionalRentOptions,
   insurances,
-  additionalOptions,
 }) => {
   let dropdownRef = useRef<DropDownListComponent | null>(null);
   const {
@@ -45,13 +46,16 @@ const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
     setSelectedInsurance,
   } = useContext(AddEventContext);
 
-  const getAccesories = () =>
-    getDataNames("accesories").map(
-      (accesory) =>
-        additionalOptions.find(
-          (additionalOption) => additionalOption.Nazwa === accesory
-        ) as dodatkoweopcje
-    );
+  const getAccesories = useCallback(
+    () =>
+      getDataNames("accesories").map(
+        (accesory) =>
+          additionalRentOptions.find(
+            (additionalOption) => additionalOption.Nazwa === accesory
+          ) as dodatkoweopcje
+      ),
+    [additionalRentOptions]
+  );
   const onCustomOnNextButtonClick = () => {
     const errorElement = document.getElementById("err4");
     const insurance = insurances.find(
@@ -106,7 +110,7 @@ const AdditionalRentTabOptionsTab: FC<AdditionalRentTabOptionsTabProps> = ({
         Dodatkowe opcje
       </label>
       <div id="accesories" style={{ width: 500 }}>
-        {additionalOptions.map((option) => (
+        {additionalRentOptions.map((option) => (
           <label
             key={option.Nazwa}
             className={styles.container}

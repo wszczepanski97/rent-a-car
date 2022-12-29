@@ -99,28 +99,6 @@ model oddzialy_hist {
   @@index([IdOddzialy_hist, IdPracownicy, IdOddzialy], map: "Oddzialy_hist_idx_1")
 }
 
-model oplaty {
-  IdOplaty       Int          @id @default(autoincrement())
-  DataOplaty     DateTime     @db.Timestamp(0)
-  KwotaOplacona  Int
-  IdWypozyczenia Int
-  IdOplatyStatus Int
-  oplatystatus   oplatystatus @relation(fields: [IdOplatyStatus], references: [IdOplatyStatus], onUpdate: Restrict, map: "Oplaty_OplatyStatus")
-  wypozyczenia   wypozyczenia @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Cascade, onUpdate: Restrict, map: "Oplaty_Wypozyczenia")
-
-  @@index([IdOplatyStatus], map: "Oplaty_OplatyStatus")
-  @@index([IdWypozyczenia], map: "Oplaty_Wypozyczenia")
-  @@index([IdOplaty, DataOplaty, IdWypozyczenia, IdOplatyStatus], map: "Oplaty_idx_1")
-}
-
-model oplatystatus {
-  IdOplatyStatus Int      @id @default(autoincrement())
-  Opis           String   @db.VarChar(150)
-  oplaty         oplaty[]
-
-  @@index([IdOplatyStatus], map: "OplatyStatus_idx_1")
-}
-
 model pracownicy {
   IdPracownicy                                              Int             @id @default(autoincrement())
   IdStanowiska                                              Int
@@ -334,11 +312,11 @@ model wypozyczenia {
   IdUslugi                    Int
   Czy_Podstawic_Auto          Boolean                       @db.Bit(1)
   Czy_Odebrac_Auto            Boolean                       @db.Bit(1)
+  OplatyStatus                String                        @default("Potwierdzona") @db.VarChar(45)
   klienci                     klienci                       @relation(fields: [IdKlienci], references: [IdKlienci], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Klienci")
   ubezpieczenia               ubezpieczenia?                @relation(fields: [IdUbezpieczenia], references: [IdUbezpieczenia], onDelete: Restrict, onUpdate: Restrict, map: "Wypozyczenia_Ubezpieczenia")
   uslugi                      uslugi                        @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Wypozyczenia_Uslugi")
   dodatkoweopcje_wypozyczenia dodatkoweopcje_wypozyczenia[]
-  oplaty                      oplaty[]
   relokacje                   relokacje[]
 
   @@index([IdKlienci], map: "Wypozyczenia_Klienci")

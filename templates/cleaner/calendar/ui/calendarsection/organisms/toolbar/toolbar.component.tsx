@@ -52,7 +52,7 @@ const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
 
   const onToolbarItemClicked = (args: ClickEventArgs) => {
     if (schedule) {
-      if (args.item.text !== "Nowa Usługa") {
+      if (args.item.text !== "Dodaj mycie") {
         schedule.currentView = args.item.text as View;
       } else {
         //@ts-ignore
@@ -75,13 +75,13 @@ const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
       <ItemsDirective>
         <ItemDirective
           prefixIcon="e-icons e-plus"
-          tooltipText="Nowa Usługa"
-          text="Nowa Usługa"
+          tooltipText="Dodaj mycie"
+          text="Dodaj mycie"
         />
         <ItemDirective type="Separator" />
         <ItemDirective
           template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_725" tabindex="-1" aria-label="Day" style="width: auto;"><span class="e-btn-icon e-icons e-day e-icon-left"></span><span class="e-tbar-btn-text">Dzień</span></button>`}
-          tooltipText="Dzisiaj"
+          tooltipText="Dzień"
           text="Day"
         />
         <ItemDirective

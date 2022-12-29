@@ -6,6 +6,7 @@ import {
 } from "@syncfusion/ej2-react-navigations";
 import { ScheduleComponent, View } from "@syncfusion/ej2-react-schedule";
 import type { FC } from "react";
+import styles from "./toolbar.module.scss";
 
 const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
   const updateLiveTime = () => {
@@ -62,50 +63,52 @@ const Toolbar: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
   };
 
   return (
-    <ToolbarComponent
-      id="toolbar_options"
-      width="100%"
-      created={() =>
-        setInterval(() => {
-          updateLiveTime();
-        }, 1000)
-      }
-      clicked={onToolbarItemClicked}
-    >
-      <ItemsDirective>
-        <ItemDirective
-          prefixIcon="e-icons e-plus"
-          tooltipText="Nowa Usługa"
-          text="Nowa Usługa"
-        />
-        <ItemDirective type="Separator" />
-        <ItemDirective
-          template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_725" tabindex="-1" aria-label="Day" style="width: auto;"><span class="e-btn-icon e-icons e-day e-icon-left"></span><span class="e-tbar-btn-text">Dzisiaj</span></button>`}
-          tooltipText="Dzisiaj"
-          text="Day"
-        />
-        <ItemDirective
-          template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_545" tabindex="-1" aria-label="WorkWeek" style="width: auto;"><span class="e-btn-icon e-icons e-week e-icon-left"></span><span class="e-tbar-btn-text">Tydzień</span></button>`}
-          tooltipText="Tydzień"
-          text="Week"
-        />
-        <ItemDirective
-          template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_545" tabindex="-1" aria-label="WorkWeek" style="width: auto;"><span class="e-btn-icon e-icons e-week e-icon-left"></span><span class="e-tbar-btn-text">Tydzień roboczy</span></button>`}
-          tooltipText="Tydzień roboczy"
-          text="WorkWeek"
-        />
-        <ItemDirective
-          template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_363" tabindex="-1" aria-label="Month" style="width: auto;"><span class="e-btn-icon e-icons e-month e-icon-left"></span><span class="e-tbar-btn-text">Miesiąc</span></button>`}
-          tooltipText="Miesiąc"
-          text="Month"
-        />
-        <ItemDirective
-          prefixIcon="e-icons e-agenda-date-range"
-          tooltipText="Agenda"
-          text="Agenda"
-        />
-      </ItemsDirective>
-    </ToolbarComponent>
+    <div className={styles["overview-toolbar"]}>
+      <ToolbarComponent
+        id="toolbar_options"
+        width="100%"
+        created={() =>
+          setInterval(() => {
+            updateLiveTime();
+          }, 1000)
+        }
+        clicked={onToolbarItemClicked}
+      >
+        <ItemsDirective>
+          <ItemDirective
+            prefixIcon="e-icons e-plus"
+            tooltipText="Nowa Usługa"
+            text="Nowa Usługa"
+          />
+          <ItemDirective type="Separator" />
+          <ItemDirective
+            template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_725" tabindex="-1" aria-label="Day" style="width: auto;"><span class="e-btn-icon e-icons e-day e-icon-left"></span><span class="e-tbar-btn-text">Dzień</span></button>`}
+            tooltipText="Dzień"
+            text="Day"
+          />
+          <ItemDirective
+            template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_545" tabindex="-1" aria-label="WorkWeek" style="width: auto;"><span class="e-btn-icon e-icons e-week e-icon-left"></span><span class="e-tbar-btn-text">Tydzień</span></button>`}
+            tooltipText="Tydzień"
+            text="Week"
+          />
+          <ItemDirective
+            template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_545" tabindex="-1" aria-label="WorkWeek" style="width: auto;"><span class="e-btn-icon e-icons e-week e-icon-left"></span><span class="e-tbar-btn-text">Tydzień roboczy</span></button>`}
+            tooltipText="Tydzień roboczy"
+            text="WorkWeek"
+          />
+          <ItemDirective
+            template={`<button class="e-tbar-btn e-tbtn-txt e-control e-btn e-lib" type="button" id="e-tbr-btn_363" tabindex="-1" aria-label="Month" style="width: auto;"><span class="e-btn-icon e-icons e-month e-icon-left"></span><span class="e-tbar-btn-text">Miesiąc</span></button>`}
+            tooltipText="Miesiąc"
+            text="Month"
+          />
+          <ItemDirective
+            prefixIcon="e-icons e-agenda-date-range"
+            tooltipText="Agenda"
+            text="Agenda"
+          />
+        </ItemsDirective>
+      </ToolbarComponent>
+    </div>
   );
 };
 

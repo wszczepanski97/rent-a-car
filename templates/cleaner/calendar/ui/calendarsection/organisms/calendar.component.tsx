@@ -218,33 +218,10 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
     schedule?.closeQuickInfoPopup();
   };
   //@ts-ignore
-  const footerTemplate = (props) => (
-    <div className="quick-info-footer">
-      {props.elementType == "cell" ? (
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-around",
-          }}
-        >
-          <ButtonComponent
-            id="add"
-            cssClass="e-flat"
-            content="Dodaj"
-            isPrimary={true}
-            style={{
-              width: "70%",
-              backgroundColor: "var(--secondary-color-1)",
-              border: 0,
-              color: "var(--light-background-color)",
-            }}
-            //@ts-ignore
-            onClick={buttonClickActions}
-          />
-        </div>
-      ) : (
-        props.Type !== "Relokacja" && (
+  const footerTemplate = (props) => {
+    return (
+      <div className="quick-info-footer">
+        {props.elementType == "cell" ? (
           <div
             style={{
               width: "100%",
@@ -253,19 +230,13 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
             }}
           >
             <ButtonComponent
-              id="more-details"
-              content="Edytuj"
-              isPrimary={true}
-              //@ts-ignore
-              onClick={buttonClickActions}
-            />
-
-            <ButtonComponent
-              id="delete"
+              id="add"
               cssClass="e-flat"
-              content="Usuń"
+              content="Dodaj"
+              isPrimary={true}
               style={{
-                backgroundColor: "var(--danger-color)",
+                width: "70%",
+                backgroundColor: "var(--secondary-color-1)",
                 border: 0,
                 color: "var(--light-background-color)",
               }}
@@ -273,10 +244,41 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
               onClick={buttonClickActions}
             />
           </div>
-        )
-      )}
-    </div>
-  );
+        ) : (
+          props.Type !== "Relokacja" && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-around",
+              }}
+            >
+              <ButtonComponent
+                id="more-details"
+                content="Edytuj"
+                isPrimary={true}
+                //@ts-ignore
+                onClick={buttonClickActions}
+              />
+
+              <ButtonComponent
+                id="delete"
+                cssClass="e-flat"
+                content="Usuń"
+                style={{
+                  backgroundColor: "var(--danger-color)",
+                  border: 0,
+                  color: "var(--light-background-color)",
+                }}
+                //@ts-ignore
+                onClick={buttonClickActions}
+              />
+            </div>
+          )
+        )}
+      </div>
+    );
+  };
   return (
     <>
       <div
@@ -325,7 +327,7 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
         allowKeyboardInteraction
       >
         <ViewsDirective>
-          <ViewDirective option="Day" displayName="Dzisiaj" />
+          <ViewDirective option="Day" displayName="Dzień" />
           <ViewDirective option="Week" displayName="Tydzień" />
           <ViewDirective option="WorkWeek" displayName="Tydzień roboczy" />
           <ViewDirective option="Month" displayName="Miesiąc" />
