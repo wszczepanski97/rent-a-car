@@ -5,7 +5,7 @@ import {
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import dynamic from "next/dynamic";
-import type { CalendarMechanicPageProps } from "pages/mechanic/calendar";
+import type { Car } from "pages/mechanic/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 
@@ -32,7 +32,7 @@ const RepairTypeTab = dynamic(
   () => import("./tabs/tabcomponents/repairtypetab/repairtypetab.component")
 );
 
-export const AddEvent: FC<CalendarMechanicPageProps> = (props) => {
+export const AddEvent: FC<{ cars: Car[] }> = ({ cars }) => {
   const { currentTab } = useContext(AddEventContext);
   const tabSelecting = (e: SelectEventArgs) => {
     if (e.isSwiped) {
@@ -50,7 +50,7 @@ export const AddEvent: FC<CalendarMechanicPageProps> = (props) => {
       <TabItemsDirective>
         <TabItemDirective
           header={{ text: "1) Samochód" }}
-          content={() => <CarTab cars={props.cars} />}
+          content={() => <CarTab cars={cars} />}
         />
         <TabItemDirective
           header={{ text: "2) Typ naprawy" }}

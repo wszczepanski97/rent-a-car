@@ -93,7 +93,6 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
   };
 
   const onPopupOpen = (args: PopupOpenEventArgs) => {
-    console.log(args);
     if (
       args.data?.startTime < new Date() ||
       (args.data?.StartTime < new Date() && !args.data?.Subject)

@@ -13,11 +13,6 @@ export const ExcelExportButton: FC<ExcelExportButtonProps> = ({
   scheduleComponent,
 }) => {
   const onClick = () => {
-    console.log(
-      scheduleComponent
-        .getEvents()
-        .filter((event) => event.Type === "Relokacja")
-    );
     scheduleComponent.exportToExcel({
       exportType: "xlsx",
       customData: scheduleComponent

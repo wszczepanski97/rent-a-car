@@ -415,7 +415,6 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     if (req.body.type === UslugaType.WYPOŻYCZENIE) {
-      console.log(req.body);
       const { service, rent, relocations, additionalOptions } = req.body;
       try {
         const uslugaByIdUslugi = await prisma.uslugi.findFirst({

@@ -5,6 +5,7 @@ import {
   TimePickerComponent,
 } from "@syncfusion/ej2-react-calendars";
 import { FC, useCallback, useContext, useMemo, useState } from "react";
+import { CalendarContext } from "templates/mechanic/calendar/contexts/calendar.context";
 import {
   TabButtonContainer,
   TabContainer,
@@ -29,8 +30,10 @@ export type DateRange = {
 };
 
 export const TimeRangeRepairTab: FC = () => {
+  const { services } = useContext(CalendarContext);
   const {
     currentTab,
+    selectedDateTimeRange,
     setSelectedDateTimeRange,
     setSelectedRepairType,
     selectedCar,
@@ -40,15 +43,33 @@ export const TimeRangeRepairTab: FC = () => {
     blockedPeriodsEndDate: Date[];
   } = useMemo(() => {
     const blockedPeriodsStartDate =
-      selectedCar?.uslugi
-        ?.map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
+      [
+        ...(selectedCar?.uslugi
+          ? selectedCar?.uslugi?.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, true)
+            )
+          : []),
+        ...(services
+          ? services.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, true)
+            )
+          : []),
+      ]
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     const blockedPeriodsEndDate =
-      selectedCar?.uslugi
-        ?.map((usluga) =>
-          getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
-        )
+      [
+        ...(selectedCar?.uslugi
+          ? selectedCar?.uslugi?.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+            )
+          : []),
+        ...(services
+          ? services.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+            )
+          : []),
+      ]
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };
@@ -68,7 +89,10 @@ export const TimeRangeRepairTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsStartDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < new Date()
+    ) {
       args.isDisabled = true;
     }
   };
@@ -77,7 +101,10 @@ export const TimeRangeRepairTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsEndDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < getNextHalfHourDate(new Date())
+    ) {
       args.isDisabled = true;
     }
   };
@@ -111,8 +138,24 @@ export const TimeRangeRepairTab: FC = () => {
   }, [blockedDates]);
 
   const [state, setState] = useState({
-    startDateValue: minDate,
-    endDateValue: getNextHalfHourDate(minDate),
+    startDateValue: selectedDateTimeRange?.startDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.startDateValue).getTime() +
+            new Date(
+              selectedDateTimeRange?.startDateValue
+            ).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : minDate,
+    endDateValue: selectedDateTimeRange?.endDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.endDateValue).getTime() +
+            new Date(selectedDateTimeRange?.endDateValue).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : getNextHalfHourDate(minDate),
   });
 
   const onChangeStartDate = useCallback(

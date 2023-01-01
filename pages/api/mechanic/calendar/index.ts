@@ -1,11 +1,86 @@
+import {
+  pracownicy,
+  samochody,
+  uslugi,
+  uslugistatus,
+  uszkodzenia,
+  uzytkownicy,
+} from "@prisma/client";
 import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+
+export type Mechanic =
+  | (uzytkownicy & {
+      pracownicy: pracownicy[];
+    })
+  | null;
+
+export type Service =
+  | (uslugi & {
+      uszkodzenia: uszkodzenia[];
+      samochody: samochody;
+      uslugistatus: uslugistatus;
+    })
+  | null;
+
+export type Car =
+  | (samochody & {
+      uslugi: uslugi[];
+    })
+  | null;
+
+export const get = async (sessionId?: number) => {
+  const mechanic: Mechanic = await prisma.uzytkownicy.findFirst({
+    where: {
+      IdUzytkownicy: sessionId,
+      role_uzytkownik: {
+        some: {
+          role: {
+            Nazwa: "MECHANIK",
+          },
+        },
+      },
+    },
+    include: { pracownicy: true },
+  });
+
+  if (!mechanic)
+    return {
+      cars: null,
+      mechanic: null,
+      services: null,
+    };
+
+  const cars: Car[] = await prisma.samochody.findMany({
+    include: { uslugi: true },
+  });
+
+  const services: Service[] = await prisma.uslugi.findMany({
+    where: {
+      IdPracownicy_Przypisanie: mechanic?.pracownicy[0].IdPracownicy,
+    },
+    include: {
+      uszkodzenia: true,
+      uslugistatus: true,
+      samochody: true,
+    },
+  });
+  return {
+    cars: JSON.parse(JSON.stringify(cars)),
+    mechanic: JSON.parse(JSON.stringify(mechanic)),
+    services: JSON.parse(JSON.stringify(services)),
+  };
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
+    const session = await getSession({ req });
+    return res.status(200).json({ ...(await get(session?.user.id)) });
+  } else if (req.method === "POST") {
     let usluga;
     const { service, repair } = req.body;
     try {
@@ -32,6 +107,14 @@ export default async function handler(
             },
             uszkodzenia: { create: { ...repair } },
           },
+          include: {
+            pracownicy: {
+              include: {
+                uzytkownicy: true,
+              },
+            },
+            samochody: true,
+          },
         }),
       ]);
     } catch (err) {
@@ -50,9 +133,7 @@ export default async function handler(
       if (!uslugaByIdUslugi) {
         return res.status(400).json({ data: "Nie odnaleziono usługi" });
       }
-      console.log(uslugaByIdUslugi.uszkodzenia[0].IdUszkodzenia);
-      console.log({ ...repair });
-      const [usluga] = await prisma.$transaction([
+      const [deletedUsluga, usluga] = await prisma.$transaction([
         prisma.uszkodzenia.delete({
           where: {
             IdUszkodzenia: uslugaByIdUslugi.uszkodzenia[0].IdUszkodzenia,
@@ -81,10 +162,18 @@ export default async function handler(
             },
             uszkodzenia: { create: { ...repair } },
           },
+          include: {
+            pracownicy: {
+              include: {
+                uzytkownicy: true,
+              },
+            },
+            samochody: true,
+          },
           where: { IdUslugi: service.IdUslugi },
         }),
       ]);
-      return res.status(200).json({ data: { usluga } });
+      return res.status(200).json({ data: { deletedUsluga, usluga } });
     } catch (err) {
       console.log(err);
     }

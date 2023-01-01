@@ -50,7 +50,11 @@ const NavbarList: FC = () => {
                   href="/coordinator/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Kalendarz" href="/coordinator/calendar" />
+                <NavbarListItem
+                  name="Kalendarz"
+                  href="/coordinator/calendar"
+                  refresh
+                />
                 <NavbarListItem name="Mapa" href="/coordinator/map" />
                 <NavbarListItem
                   name="Profil"
@@ -71,7 +75,11 @@ const NavbarList: FC = () => {
                   href="/cleaner/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Mój kalendarz" href="/cleaner/calendar" />
+                <NavbarListItem
+                  name="Mój kalendarz"
+                  href="/cleaner/calendar"
+                  refresh
+                />
                 <NavbarListItem
                   name="Profil"
                   dataIcon="UserCircleWithBg"
@@ -91,7 +99,11 @@ const NavbarList: FC = () => {
                   href="/driver/dashboard"
                   dataIcon="Dashboard"
                 />
-                <NavbarListItem name="Mój kalendarz" href="/driver/calendar" />
+                <NavbarListItem
+                  name="Mój kalendarz"
+                  href="/driver/calendar"
+                  refresh
+                />
                 <NavbarListItem name="Mapa dojazdu" href="/driver/map" />
                 <NavbarListItem
                   name="Profil"
@@ -115,6 +127,7 @@ const NavbarList: FC = () => {
                 <NavbarListItem
                   name="Mój kalendarz"
                   href="/mechanic/calendar"
+                  refresh
                 />
                 <NavbarListItem
                   name="Profil"

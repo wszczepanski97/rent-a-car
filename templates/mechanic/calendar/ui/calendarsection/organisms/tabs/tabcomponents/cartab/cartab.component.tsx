@@ -27,7 +27,8 @@ type CarTabProps = { cars: Car[] };
 const CarTab: FC<CarTabProps> = memo(({ cars }) => {
   let availableCarGrid: GridComponent | null;
   const carSelected = useRef<Car>();
-  const { currentTab, setSelectedCar } = useContext(AddEventContext);
+  const { currentTab, selectedCar, setSelectedCar } =
+    useContext(AddEventContext);
   const [disabled, setDisabled] = useState(true);
   const onCarSelected = (args: RowSelectEventArgs) => {
     carSelected.current = args.data as Car;
@@ -55,9 +56,14 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
       availableCarGrid.dataSource = [...cars];
     }
   };
+
+  const selectedRowIndex = cars.findIndex(
+    (car) => car?.IdSamochody === selectedCar?.IdSamochody
+  );
+
   return (
     <TabContainer>
-      <TabTitle title="Wybierz auto do mycia" />
+      <TabTitle title="Wybierz auto do naprawy" />
       <TabError index={2} />
       <GridComponent
         allowPaging
@@ -66,10 +72,21 @@ const CarTab: FC<CarTabProps> = memo(({ cars }) => {
         clipMode="EllipsisWithTooltip"
         filterSettings={{ type: "CheckBox" }}
         ref={(grid) => (availableCarGrid = grid)}
+        selectedRowIndex={
+          selectedRowIndex === -1
+            ? undefined
+            : selectedRowIndex > 5
+            ? selectedRowIndex - 5
+            : selectedRowIndex
+        }
         width={1000}
         rowSelected={onCarSelected}
         created={getAvailableCars}
-        pageSettings={{ pageSize: 5 }}
+        pageSettings={{
+          pageSize: 5,
+          currentPage:
+            selectedRowIndex === -1 ? 1 : Math.floor(selectedRowIndex / 5) + 1,
+        }}
       >
         <ColumnsDirective>
           <ColumnDirective

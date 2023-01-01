@@ -14,7 +14,6 @@ const TabButtonContainer: FC<TabButtonContainerProps> = ({
   ...rest
 }) => {
   const { currentTab } = useContext(AddEventContext);
-  console.log(currentTab?.current?.selectedItem);
   return (
     <div className={styles.tabButtonContainer}>
       <TabNextButton {...rest} index={index} />

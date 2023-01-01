@@ -33,7 +33,6 @@ import Header from "./header/header.component";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 import { WashingType } from "./tabs/tabcomponents/washingtypetab/washingtypetab.component";
 import Toolbar from "./toolbar/toolbar.component";
-import ViewsDirectives from "./viewsdirectives/viewsdirectives.component";
 
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 

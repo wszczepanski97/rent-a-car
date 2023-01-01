@@ -7,10 +7,13 @@ import {
   uzytkownicy,
 } from "@prisma/client";
 import { SidebarContextProvider } from "contexts/sidebar.context";
-import { prisma } from "db";
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import Head from "next/head";
+import { get } from "pages/api/mechanic/calendar";
 import { ReactElement } from "react";
+import { SWRConfig } from "swr";
+import { CalendarContextProvider } from "templates/mechanic/calendar/contexts/calendar.context";
 import { CalendarSection } from "templates/mechanic/calendar/ui";
 import { NextPageWithLayout } from "types/next";
 import Navbar from "ui/organisms/navbar/navbar.component";
@@ -49,7 +52,18 @@ const CalendarMechanicPage: NextPageWithLayout<CalendarMechanicPageProps> = (
 ) => {
   return Object.values(props).length ===
     Object.values(props).filter((prop) => prop === null).length ? null : (
-    <CalendarSection {...props} />
+    <SWRConfig
+      value={{
+        refreshInterval: 180000,
+      }}
+    >
+      <Head>
+        <title>Kalendarz - Mechanik</title>
+      </Head>
+      <CalendarContextProvider {...props}>
+        <CalendarSection />
+      </CalendarContextProvider>
+    </SWRConfig>
   );
 };
 
@@ -77,50 +91,8 @@ const getServices: GetServerSideProps<CalendarMechanicPageProps> = async (
   context
 ) => {
   const session = await getSession(context);
-  const mechanic = await prisma.uzytkownicy.findFirst({
-    where: {
-      IdUzytkownicy: session?.user.id,
-      role_uzytkownik: {
-        some: {
-          role: {
-            Nazwa: "MECHANIK",
-          },
-        },
-      },
-    },
-    include: { pracownicy: true },
-  });
-
-  if (!mechanic)
-    return {
-      props: {
-        cars: null,
-        mechanic: null,
-        services: null,
-      },
-    };
-
-  const cars: Car[] = await prisma.samochody.findMany({
-    include: { uslugi: true },
-  });
-
-  const services: Service[] = await prisma.uslugi.findMany({
-    where: {
-      IdPracownicy_Przypisanie: mechanic?.pracownicy[0].IdPracownicy,
-    },
-    include: {
-      uszkodzenia: true,
-      uslugistatus: true,
-      samochody: true,
-    },
-  });
-
   return {
-    props: {
-      cars: JSON.parse(JSON.stringify(cars)),
-      mechanic: JSON.parse(JSON.stringify(mechanic)),
-      services: JSON.parse(JSON.stringify(services)),
-    },
+    props: { ...(await get(session?.user.id)) },
   };
 };
 

@@ -10,6 +10,7 @@ const NavbarListItem: FC<NavbarListItemProps> = ({
   dataIcon,
   href,
   logout,
+  refresh,
   ...rest
 }) => {
   const [active, setActive] = useState(false);
@@ -20,7 +21,7 @@ const NavbarListItem: FC<NavbarListItemProps> = ({
     } else {
       setActive(false);
     }
-  });
+  }, [href]);
 
   return (
     <li
@@ -32,7 +33,18 @@ const NavbarListItem: FC<NavbarListItemProps> = ({
         logout && signOut({ redirect: true, callbackUrl: "/" });
       }}
     >
-      {open ? null : (
+      {open ? null : refresh ? (
+        <a
+          href={href}
+          style={{
+            fontWeight: active ? 700 : 600,
+            opacity: active ? 1 : 0.6,
+          }}
+          {...rest}
+        >
+          {name}
+        </a>
+      ) : (
         <Link
           name={name}
           href={href}

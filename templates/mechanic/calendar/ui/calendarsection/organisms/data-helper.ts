@@ -14,9 +14,8 @@ export type Data = {
   IsReadonly: boolean;
 };
 
-export const getData = (services: Service[]) => {
-  console.log(services);
-  return services
+export const getData = (services: Service[]) =>
+  services
     ? (extend(
         [],
         [
@@ -37,6 +36,10 @@ export const getData = (services: Service[]) => {
                   new Date(service!.DataDo).getHours() - 1
                 )
               ),
+              Car: `${service?.samochody.Marka} ${service?.samochody.Model}`,
+              AutoryzowanySerwis: service?.uszkodzenia[0].AutoryzowanySerwis,
+              SamodzielnaNaprawa: service?.uszkodzenia[0].SamodzielnaNaprawa,
+              Warsztat: service?.uszkodzenia[0].Warsztat,
               Description: service!.Opis,
               Type: "Uszkodzenie",
               AssignedWorker: service!.IdPracownicy_Przypisanie,
@@ -51,4 +54,3 @@ export const getData = (services: Service[]) => {
         true
       ) as Data[])
     : null;
-};
