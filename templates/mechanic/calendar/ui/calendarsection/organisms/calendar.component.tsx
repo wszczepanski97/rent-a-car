@@ -51,7 +51,6 @@ export const Calendar = () => {
     data: { mechanic, cars, services },
     mutate,
   } = useCalendar();
-  console.log(mechanic);
   const { screen } = useContext(FullScreenContext);
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(services);
@@ -210,7 +209,7 @@ export const Calendar = () => {
           () => (
             <AddEvent cars={cars} />
           ),
-          []
+          [cars]
         )}
         actionComplete={onActionComplete}
         popupOpen={onPopupOpen}

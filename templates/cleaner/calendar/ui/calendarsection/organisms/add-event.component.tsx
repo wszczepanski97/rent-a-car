@@ -5,7 +5,7 @@ import {
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import dynamic from "next/dynamic";
-import type { CalendarCleanerPageProps } from "pages/cleaner/calendar";
+import { Car } from "pages/api/cleaner/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 
@@ -32,7 +32,7 @@ const WashingTypeTab = dynamic(
   () => import("./tabs/tabcomponents/washingtypetab/washingtypetab.component")
 );
 
-export const AddEvent: FC<CalendarCleanerPageProps> = (props) => {
+export const AddEvent: FC<{ cars: Car[] }> = ({ cars }) => {
   const { currentTab } = useContext(AddEventContext);
   const tabSelecting = (e: SelectEventArgs) => {
     if (e.isSwiped) {
@@ -50,7 +50,7 @@ export const AddEvent: FC<CalendarCleanerPageProps> = (props) => {
       <TabItemsDirective>
         <TabItemDirective
           header={{ text: "1) Samochód" }}
-          content={() => <CarTab cars={props.cars} />}
+          content={() => <CarTab cars={cars} />}
         />
         <TabItemDirective
           header={{ text: "2) Typ mycia" }}

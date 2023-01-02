@@ -5,6 +5,7 @@ import {
   TimePickerComponent,
 } from "@syncfusion/ej2-react-calendars";
 import { FC, useCallback, useContext, useMemo, useState } from "react";
+import { CalendarContext } from "templates/cleaner/calendar/contexts/calendar.context";
 import {
   TabButtonContainer,
   TabContainer,
@@ -29,8 +30,10 @@ export type DateRange = {
 };
 
 export const TimeRangeWashingTab: FC = () => {
+  const { services } = useContext(CalendarContext);
   const {
     currentTab,
+    selectedDateTimeRange,
     setSelectedDateTimeRange,
     setSelectedWashingType,
     selectedCar,
@@ -40,22 +43,41 @@ export const TimeRangeWashingTab: FC = () => {
     blockedPeriodsEndDate: Date[];
   } = useMemo(() => {
     const blockedPeriodsStartDate =
-      selectedCar?.uslugi
-        ?.map((usluga) => getBlockedPeriods(usluga.DataOd, usluga.DataDo, true))
+      [
+        ...(selectedCar?.uslugi
+          ? selectedCar?.uslugi?.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, true)
+            )
+          : []),
+        ...(services
+          ? services.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, true)
+            )
+          : []),
+      ]
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     const blockedPeriodsEndDate =
-      selectedCar?.uslugi
-        ?.map((usluga) =>
-          getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
-        )
+      [
+        ...(selectedCar?.uslugi
+          ? selectedCar?.uslugi?.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+            )
+          : []),
+        ...(services
+          ? services.map((usluga) =>
+              getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+            )
+          : []),
+      ]
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };
-  }, [getBlockedPeriods]);
+  }, [selectedCar?.uslugi, services]);
+
   const blockedDates = useMemo(
     () => getBlockedDates(blockedPeriods.blockedPeriodsStartDate),
-    [blockedPeriods, getBlockedDates]
+    [blockedPeriods]
   );
 
   const onRenderCell = (args: RenderDayCellEventArgs) => {
@@ -68,7 +90,10 @@ export const TimeRangeWashingTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsStartDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < new Date()
+    ) {
       args.isDisabled = true;
     }
   };
@@ -77,7 +102,10 @@ export const TimeRangeWashingTab: FC = () => {
     const blockedPeriodsString = blockedPeriods.blockedPeriodsEndDate.map(
       (blockedPeriod) => blockedPeriod.toUTCString()
     );
-    if (blockedPeriodsString.includes(new Date(args.value).toUTCString())) {
+    if (
+      blockedPeriodsString.includes(new Date(args.value).toUTCString()) ||
+      new Date(args.value) < getNextHalfHourDate(new Date())
+    ) {
       args.isDisabled = true;
     }
   };
@@ -108,11 +136,27 @@ export const TimeRangeWashingTab: FC = () => {
           )
         : getNextHalfHourDateForToday(new Date());
     } else return getNextHalfHourDateForToday(new Date());
-  }, [blockedDates]);
+  }, [blockedDates, blockedPeriods.blockedPeriodsStartDate]);
 
   const [state, setState] = useState({
-    startDateValue: minDate,
-    endDateValue: getNextHalfHourDate(minDate),
+    startDateValue: selectedDateTimeRange?.startDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.startDateValue).getTime() +
+            new Date(
+              selectedDateTimeRange?.startDateValue
+            ).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : minDate,
+    endDateValue: selectedDateTimeRange?.endDateValue
+      ? new Date(
+          new Date(selectedDateTimeRange?.endDateValue).getTime() +
+            new Date(selectedDateTimeRange?.endDateValue).getTimezoneOffset() *
+              60 *
+              1000
+        )
+      : getNextHalfHourDate(minDate),
   });
 
   const onChangeStartDate = useCallback(
@@ -138,7 +182,7 @@ export const TimeRangeWashingTab: FC = () => {
         setState({ ...state, startDateValue: new Date(e.value) });
       }
     },
-    [state, getNextHalfHourDate]
+    [state, blockedPeriods.blockedPeriodsStartDate]
   );
 
   const onChangeEndDate = useCallback(
@@ -162,7 +206,7 @@ export const TimeRangeWashingTab: FC = () => {
         setState({ ...state, endDateValue: new Date(e.value) });
       }
     },
-    [state, blockedPeriods, getPrevHalfHourDate]
+    [state, blockedPeriods]
   );
 
   const onCustomOnNextButtonClick = (range: DateRange) => {

@@ -1,5 +1,4 @@
-import { closest, loadCldr } from "@syncfusion/ej2-base";
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import { loadCldr } from "@syncfusion/ej2-base";
 import {
   ActionEventArgs,
   Agenda,
@@ -10,6 +9,7 @@ import {
   Inject,
   Month,
   PopupCloseEventArgs,
+  PopupOpenEventArgs,
   Print,
   Resize,
   ScheduleComponent,
@@ -22,37 +22,34 @@ import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
-import { FullScreenContext } from "contexts/full-screen.context";
-import { CalendarCleanerPageProps, Car } from "pages/cleaner/calendar";
-import { FC, memo, useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
+import { useCalendar } from "templates/cleaner/calendar/swr/use-calendar.swr";
 import { UslugaType } from "templates/coordinator/calendar/ui/calendarsection/organisms/add-event.component";
 import { AddEvent } from "./add-event.component";
 import styles from "./calendar.module.scss";
 import { Data, getData } from "./data-helper";
 import Header from "./header/header.component";
+import ContentTemplate from "./quickinfotemplates/contenttemplate.component";
+import FooterTemplate from "./quickinfotemplates/footertemplate.component";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 import { WashingType } from "./tabs/tabcomponents/washingtypetab/washingtypetab.component";
 import Toolbar from "./toolbar/toolbar.component";
 
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
-export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
-  cleaner,
-  cars,
-  services,
-}) {
+export const Calendar = () => {
+  const [disabled, setDisabled] = useState(true);
   const {
     selectedCar,
     selectedDateTimeRange,
     serviceDescription,
     selectedWashingType,
-    setSelectedCar,
-    setSelectedDateTimeRange,
-    setServiceDescription,
-    setSelectedWashingType,
     resetContextData,
   } = useContext(AddEventContext);
-  const { screen } = useContext(FullScreenContext);
+  const {
+    data: { cleaner, cars, services },
+    mutate,
+  } = useCalendar();
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(services);
   const onActionComplete = async (args: ActionEventArgs) => {
@@ -60,6 +57,13 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
       args.requestType === "eventCreated" ||
       args.requestType === "eventChanged"
     ) {
+      if (
+        args.addedRecords &&
+        args.addedRecords?.length > 0 &&
+        args.addedRecords?.[0].Subject
+      )
+        return;
+      setDisabled(true);
       const body = JSON.stringify({
         type: UslugaType.MYCIE,
         service: {
@@ -84,7 +88,32 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
         headers: { "Content-Type": "application/json" },
         body,
       };
-      await fetch("/api/cleaner/calendar", options);
+      const {
+        data: { usluga },
+      } = await (await fetch("/api/cleaner/calendar", options)).json();
+      await mutate();
+      const service = args.requestType === "eventCreated" ? usluga[0] : usluga;
+      schedule?.addEvent({
+        Id: service.IdUslugi,
+        Subject: `Mycie ${service.samochody.Marka} ${service.samochody.Model}`,
+        CategoryColor: "#91b52d",
+        StartTime: new Date(
+          new Date(service.DataOd).setHours(
+            new Date(service.DataOd).getHours() - 1
+          )
+        ),
+        EndTime: new Date(
+          new Date(service.DataDo).setHours(
+            new Date(service.DataDo).getHours() - 1
+          )
+        ),
+        Description: service.Opis,
+        Type: "Mycie",
+        AssignedWorker: `${service.pracownicy.uzytkownicy.Imie} ${service.pracownicy.uzytkownicy.Nazwisko}`,
+        StartTimezone: "Europe/Warsaw",
+        EndTimezone: "Europe/Warsaw",
+        IsReadonly: service.DataDo && new Date(service.DataDo) < new Date(),
+      });
     } else if (args.requestType === "eventRemoved") {
       await Promise.all(
         args.data?.map(async (service: Data) => {
@@ -99,12 +128,37 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
           await fetch("/api/cleaner/calendar", options);
         })
       );
+      await mutate();
     }
+    setDisabled(false);
   };
   const onPopupClose = (e: PopupCloseEventArgs) => {
     if (e.type === "Editor" && !e.data) {
       resetContextData();
     }
+  };
+
+  const onPopupOpen = useCallback(
+    (args: PopupOpenEventArgs) => {
+      if (
+        (args.target &&
+          !args.target.classList.contains("e-appointment") &&
+          args.type === "QuickInfo") ||
+        args.type === "Editor"
+      ) {
+        args.cancel = onEventCheck(args);
+      }
+      if (disabled) {
+        args.cancel = true;
+      }
+    },
+    [disabled]
+  );
+
+  const onEventCheck = (args: Record<string, any>) => {
+    let eventObj: Record<string, any> =
+      args.data instanceof Array ? args.data[0] : args.data;
+    return eventObj.StartTime < new Date();
   };
 
   const onEventRendered = (args: EventRenderedArgs) => {
@@ -120,170 +174,9 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
     }
   };
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
-
-  const contentTemplate = (props: Data) => (
-    <div className="e-popup-content">
-      <div className="e-date-time">
-        <div className="e-date-time-icon e-icons"></div>
-        <div className="e-date-time-wrapper e-text-ellipsis">
-          <div className="e-date-time-details e-text-ellipsis">
-            {props.StartTime.toDateString() === props.EndTime.toDateString()
-              ? `${props.StartTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.StartTime.toLocaleTimeString().replace(
-                  /:00$/,
-                  ""
-                )} - ${props.EndTime.toLocaleTimeString().replace(/:00$/, "")})`
-              : `${props.StartTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.StartTime.toLocaleTimeString().replace(
-                  /:00$/,
-                  ""
-                )}) - ${props.EndTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.EndTime.toLocaleTimeString().replace(/:00$/, "")})`}
-          </div>
-        </div>
-      </div>
-      <div className="e-resource">
-        <div className="e-resource-icon e-icons"></div>
-        <div className="e-resource-details e-text-ellipsis">
-          {`${cleaner?.Imie} ${cleaner?.Nazwisko}`}
-        </div>
-      </div>
-    </div>
-  );
-
-  const buttonClickActions = (e: Event) => {
-    const quickPopup = closest(e.target as Element, ".e-quick-popup-wrapper");
-    const getSlotData = () => {
-      let cellDetails = schedule?.getCellDetails(
-        schedule.getSelectedElements()
-      );
-      return cellDetails
-        ? {
-            StartTime: new Date(+cellDetails.startTime),
-            EndTime: new Date(+cellDetails.endTime),
-          }
-        : {};
-    };
-    if ((e.target as Element).id === "delete") {
-      const eventDetails = schedule?.activeEventData.event;
-      if (eventDetails) {
-        schedule?.deleteEvent(eventDetails, "Delete");
-      }
-    } else {
-      const isCellPopup =
-        quickPopup.firstElementChild?.classList.contains("e-cell-popup");
-      if (isCellPopup) {
-        schedule?.openEditor(getSlotData(), "Add", true);
-      } else {
-        const idService = (
-          schedule?.activeEventData.event as Record<string, any>
-        ).Id;
-        const foundService = services.find(
-          (service) => service!.IdUslugi === idService
-        );
-        if (foundService) {
-          setSelectedCar(foundService.samochody as Car);
-          setSelectedDateTimeRange({
-            startDateValue: foundService.DataOd,
-            endDateValue: foundService.DataDo,
-          });
-          setSelectedWashingType(
-            foundService.mycie[0].MyjniaAutomatyczna
-              ? WashingType.Automatyczna
-              : foundService.mycie[0].MyjniaBezdotykowa
-              ? WashingType.Bezdotykowa
-              : WashingType.Prywatna
-          );
-          setServiceDescription(
-            //@ts-ignore
-            foundService.Opis
-          );
-          schedule?.openEditor({ Id: idService }, "Save", true);
-        }
-      }
-    }
-    schedule?.closeQuickInfoPopup();
-  };
-  //@ts-ignore
-  const footerTemplate = (props) => {
-    return (
-      <div className="quick-info-footer">
-        {props.elementType == "cell" ? (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-          >
-            <ButtonComponent
-              id="add"
-              cssClass="e-flat"
-              content="Dodaj"
-              isPrimary={true}
-              style={{
-                width: "70%",
-                backgroundColor: "var(--secondary-color-1)",
-                border: 0,
-                color: "var(--light-background-color)",
-              }}
-              //@ts-ignore
-              onClick={buttonClickActions}
-            />
-          </div>
-        ) : (
-          props.Type !== "Relokacja" && (
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-            >
-              <ButtonComponent
-                id="more-details"
-                content="Edytuj"
-                isPrimary={true}
-                //@ts-ignore
-                onClick={buttonClickActions}
-              />
-
-              <ButtonComponent
-                id="delete"
-                cssClass="e-flat"
-                content="Usuń"
-                style={{
-                  backgroundColor: "var(--danger-color)",
-                  border: 0,
-                  color: "var(--light-background-color)",
-                }}
-                //@ts-ignore
-                onClick={buttonClickActions}
-              />
-            </div>
-          )
-        )}
-      </div>
-    );
-  };
   return (
     <>
-      <div
-        className={styles["schedule-overview"]}
-        style={{ width: screen.active ? "100vw" : "auto" }}
-      >
+      <div className={styles["schedule-overview"]}>
         <Header schedule={schedule} />
         <div className={styles["overview-toolbar"]}>
           <Toolbar schedule={schedule} />
@@ -299,24 +192,31 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
         }}
         timeFormat="HH:mm"
         style={{
-          maxHeight: screen.active ? "87vh" : "77vh",
-          width: screen.active ? "100vw" : "auto",
+          maxHeight: "calc(100vh - var(--navbar-height) - 120px)",
           overflowY: "auto",
         }}
         editorTemplate={useCallback(
           () => (
-            <AddEvent cleaner={cleaner} cars={cars} services={services} />
+            <AddEvent cars={cars} />
           ),
-          [cleaner, cars, services]
+          [cars]
         )}
         actionComplete={onActionComplete}
+        popupOpen={onPopupOpen}
         popupClose={onPopupClose}
         eventRendered={onEventRendered}
         quickInfoTemplates={{
           //@ts-ignore
-          content: contentTemplate,
+          content: (props: Data) => <ContentTemplate {...props} />,
           //@ts-ignore
-          footer: footerTemplate,
+          footer: (props: Data) => (
+            //@ts-ignore
+            <FooterTemplate
+              {...props}
+              schedule={schedule}
+              services={services}
+            />
+          ),
         }}
         workHours={{
           highlight: true,
@@ -348,4 +248,4 @@ export const Calendar: FC<CalendarCleanerPageProps> = memo(function Calendar({
       </ScheduleComponent>
     </>
   );
-});
+};

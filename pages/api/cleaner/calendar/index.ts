@@ -1,11 +1,87 @@
+import {
+  mycie,
+  pracownicy,
+  samochody,
+  uslugi,
+  uslugistatus,
+  uzytkownicy,
+} from "@prisma/client";
 import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+
+export type Cleaner =
+  | (uzytkownicy & {
+      pracownicy: pracownicy[];
+    })
+  | null;
+
+export type Service =
+  | (uslugi & {
+      mycie: mycie[];
+      samochody: samochody;
+      uslugistatus: uslugistatus;
+    })
+  | null;
+
+export type Car =
+  | (samochody & {
+      uslugi: uslugi[];
+    })
+  | null;
+
+export const get = async (sessionId?: number) => {
+  const cleaner: Cleaner = await prisma.uzytkownicy.findFirst({
+    where: {
+      IdUzytkownicy: sessionId,
+      role_uzytkownik: {
+        some: {
+          role: {
+            Nazwa: "PRACOWNIK MYJNI",
+          },
+        },
+      },
+    },
+    include: { pracownicy: true },
+  });
+
+  if (!cleaner)
+    return {
+      cars: null,
+      cleaner: null,
+      services: null,
+    };
+
+  const cars: Car[] = await prisma.samochody.findMany({
+    include: { uslugi: true },
+  });
+
+  const services: Service[] = await prisma.uslugi.findMany({
+    where: {
+      IdPracownicy_Przypisanie: cleaner?.pracownicy[0].IdPracownicy,
+    },
+    include: {
+      mycie: true,
+      uslugistatus: true,
+      samochody: true,
+    },
+  });
+
+  return {
+    cars: JSON.parse(JSON.stringify(cars)),
+    cleaner: JSON.parse(JSON.stringify(cleaner)),
+    services: JSON.parse(JSON.stringify(services)),
+  };
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
+    const session = await getSession({ req });
+    return res.status(200).json({ ...(await get(session?.user.id)) });
+  } else if (req.method === "POST") {
     let usluga;
     const { service, washing } = req.body;
     try {
@@ -31,6 +107,14 @@ export default async function handler(
               connect: { IdSamochody: service.IdSamochody },
             },
             mycie: { create: { ...washing } },
+          },
+          include: {
+            pracownicy: {
+              include: {
+                uzytkownicy: true,
+              },
+            },
+            samochody: true,
           },
         }),
       ]);
@@ -80,6 +164,14 @@ export default async function handler(
                 },
               },
             },
+          },
+          include: {
+            pracownicy: {
+              include: {
+                uzytkownicy: true,
+              },
+            },
+            samochody: true,
           },
           where: {
             IdUslugi: service.IdUslugi,

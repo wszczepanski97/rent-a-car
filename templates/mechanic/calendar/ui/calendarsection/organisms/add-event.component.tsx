@@ -5,7 +5,7 @@ import {
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import dynamic from "next/dynamic";
-import type { Car } from "pages/mechanic/calendar";
+import { Car } from "pages/api/mechanic/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 

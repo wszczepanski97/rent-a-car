@@ -10,7 +10,7 @@ import { SidebarContextProvider } from "contexts/sidebar.context";
 import type { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import { get } from "pages/api/mechanic/calendar";
+import { Car, get, Mechanic, Service } from "pages/api/mechanic/calendar";
 import { ReactElement } from "react";
 import { SWRConfig } from "swr";
 import { CalendarContextProvider } from "templates/mechanic/calendar/contexts/calendar.context";
@@ -20,26 +20,6 @@ import Navbar from "ui/organisms/navbar/navbar.component";
 import Sidebar from "ui/organisms/sidebar/sidebar.component";
 import Layout from "ui/templates/layout";
 import Main from "ui/templates/main";
-
-export type Mechanic =
-  | (uzytkownicy & {
-      pracownicy: pracownicy[];
-    })
-  | null;
-
-export type Service =
-  | (uslugi & {
-      uszkodzenia: uszkodzenia[];
-      samochody: samochody;
-      uslugistatus: uslugistatus;
-    })
-  | null;
-
-export type Car =
-  | (samochody & {
-      uslugi: uslugi[];
-    })
-  | null;
 
 export type CalendarMechanicPageProps = {
   cars: Car[];

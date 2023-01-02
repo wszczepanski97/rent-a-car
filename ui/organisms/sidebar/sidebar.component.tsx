@@ -50,7 +50,7 @@ const Sidebar = () => {
             className={styles.sidebar}
             initial={{ width: 0 }}
             animate={{
-              width: "auto",
+              width: "240px",
             }}
             exit={{
               width: 0,

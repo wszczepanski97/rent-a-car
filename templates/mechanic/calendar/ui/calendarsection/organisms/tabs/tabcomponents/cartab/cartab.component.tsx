@@ -8,7 +8,7 @@ import {
   RowSelectEventArgs,
   Sort,
 } from "@syncfusion/ej2-react-grids";
-import { Car } from "pages/cleaner/calendar";
+import { Car } from "pages/api/mechanic/calendar";
 import { FC, memo, useContext, useRef, useState } from "react";
 import {
   TabButtonContainer,

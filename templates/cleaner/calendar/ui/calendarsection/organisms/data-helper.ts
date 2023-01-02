@@ -1,11 +1,16 @@
 import { extend } from "@syncfusion/ej2-base";
-import { Service } from "pages/cleaner/calendar";
+import { Service } from "pages/api/cleaner/calendar";
 
 export type Data = {
   Id: number;
   Subject: string;
+  CategoryColor: string;
   StartTime: Date;
   EndTime: Date;
+  Car: string;
+  MyjniaAutomatyczna: boolean;
+  MyjniaBezdotykowa: boolean;
+  MyjniaPrywatna: boolean;
   Description: string;
   Type: string;
   AssignedWorker: number | null;
@@ -15,6 +20,7 @@ export type Data = {
 };
 
 export const getData = (services: Service[]) => {
+  console.log(services);
   return services
     ? (extend(
         [],
@@ -36,6 +42,10 @@ export const getData = (services: Service[]) => {
                   new Date(service!.DataDo).getHours() - 1
                 )
               ),
+              Car: `${service?.samochody.Marka} ${service?.samochody.Model}`,
+              MyjniaAutomatyczna: service?.mycie[0].MyjniaAutomatyczna,
+              MyjniaBezdotykowa: service?.mycie[0].MyjniaBezdotykowa,
+              MyjniaPrywatna: service?.mycie[0].MyjniaPrywatna,
               Description: service!.Opis,
               Type: "Mycie",
               AssignedWorker: service!.IdPracownicy_Przypisanie,

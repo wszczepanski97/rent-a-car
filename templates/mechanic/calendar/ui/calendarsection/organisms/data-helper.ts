@@ -4,8 +4,13 @@ import { Service } from "pages/mechanic/calendar";
 export type Data = {
   Id: number;
   Subject: string;
+  CategoryColor: string;
   StartTime: Date;
   EndTime: Date;
+  Car: string;
+  AutoryzowanySerwis: boolean;
+  SamodzielnaNaprawa: boolean;
+  Warsztat: boolean;
   Description: string;
   Type: string;
   AssignedWorker: number | null;
@@ -14,7 +19,7 @@ export type Data = {
   IsReadonly: boolean;
 };
 
-export const getData = (services: Service[]) =>
+export const getData: (services: Service[]) => Data[] | null = (services) =>
   services
     ? (extend(
         [],

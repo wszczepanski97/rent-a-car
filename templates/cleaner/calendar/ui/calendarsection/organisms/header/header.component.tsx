@@ -30,11 +30,13 @@ const Header: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
     schedule?.exportToExcel({
       fieldsInfo: [
         { name: "Subject", text: "Nazwa" },
-        { name: "Client", text: "Klient" },
+        { name: "Car", text: "Samochód" },
         { name: "StartTime", text: "Czas startu" },
         { name: "EndTime", text: "Czas zakończenia" },
         { name: "Description", text: "Opis" },
-        { name: "Location", text: "Lokalizacja" },
+        { name: "MyjniaAutomatyczna", text: "Myjnia automatyczna" },
+        { name: "MyjniaBezdotykowa", text: "Myjnia bezdotykowa" },
+        { name: "MyjniaPrywatna", text: "Myjnia prywatna" },
       ],
       customData: schedule?.getEvents().map((event) => ({
         ...event,
@@ -45,11 +47,13 @@ const Header: FC<{ schedule: ScheduleComponent | null }> = ({ schedule }) => {
       fields: [
         "Id",
         "Subject",
-        "Client",
+        "Car",
         "StartTime",
         "EndTime",
         "Description",
-        "Location",
+        "MyjniaAutomatyczna",
+        "MyjniaBezdotykowa",
+        "MyjniaPrywatna",
       ],
       fileName: `Wykaz Pracownik Myjni ${new Date().toLocaleDateString()}`,
     });

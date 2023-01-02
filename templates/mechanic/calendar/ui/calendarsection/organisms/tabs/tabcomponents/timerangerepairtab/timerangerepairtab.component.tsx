@@ -73,10 +73,11 @@ export const TimeRangeRepairTab: FC = () => {
         .flat()
         .sort((a, b) => a.getTime() - b.getTime()) || [];
     return { blockedPeriodsStartDate, blockedPeriodsEndDate };
-  }, [getBlockedPeriods]);
+  }, [selectedCar?.uslugi, services]);
+
   const blockedDates = useMemo(
     () => getBlockedDates(blockedPeriods.blockedPeriodsStartDate),
-    [blockedPeriods, getBlockedDates]
+    [blockedPeriods]
   );
 
   const onRenderCell = (args: RenderDayCellEventArgs) => {
@@ -135,7 +136,7 @@ export const TimeRangeRepairTab: FC = () => {
           )
         : getNextHalfHourDateForToday(new Date());
     } else return getNextHalfHourDateForToday(new Date());
-  }, [blockedDates]);
+  }, [blockedDates, blockedPeriods.blockedPeriodsStartDate]);
 
   const [state, setState] = useState({
     startDateValue: selectedDateTimeRange?.startDateValue
@@ -181,7 +182,7 @@ export const TimeRangeRepairTab: FC = () => {
         setState({ ...state, startDateValue: new Date(e.value) });
       }
     },
-    [state, getNextHalfHourDate]
+    [state, blockedPeriods.blockedPeriodsStartDate]
   );
 
   const onChangeEndDate = useCallback(
@@ -205,7 +206,7 @@ export const TimeRangeRepairTab: FC = () => {
         setState({ ...state, endDateValue: new Date(e.value) });
       }
     },
-    [state, blockedPeriods, getPrevHalfHourDate]
+    [state, blockedPeriods]
   );
 
   const onCustomOnNextButtonClick = (range: DateRange) => {
