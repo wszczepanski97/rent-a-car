@@ -114,7 +114,7 @@ const ServicesGridCardTable: FC<ServicesGridCardTableProps> = ({
             })
           : JSON.stringify({
               IdUslugi,
-              IdPracownicy: session?.user.id,
+              IdUzytkownicy: session?.user.id,
               type,
             }),
     });
@@ -205,7 +205,7 @@ const ServicesGridCardTable: FC<ServicesGridCardTableProps> = ({
                           await handleDrive(
                             "UNASSIGN",
                             row.values.IdUslugi,
-                            row.values.IdUszkodzenia
+                            row.values.IdRelokacje
                           )
                         }
                         text="Odepnij"
@@ -217,7 +217,7 @@ const ServicesGridCardTable: FC<ServicesGridCardTableProps> = ({
                         await handleDrive(
                           "DELETE",
                           row.values.IdUslugi,
-                          row.values.IdUszkodzenia
+                          row.values.IdRelokacje
                         )
                       }
                       text="Anuluj"

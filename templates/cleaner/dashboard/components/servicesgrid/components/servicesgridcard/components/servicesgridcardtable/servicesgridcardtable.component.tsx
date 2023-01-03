@@ -114,7 +114,7 @@ const ServicesGridCardTable: FC<ServicesGridCardTableProps> = ({
             })
           : JSON.stringify({
               IdUslugi,
-              IdPracownicy: session?.user.id,
+              IdUzytkownicy: session?.user.id,
               type,
             }),
     });

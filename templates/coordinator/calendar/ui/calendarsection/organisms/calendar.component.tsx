@@ -1,5 +1,4 @@
 import { loadCldr } from "@syncfusion/ej2-base";
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import {
   ActionEventArgs,
   Agenda,
@@ -23,7 +22,6 @@ import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
-import { FullScreenContext } from "contexts/full-screen.context";
 import { memo, useCallback, useContext, useState } from "react";
 import { useCalendar } from "templates/coordinator/calendar/swr/use-calendar.swr";
 import { AddEvent, UslugaType } from "./add-event.component";
@@ -75,7 +73,6 @@ export const Calendar = memo(function Calendar() {
     },
     mutate,
   } = useCalendar();
-  const { screen } = useContext(FullScreenContext);
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(services);
   const onActionComplete = async (args: ActionEventArgs) => {
@@ -414,10 +411,7 @@ export const Calendar = memo(function Calendar() {
 
   return (
     <>
-      <div
-        className={styles["schedule-overview"]}
-        style={{ width: screen.active ? "100vw" : "auto" }}
-      >
+      <div className={styles["schedule-overview"]}>
         <Header schedule={schedule} />
         <Toolbar schedule={schedule} />
       </div>
@@ -431,8 +425,8 @@ export const Calendar = memo(function Calendar() {
         }}
         timeFormat="HH:mm"
         style={{
-          maxHeight: screen.active ? "87vh" : "77vh",
-          width: screen.active ? "100vw" : "auto",
+          minHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
+          maxHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
           overflowY: "auto",
         }}
         popupOpen={onPopupOpen}

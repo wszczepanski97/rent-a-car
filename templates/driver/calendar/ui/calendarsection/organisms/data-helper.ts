@@ -36,9 +36,7 @@ export const getData = (services: Service[]) =>
                   new Date(service!.uslugi.DataDo).getHours() - 1
                 )
               ),
-              Description: service!.uslugi.Opis,
               Type: "Wypozyczenie",
-              AssignedWorker: service!.uslugi.IdPracownicy_Przypisanie,
               StartTimezone: "Europe/Warsaw",
               EndTimezone: "Europe/Warsaw",
               IsReadonly: true,
@@ -48,40 +46,40 @@ export const getData = (services: Service[]) =>
             .map((service) => service.relokacje.flat())
             .map((relocations) => {
               return relocations
-                ?.map((relokacja) => ({
-                  Subject: `Relokacja ${relokacja.Typ_Relokacja} ${relokacja.uslugi?.samochody.Marka} ${relokacja.uslugi?.samochody.Model}`,
-                  Client: `${relokacja.wypozyczenia?.klienci.uzytkownicy.Imie} ${relokacja.wypozyczenia?.klienci.uzytkownicy.Nazwisko}`,
-                  CategoryColor: "#b5a32d",
-                  StartTime:
-                    relokacja.uslugi?.DataOd &&
-                    new Date(
-                      new Date(relokacja.uslugi?.DataOd).setHours(
-                        new Date(relokacja.uslugi?.DataOd).getHours() - 1
-                      )
-                    ),
-                  EndTime:
-                    relokacja.uslugi?.DataDo &&
-                    new Date(
-                      new Date(relokacja.uslugi?.DataDo).setHours(
-                        new Date(relokacja.uslugi?.DataDo).getHours() - 1
-                      )
-                    ),
-                  Description: relokacja.uslugi?.Opis,
-                  Type: "Relokacja",
-                  AssignedWorker:
-                    relokacja.Typ_Relokacja === "Podstawienie"
-                      ? relokacja.IdPracownicy_Podstawienie
-                      : relokacja.IdPracownicy_Odbior,
-                  Location:
-                    relokacja.Typ_Relokacja === "Podstawienie"
-                      ? relokacja.IdLokalizacje_Podstawienie
-                      : relokacja.IdLokalizacje_Odbior,
-                  StartTimezone: "Europe/Warsaw",
-                  EndTimezone: "Europe/Warsaw",
-                  IsReadonly:
-                    relokacja.uslugi?.DataDo &&
-                    new Date(relokacja.uslugi.DataDo) < new Date(),
-                }))
+                ?.map((relokacja) => {
+                  return {
+                    Id: relokacja!.IdUslugi,
+                    Subject: `Relokacja ${relokacja.Typ_Relokacja} ${relokacja.uslugi?.samochody.Marka} ${relokacja.uslugi?.samochody.Model}`,
+                    CategoryColor: "#b5a32d",
+                    CzasDojazdu: relokacja.CzasDojazdu,
+                    IdWypozyczenia: relokacja.IdWypozyczenia,
+                    IdUslugi: relokacja.IdUslugi,
+                    StartTime:
+                      relokacja.uslugi?.DataOd &&
+                      new Date(
+                        new Date(relokacja.uslugi?.DataOd).setHours(
+                          new Date(relokacja.uslugi?.DataOd).getHours() - 1
+                        )
+                      ),
+                    EndTime:
+                      relokacja.uslugi?.DataDo &&
+                      new Date(
+                        new Date(relokacja.uslugi?.DataDo).setHours(
+                          new Date(relokacja.uslugi?.DataDo).getHours() - 1
+                        )
+                      ),
+                    Description: relokacja.uslugi?.Opis,
+                    Type: "Relokacja",
+                    Typ_Relokacja: relokacja.Typ_Relokacja,
+                    AssignedWorker: `${relokacja.uslugi.pracownicy.uzytkownicy.Imie} ${relokacja.uslugi.pracownicy.uzytkownicy.Nazwisko}`,
+                    Location: `${relokacja.lokalizacje.Miejscowosc}, ${relokacja.lokalizacje.Ulica} ${relokacja.lokalizacje.NumerUlicy}`,
+                    StartTimezone: "Europe/Warsaw",
+                    EndTimezone: "Europe/Warsaw",
+                    IsReadonly:
+                      relokacja.uslugi?.DataDo &&
+                      new Date(relokacja.uslugi.DataDo) < new Date(),
+                  };
+                })
                 .flat();
             })
             .flat(),

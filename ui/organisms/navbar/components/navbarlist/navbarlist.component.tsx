@@ -55,7 +55,6 @@ const NavbarList: FC = () => {
                   href="/coordinator/calendar"
                   refresh
                 />
-                <NavbarListItem name="Mapa" href="/coordinator/map" />
                 <NavbarListItem
                   name="Profil"
                   dataIcon="UserCircleWithBg"
@@ -104,7 +103,6 @@ const NavbarList: FC = () => {
                   href="/driver/calendar"
                   refresh
                 />
-                <NavbarListItem name="Mapa dojazdu" href="/driver/map" />
                 <NavbarListItem
                   name="Profil"
                   dataIcon="UserCircleWithBg"

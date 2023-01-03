@@ -24,81 +24,161 @@ import * as gregorian from "cldr-data/main/pl/ca-gregorian.json";
 import * as numbers from "cldr-data/main/pl/numbers.json";
 import * as timeZoneNames from "cldr-data/main/pl/timeZoneNames.json";
 import * as numberingSystems from "cldr-data/supplemental/numberingSystems.json";
-import { FullScreenContext } from "contexts/full-screen.context";
-import { CalendarDriverPageProps } from "pages/driver/calendar";
-import { FC, memo, useCallback, useContext, useState } from "react";
+import { Service } from "pages/api/driver/calendar";
+import { useCallback, useContext, useState } from "react";
+import { useCalendar } from "templates/driver/calendar/swr/use-calendar.swr";
 import { AddEvent } from "./add-event.component";
 import styles from "./calendar.module.scss";
 import { Data, getData } from "./data-helper";
 import Header from "./header/header.component";
+import ContentTemplate from "./quickinfotemplates/contenttemplate.component";
+import FooterTemplate from "./quickinfotemplates/footertemplate.component";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 import Toolbar from "./toolbar/toolbar.component";
 
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames);
 
-export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
-  driver,
-  locations,
-  services,
-}) {
-  const { serviceDescription, setServiceDescription, resetContextData } =
-    useContext(AddEventContext);
-  const { screen } = useContext(FullScreenContext);
+export const Calendar = () => {
+  const [disabled, setDisabled] = useState(true);
+  const {
+    deliveryEstimationTime,
+    selectedCarDeliverLocation,
+    pickupEstimationTime,
+    selectedCarPickupLocation,
+    selectedRent,
+    selectedRelocationType,
+    serviceDescription,
+    resetContextData,
+  } = useContext(AddEventContext);
+  const {
+    data: { driver, locations, services },
+    mutate,
+  } = useCalendar();
   const [schedule, setSchedule] = useState<ScheduleComponent | null>(null);
   const dataSource = getData(services);
   const onActionComplete = async (args: ActionEventArgs) => {
-    // if (
-    //   args.requestType === "eventCreated" ||
-    //   args.requestType === "eventChanged"
-    // ) {
-    //   const body = JSON.stringify({
-    //     service: {
-    //       IdUslugi:
-    //         args.requestType === "eventChanged"
-    //           ? args.changedRecords?.[0].Id
-    //           : undefined,
-    //       DataOd: selectedDateTimeRange?.startDateValue,
-    //       DataDo: selectedDateTimeRange?.endDateValue,
-    //       Opis: serviceDescription,
-    //       IdPracownicy_Przypisanie: driver?.pracownicy[0].IdPracownicy,
-    //       IdSamochody: selectedCar?.IdSamochody,
-    //     },
-    //     washing: {
-    //       MyjniaBezdotykowa: selectedWashingType === WashingType.Bezdotykowa,
-    //       MyjniaAutomatyczna: selectedWashingType === WashingType.Automatyczna,
-    //       MyjniaPrywatna: selectedWashingType === WashingType.Prywatna,
-    //     },
-    //   });
-    //   const options = {
-    //     method: args.requestType === "eventCreated" ? "POST" : "PUT",
-    //     headers: { "Content-Type": "application/json" },
-    //     body,
-    //   };
-    //   await fetch("/api/driver/calendar", options);
-    // } else if (args.requestType === "eventRemoved") {
-    //   await Promise.all(
-    //     args.data?.map(async (service: Data) => {
-    //       const options = {
-    //         method: "DELETE",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({
-    //           IdUslugi: service.Id,
-    //           type: service.Type,
-    //         }),
-    //       };
-    //       await fetch("/api/driver/calendar", options);
-    //     })
-    //   );
-    // }
+    if (
+      args.requestType === "eventCreated" ||
+      args.requestType === "eventChanged"
+    ) {
+      if (
+        args.addedRecords &&
+        args.addedRecords?.length > 0 &&
+        args.addedRecords?.[0].Subject
+      )
+        return;
+      setDisabled(true);
+      const body = JSON.stringify({
+        service: {
+          IdUslugi:
+            args.requestType === "eventChanged"
+              ? args.changedRecords?.[0].Id
+              : undefined,
+          DataOd:
+            selectedRelocationType === "Podstawienie"
+              ? new Date(
+                  new Date(selectedRent!.uslugi.DataOd).getTime() -
+                    Number(pickupEstimationTime!) * 60 * 60000
+                )
+              : selectedRent!.uslugi.DataDo,
+          DataDo:
+            selectedRelocationType === "Podstawienie"
+              ? selectedRent!.uslugi.DataOd
+              : new Date(
+                  new Date(selectedRent!.uslugi.DataDo).getTime() +
+                    Number(deliveryEstimationTime!) * 60 * 60000
+                ),
+          Opis: serviceDescription,
+          IdPracownicy_Przypisanie: driver?.pracownicy[0].IdPracownicy,
+          IdSamochody: selectedRent?.uslugi.samochody.IdSamochody,
+        },
+        relocation: {
+          IdLokalizacje:
+            selectedRelocationType === "Podstawienie"
+              ? selectedCarPickupLocation?.IdLokalizacje
+              : selectedCarDeliverLocation?.IdLokalizacje,
+          CzasDojazdu:
+            selectedRelocationType === "Podstawienie"
+              ? Number(pickupEstimationTime)
+              : Number(deliveryEstimationTime),
+          IdWypozyczenia: selectedRent?.IdWypozyczenia,
+          Typ_Relokacja:
+            selectedRelocationType === "Podstawienie"
+              ? "Podstawienie"
+              : "Odbior",
+        },
+      });
+      const options = {
+        method: args.requestType === "eventCreated" ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body,
+      };
+      const {
+        data: { usluga },
+      } = await (await fetch("/api/driver/calendar", options)).json();
+      await mutate();
+      const service = args.requestType === "eventCreated" ? usluga[0] : usluga;
+      schedule?.addEvent({
+        Id: service.IdUslugi,
+        Subject: `Relokacja ${service.samochody.Marka} ${service.samochody.Model}`,
+        CategoryColor: "#91b52d",
+        StartTime: new Date(
+          new Date(service.DataOd).setHours(
+            new Date(service.DataOd).getHours() - 1
+          )
+        ),
+        EndTime: new Date(
+          new Date(service.DataDo).setHours(
+            new Date(service.DataDo).getHours() - 1
+          )
+        ),
+        Description: service.Opis,
+        Type: "Relokacja",
+        AssignedWorker: `${service.pracownicy.uzytkownicy.Imie} ${service.pracownicy.uzytkownicy.Nazwisko}`,
+        StartTimezone: "Europe/Warsaw",
+        EndTimezone: "Europe/Warsaw",
+        IsReadonly: service.DataDo && new Date(service.DataDo) < new Date(),
+      });
+    } else if (args.requestType === "eventRemoved") {
+      await Promise.all(
+        args.data?.map(async (service: Data) => {
+          const options = {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              IdUslugi: service.Id,
+              type: service.Type,
+            }),
+          };
+          await fetch("/api/driver/calendar", options);
+        })
+      );
+      await mutate();
+    }
+    setDisabled(false);
   };
 
-  const onPopupOpen = (args: PopupOpenEventArgs) => {
-    if (
-      args.data?.startTime < new Date() ||
-      (args.data?.StartTime < new Date() && !args.data?.Subject)
-    ) {
-      args.cancel = true;
-    }
+  const onPopupOpen = useCallback(
+    (args: PopupOpenEventArgs) => {
+      if (
+        (args.target &&
+          !args.target.classList.contains("e-appointment") &&
+          args.type === "QuickInfo") ||
+        args.type === "Editor"
+      ) {
+        args.cancel = onEventCheck(args);
+      }
+      if (disabled) {
+        args.cancel = true;
+      }
+    },
+    [disabled]
+  );
+
+  const onEventCheck = (args: Record<string, any>) => {
+    let eventObj: Record<string, any> =
+      args.data instanceof Array ? args.data[0] : args.data;
+    return eventObj.StartTime < new Date();
   };
 
   const onPopupClose = (e: PopupCloseEventArgs) => {
@@ -120,172 +200,9 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
     }
   };
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
-
-  const contentTemplate = (props: Data) => (
-    <div className="e-popup-content">
-      <div className="e-date-time">
-        <div className="e-date-time-icon e-icons"></div>
-        <div className="e-date-time-wrapper e-text-ellipsis">
-          <div className="e-date-time-details e-text-ellipsis">
-            {props.StartTime.toDateString() === props.EndTime.toDateString()
-              ? `${props.StartTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.StartTime.toLocaleTimeString().replace(
-                  /:00$/,
-                  ""
-                )} - ${props.EndTime.toLocaleTimeString().replace(/:00$/, "")})`
-              : `${props.StartTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.StartTime.toLocaleTimeString().replace(
-                  /:00$/,
-                  ""
-                )}) - ${props.EndTime.toLocaleDateString(
-                  "pl-PL",
-                  dateOptions
-                )} (${props.EndTime.toLocaleTimeString().replace(/:00$/, "")})`}
-          </div>
-        </div>
-      </div>
-      <div className="e-resource">
-        <div className="e-resource-icon e-icons"></div>
-        <div className="e-resource-details e-text-ellipsis">
-          {`${driver?.Imie} ${driver?.Nazwisko}`}
-        </div>
-      </div>
-    </div>
-  );
-
-  const buttonClickActions = (e: Event) => {
-    const quickPopup = closest(e.target as Element, ".e-quick-popup-wrapper");
-    const getSlotData = () => {
-      let cellDetails = schedule?.getCellDetails(
-        schedule.getSelectedElements()
-      );
-      return cellDetails
-        ? {
-            StartTime: new Date(+cellDetails.startTime),
-            EndTime: new Date(+cellDetails.endTime),
-          }
-        : {};
-    };
-    if ((e.target as Element).id === "delete") {
-      const eventDetails = schedule?.activeEventData.event;
-      if (eventDetails) {
-        schedule?.deleteEvent(eventDetails, "Delete");
-      }
-    } else {
-      const isCellPopup =
-        quickPopup.firstElementChild?.classList.contains("e-cell-popup");
-      if (isCellPopup) {
-        schedule?.openEditor(getSlotData(), "Add", true);
-      } else {
-        const idService = (
-          schedule?.activeEventData.event as Record<string, any>
-        ).Id;
-        const foundService = services.find(
-          (service) => service!.IdUslugi === idService
-        );
-        if (foundService) {
-          // setSelectedCar(foundService.samochody as Car);
-          // setSelectedDateTimeRange({
-          //   startDateValue: foundService.DataOd,
-          //   endDateValue: foundService.DataDo,
-          // });
-          // setSelectedWashingType(
-          //   foundService.relokacje[0].MyjniaAutomatyczna
-          //     ? WashingType.Automatyczna
-          //     : foundService.relokacje[0].MyjniaBezdotykowa
-          //     ? WashingType.Bezdotykowa
-          //     : WashingType.Prywatna
-          // );
-          setServiceDescription(
-            //@ts-ignore
-            foundService.Opis
-          );
-          schedule?.openEditor({ Id: idService }, "Save", true);
-        }
-      }
-    }
-    schedule?.closeQuickInfoPopup();
-  };
-  //@ts-ignore
-  const footerTemplate = (props) => {
-    if (!(props.StartTime > new Date())) return null;
-    return (
-      <div className="quick-info-footer">
-        {props.elementType == "cell" ? (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-around",
-            }}
-          >
-            <ButtonComponent
-              id="add"
-              cssClass="e-flat"
-              content="Dodaj"
-              isPrimary={true}
-              style={{
-                width: "70%",
-                backgroundColor: "var(--secondary-color-1)",
-                border: 0,
-                color: "var(--light-background-color)",
-              }}
-              //@ts-ignore
-              onClick={buttonClickActions}
-            />
-          </div>
-        ) : (
-          props.Type !== "Wypozyczenie" &&
-          !props.IsReadonly && (
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-            >
-              <ButtonComponent
-                id="more-details"
-                content="Edytuj"
-                isPrimary={true}
-                //@ts-ignore
-                onClick={buttonClickActions}
-              />
-
-              <ButtonComponent
-                id="delete"
-                cssClass="e-flat"
-                content="Usuń"
-                style={{
-                  backgroundColor: "var(--danger-color)",
-                  border: 0,
-                  color: "var(--light-background-color)",
-                }}
-                //@ts-ignore
-                onClick={buttonClickActions}
-              />
-            </div>
-          )
-        )}
-      </div>
-    );
-  };
   return (
     <>
-      <div
-        className={styles["schedule-overview"]}
-        style={{ width: screen.active ? "100vw" : "auto" }}
-      >
+      <div className={styles["schedule-overview"]}>
         <Header schedule={schedule} />
         <div className={styles["overview-toolbar"]}>
           <Toolbar schedule={schedule} />
@@ -303,13 +220,20 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
         }}
         timeFormat="HH:mm"
         style={{
-          maxHeight: screen.active ? "87vh" : "77vh",
-          width: screen.active ? "100vw" : "auto",
+          minHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
+          maxHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
           overflowY: "auto",
         }}
         editorTemplate={useCallback(
           () => (
-            <AddEvent locations={locations} rents={services} />
+            <AddEvent
+              locations={locations}
+              rents={services.filter(
+                (service: Service) =>
+                  new Date(service.uslugi.DataOd) > new Date() &&
+                  new Date(service.uslugi.DataDo) > new Date()
+              )}
+            />
           ),
           [locations, services]
         )}
@@ -319,9 +243,17 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
         eventRendered={onEventRendered}
         quickInfoTemplates={{
           //@ts-ignore
-          content: contentTemplate,
+          content: (props: Data) => <ContentTemplate {...props} />,
           //@ts-ignore
-          footer: footerTemplate,
+          footer: (props: Data) =>
+            props.Type === "Relokacja" ? (
+              //@ts-ignore
+              <FooterTemplate
+                {...props}
+                schedule={schedule}
+                services={services}
+              />
+            ) : null,
         }}
         workHours={{
           start: "00:00",
@@ -353,4 +285,4 @@ export const Calendar: FC<CalendarDriverPageProps> = memo(function Calendar({
       </ScheduleComponent>
     </>
   );
-});
+};

@@ -1,5 +1,5 @@
 import { extend } from "@syncfusion/ej2-base";
-import { Service } from "pages/mechanic/calendar";
+import { Service } from "pages/api/mechanic/calendar";
 
 export type Data = {
   Id: number;

@@ -1,6 +1,6 @@
-import { lokalizacje, wypozyczenia } from "@prisma/client";
+import { lokalizacje } from "@prisma/client";
 import { TabComponent } from "@syncfusion/ej2-react-navigations";
-import { Service } from "pages/driver/calendar";
+import { Service } from "pages/api/driver/calendar";
 import {
   createContext,
   Dispatch,
@@ -35,6 +35,8 @@ export type AddEventContextInterface = {
   >;
   serviceDescription?: string;
   setServiceDescription: Dispatch<React.SetStateAction<string | undefined>>;
+  formType: "EDIT" | "NEW";
+  setFormType: Dispatch<React.SetStateAction<"EDIT" | "NEW">>;
   resetContextData: () => void;
 };
 
@@ -55,6 +57,7 @@ const AddEventContextProvider: FC = ({ children }) => {
   const [selectedCarDeliverLocation, setSelectedCarDeliverLocation] =
     useState<lokalizacje>();
   const [serviceDescription, setServiceDescription] = useState<string>();
+  const [formType, setFormType] = useState<"EDIT" | "NEW">("NEW");
   const resetContextData = useCallback(() => {
     setSelectedRentId(undefined);
     setSelectedRelocationType(undefined);
@@ -85,6 +88,8 @@ const AddEventContextProvider: FC = ({ children }) => {
         setSelectedCarDeliverLocation,
         serviceDescription,
         setServiceDescription,
+        formType,
+        setFormType,
         resetContextData,
       }}
     >

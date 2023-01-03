@@ -116,6 +116,9 @@ export async function get(req: NextApiRequest, res: NextApiResponse) {
 async function put(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.body.IdUslugi) {
+      const pracownik = await prisma.pracownicy.findFirst({
+        where: { IdUzytkownicy: req.body.IdUzytkownicy },
+      });
       const [usluga] = await prisma.$transaction([
         prisma.uslugi.update({
           where: {
@@ -133,7 +136,7 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
                 }
               : {
                   IdUslugaStatus: 1,
-                  IdPracownicy_Przypisanie: req.body.IdPracownicy,
+                  IdPracownicy_Przypisanie: pracownik?.IdPracownicy,
                 },
         }),
       ]);

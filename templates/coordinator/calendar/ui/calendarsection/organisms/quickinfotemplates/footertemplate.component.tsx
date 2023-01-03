@@ -124,16 +124,14 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
               );
             if (relocationPodstawienie) {
               setPickupEstimationTime(
-                String(relocationPodstawienie.CzasDojazdu_Podstawienie)
+                String(relocationPodstawienie.CzasDojazdu)
               );
               setSelectedCarPickup(true);
               setSelectedCarPickupEmployee(
-                relocationPodstawienie.pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie ??
-                  undefined
+                relocationPodstawienie.uslugi?.pracownicy ?? undefined
               );
               setSelectedCarPickupLocation(
-                relocationPodstawienie.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie ??
-                  undefined
+                relocationPodstawienie.lokalizacje ?? undefined
               );
             }
             const relocationOdbior =
@@ -141,17 +139,13 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
                 (relokacja) => relokacja.Typ_Relokacja === "Odbior"
               );
             if (relocationOdbior) {
-              setDeliveryEstimationTime(
-                String(relocationOdbior.CzasDojazdu_Odbior)
-              );
+              setDeliveryEstimationTime(String(relocationOdbior.CzasDojazdu));
               setSelectedCarDeliver(true);
               setSelectedCarDeliverEmployee(
-                relocationOdbior.pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior ??
-                  undefined
+                relocationOdbior.uslugi?.pracownicy ?? undefined
               );
               setSelectedCarDeliverLocation(
-                relocationOdbior.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior ??
-                  undefined
+                relocationOdbior.lokalizacje ?? undefined
               );
             }
           } else if (serviceType === UslugaType.MYCIE) {

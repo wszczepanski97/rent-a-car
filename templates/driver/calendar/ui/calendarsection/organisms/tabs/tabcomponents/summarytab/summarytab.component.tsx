@@ -36,7 +36,7 @@ export const SummaryTab: FC = () => {
               className="e-textlabel"
               style={{ fontSize: "16px", fontWeight: 700 }}
             >
-              Id Wypożyczenia
+              Wypożyczenie
             </label>
             <span style={{ textOverflow: "ellipsis", fontSize: "14px" }}>
               {selectedRentId}

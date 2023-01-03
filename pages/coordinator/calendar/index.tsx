@@ -55,7 +55,10 @@ CalendarCoordinatorPage.getLayout = (page: ReactElement) => (
           style={{
             display: "flex",
             flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             margin: "0 auto",
+            height: "100vh",
           }}
         >
           <Navbar />

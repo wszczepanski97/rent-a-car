@@ -1,5 +1,5 @@
 import { TabComponent } from "@syncfusion/ej2-react-navigations";
-import { Car } from "pages/mechanic/calendar";
+import { Car } from "pages/api/mechanic/calendar";
 import {
   createContext,
   Dispatch,

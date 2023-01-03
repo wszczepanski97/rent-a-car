@@ -59,21 +59,11 @@ export const getData = (services: Service[]) => {
               : serviceName === "Naprawa"
               ? "#b52d9c"
               : "#b5a32d",
-          PickLocation: service.relokacje?.[0]
-            ?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie
-            ? `${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie.Miejscowosc}, ${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie.Ulica} ${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie.NumerUlicy}`
+          Location: service.relokacje?.[0]?.lokalizacje
+            ? `${service.relokacje?.[0].lokalizacje.Miejscowosc}, ${service.relokacje?.[0].lokalizacje.Ulica} ${service.relokacje?.[0].lokalizacje.NumerUlicy}`
             : "",
-          ReturnLocation: service.relokacje?.[0]
-            ?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior
-            ? `${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior.Miejscowosc}, ${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior.Ulica} ${service.relokacje?.[0]?.lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior.NumerUlicy}`
-            : "",
-          PickEmployee: service.relokacje?.[0]
-            ?.pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie
-            ? `${service.relokacje?.[0]?.pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie?.uzytkownicy.Imie} ${service.relokacje?.[0]?.pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie?.uzytkownicy.Nazwisko}`
-            : "",
-          ReturnEmployee: service.relokacje?.[0]
-            ?.pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior
-            ? `${service.relokacje?.[0]?.pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior?.uzytkownicy.Imie} ${service.relokacje?.[0]?.pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior?.uzytkownicy.Nazwisko}`
+          Employee: service.pracownicy?.uzytkownicy
+            ? `${service.pracownicy?.uzytkownicy.Imie} ${service.pracownicy?.uzytkownicy.Nazwisko}`
             : "",
           StartTimezone: "Europe/Warsaw",
           EndTimezone: "Europe/Warsaw",

@@ -13,12 +13,20 @@ type TabDropdownProps = {
   placeholder: string;
   dropdownRef: MutableRefObject<DropDownListComponent | null>;
   value: any;
+  disabled?: boolean;
   setDisabled?: Dispatch<SetStateAction<boolean>>;
   setSelectedProperty: Dispatch<SetStateAction<any>>;
 };
 
 const TabDropdown: FC<TabDropdownProps> = memo(
-  ({ setDisabled, setSelectedProperty, dropdownRef, value, ...rest }) => {
+  ({
+    setDisabled,
+    setSelectedProperty,
+    dropdownRef,
+    value,
+    disabled,
+    ...rest
+  }) => {
     const onDropdownChange = useCallback(
       (e: any) => {
         setSelectedProperty(e.value);
@@ -30,6 +38,7 @@ const TabDropdown: FC<TabDropdownProps> = memo(
         ref={dropdownRef}
         onChange={onDropdownChange}
         value={value}
+        enabled={!disabled}
         {...rest}
       />
     );

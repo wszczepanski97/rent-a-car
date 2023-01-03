@@ -51,7 +51,7 @@ export const TimeRangeRepairTab: FC = () => {
           : []),
         ...(services
           ? services.map((usluga) =>
-              getBlockedPeriods(usluga.DataOd, usluga.DataDo, true)
+              getBlockedPeriods(usluga!.DataOd, usluga!.DataDo, true)
             )
           : []),
       ]
@@ -66,7 +66,7 @@ export const TimeRangeRepairTab: FC = () => {
           : []),
         ...(services
           ? services.map((usluga) =>
-              getBlockedPeriods(usluga.DataOd, usluga.DataDo, false)
+              getBlockedPeriods(usluga!.DataOd, usluga!.DataDo, false)
             )
           : []),
       ]

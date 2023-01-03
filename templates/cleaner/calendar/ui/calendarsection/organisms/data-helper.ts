@@ -20,7 +20,6 @@ export type Data = {
 };
 
 export const getData = (services: Service[]) => {
-  console.log(services);
   return services
     ? (extend(
         [],

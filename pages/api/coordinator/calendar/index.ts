@@ -28,12 +28,13 @@ export type Service = uslugi & {
       })
     | null;
   relokacje: (relokacje & {
-    uslugi: uslugi | null;
+    lokalizacje: lokalizacje | null;
+    uslugi:
+      | (uslugi & {
+          pracownicy: Employee | null;
+        })
+      | null;
     wypozyczenia: wypozyczenia | null;
-    lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior: lokalizacje | null;
-    lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie: lokalizacje | null;
-    pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior: Employee | null;
-    pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie: Employee | null;
   })[];
   samochody: samochody;
   uslugistatus: uslugistatus;
@@ -46,10 +47,12 @@ export type Service = uslugi & {
       uzytkownicy: uzytkownicy;
     };
     relokacje: (relokacje & {
-      lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior: lokalizacje | null;
-      lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie: lokalizacje | null;
-      pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior: Employee | null;
-      pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie: Employee | null;
+      lokalizacje: lokalizacje | null;
+      uslugi:
+        | (uslugi & {
+            pracownicy: Employee | null;
+          })
+        | null;
     })[];
   })[];
 };
@@ -99,37 +102,24 @@ export const get = async () => {
           },
           relokacje: {
             include: {
-              lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior: true,
-              lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie:
-                true,
-              pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior: {
+              lokalizacje: true,
+              uslugi: {
                 include: {
-                  stanowiska: {
+                  pracownicy: {
                     include: {
-                      role_stanowisko: {
+                      uzytkownicy: true,
+                      uslugi: true,
+                      stanowiska: {
                         include: {
-                          role: true,
+                          role_stanowisko: {
+                            include: {
+                              role: true,
+                            },
+                          },
                         },
                       },
                     },
                   },
-                  uslugi: true,
-                  uzytkownicy: true,
-                },
-              },
-              pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie: {
-                include: {
-                  stanowiska: {
-                    include: {
-                      role_stanowisko: {
-                        include: {
-                          role: true,
-                        },
-                      },
-                    },
-                  },
-                  uslugi: true,
-                  uzytkownicy: true,
                 },
               },
             },
@@ -138,40 +128,27 @@ export const get = async () => {
       },
       relokacje: {
         include: {
-          uslugi: true,
+          uslugi: {
+            include: {
+              pracownicy: {
+                include: {
+                  uzytkownicy: true,
+                  uslugi: true,
+                  stanowiska: {
+                    include: {
+                      role_stanowisko: {
+                        include: {
+                          role: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
           wypozyczenia: true,
-          lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Odbior: true,
-          lokalizacje_lokalizacjeTorelokacje_IdLokalizacje_Podstawienie: true,
-          pracownicy_pracownicyTorelokacje_IdPracownicy_Odbior: {
-            include: {
-              stanowiska: {
-                include: {
-                  role_stanowisko: {
-                    include: {
-                      role: true,
-                    },
-                  },
-                },
-              },
-              uslugi: true,
-              uzytkownicy: true,
-            },
-          },
-          pracownicy_pracownicyTorelokacje_IdPracownicy_Podstawienie: {
-            include: {
-              stanowiska: {
-                include: {
-                  role_stanowisko: {
-                    include: {
-                      role: true,
-                    },
-                  },
-                },
-              },
-              uslugi: true,
-              uzytkownicy: true,
-            },
-          },
+          lokalizacje: true,
         },
       },
       uslugistatus: true,
@@ -270,6 +247,8 @@ export default async function handler(
               data: {
                 DataOd: relocations.Podstawienie.DataOd,
                 DataDo: relocations.Podstawienie.DataDo,
+                IdPracownicy_Przypisanie:
+                  relocations.Podstawienie.IdPracownicy_Podstawienie,
                 Opis: null,
                 uslugistatus: { connect: { IdUslugiStatus: 1 } },
                 samochody: {
@@ -277,11 +256,9 @@ export default async function handler(
                 },
                 relokacje: {
                   create: {
-                    IdPracownicy_Podstawienie:
-                      relocations.Podstawienie.IdPracownicy_Podstawienie,
-                    IdLokalizacje_Podstawienie:
+                    IdLokalizacje:
                       relocations.Podstawienie.IdLokalizacje_Podstawienie,
-                    CzasDojazdu_Podstawienie:
+                    CzasDojazdu:
                       relocations.Podstawienie.CzasDojazdu_Podstawienie,
                     IdWypozyczenia: usluga[0].wypozyczenia[0].IdWypozyczenia,
                     Typ_Relokacja: relocations.Podstawienie.Typ_Relokacja,
@@ -304,6 +281,8 @@ export default async function handler(
               data: {
                 DataOd: relocations.Odbior.DataOd,
                 DataDo: relocations.Odbior.DataDo,
+                IdPracownicy_Przypisanie:
+                  relocations.Odbior.IdPracownicy_Odbior,
                 Opis: null,
                 uslugistatus: { connect: { IdUslugiStatus: 1 } },
                 samochody: {
@@ -311,10 +290,8 @@ export default async function handler(
                 },
                 relokacje: {
                   create: {
-                    IdPracownicy_Odbior: relocations.Odbior.IdPracownicy_Odbior,
-                    IdLokalizacje_Odbior:
-                      relocations.Odbior.IdLokalizacje_Odbior,
-                    CzasDojazdu_Odbior: relocations.Odbior.CzasDojazdu_Odbior,
+                    IdLokalizacje: relocations.Odbior.IdLokalizacje_Odbior,
+                    CzasDojazdu: relocations.Odbior.CzasDojazdu_Odbior,
                     IdWypozyczenia: usluga[0].wypozyczenia[0].IdWypozyczenia,
                     Typ_Relokacja: relocations.Odbior.Typ_Relokacja,
                   },
@@ -489,6 +466,8 @@ export default async function handler(
                   data: {
                     DataOd: relocations.Podstawienie.DataOd,
                     DataDo: relocations.Podstawienie.DataDo,
+                    IdPracownicy_Przypisanie:
+                      relocations.Podstawienie.IdPracownicy_Podstawienie,
                     Opis: null,
                     uslugistatus: { connect: { IdUslugiStatus: 1 } },
                     samochody: {
@@ -497,11 +476,9 @@ export default async function handler(
                     relokacje: {
                       update: {
                         data: {
-                          IdPracownicy_Podstawienie:
-                            relocations.Podstawienie.IdPracownicy_Podstawienie,
-                          IdLokalizacje_Podstawienie:
+                          IdLokalizacje:
                             relocations.Podstawienie.IdLokalizacje_Podstawienie,
-                          CzasDojazdu_Podstawienie:
+                          CzasDojazdu:
                             relocations.Podstawienie.CzasDojazdu_Podstawienie,
                           IdWypozyczenia:
                             uslugaByIdUslugi.wypozyczenia[0].IdWypozyczenia,
@@ -525,6 +502,8 @@ export default async function handler(
                   data: {
                     DataOd: relocations.Odbior.DataOd,
                     DataDo: relocations.Odbior.DataDo,
+                    IdPracownicy_Przypisanie:
+                      relocations.Odbior.IdPracownicy_Odbior,
                     Opis: null,
                     uslugistatus: { connect: { IdUslugiStatus: 1 } },
                     samochody: {
@@ -533,12 +512,9 @@ export default async function handler(
                     relokacje: {
                       update: {
                         data: {
-                          IdPracownicy_Odbior:
-                            relocations.Odbior.IdPracownicy_Odbior,
-                          IdLokalizacje_Odbior:
+                          IdLokalizacje:
                             relocations.Odbior.IdLokalizacje_Odbior,
-                          CzasDojazdu_Odbior:
-                            relocations.Odbior.CzasDojazdu_Odbior,
+                          CzasDojazdu: relocations.Odbior.CzasDojazdu_Odbior,
                           IdWypozyczenia:
                             uslugaByIdUslugi.wypozyczenia[0].IdWypozyczenia,
                           Typ_Relokacja: relocations.Odbior.Typ_Relokacja,

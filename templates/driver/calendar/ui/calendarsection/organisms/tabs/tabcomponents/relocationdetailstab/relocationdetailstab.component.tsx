@@ -79,8 +79,8 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
       <TabTitle
         title={
           selectedRelocationType === "Podstawienie"
-            ? "Wybierz pracownika do podstawienia auta"
-            : "Wybierz pracownika do odbioru auta"
+            ? "Wypełnij szczegóły podstawienia auta"
+            : "Wypełnij szczegóły odbioru auta"
         }
       />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -125,13 +125,46 @@ const RelocationDetailsTab: FC<RelocationDetailsTabProps> = ({ locations }) => {
                 ))}
               </select>
             </div>
-            <i style={{ fontSize: 14, textDecoration: "underline" }}>
-              Pamiętaj, wypożyczenie rozpoczyna się o godzinie:
-              {selectedRent?.uslugi.DataOd}
-            </i>
-            <i style={{ fontSize: 14, textDecoration: "underline" }}>
-              Jest to czas w którym powinieneś znaleźć się na miejscu.
-            </i>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+              <i style={{ fontSize: 14 }}>
+                Pamiętaj, wypożyczenie rozpoczyna się:
+                <b>
+                  {selectedRent?.uslugi &&
+                    new Date(
+                      new Date(selectedRent?.uslugi.DataOd).getTime() +
+                        new Date(
+                          selectedRent?.uslugi.DataOd
+                        ).getTimezoneOffset() *
+                          60 *
+                          1000
+                    ).toLocaleString()}
+                </b>
+              </i>
+              <i
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "underline",
+                }}
+              >
+                Jest to czas w którym powinieneś znaleźć się na miejscu.
+              </i>
+              <p>
+                Realizacja podstawienia rozpocznie się:
+                {selectedRent?.uslugi &&
+                  new Date(
+                    new Date(
+                      new Date(selectedRent?.uslugi.DataOd).getTime() +
+                        new Date(
+                          selectedRent?.uslugi.DataOd
+                        ).getTimezoneOffset() *
+                          60 *
+                          1000
+                    ).getTime() -
+                      Number(pickupEstimationTime!) * 60 * 60000
+                  ).toLocaleString()}
+              </p>
+            </div>
           </div>
         )}
         {selectedRelocationType === "Odbior" && (

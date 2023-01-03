@@ -1,39 +1,27 @@
-import { FullScreenContext } from "contexts/full-screen.context";
 import Head from "next/head";
-import { useContext } from "react";
 import { Calendar } from "./organisms/calendar.component";
 import styles from "./organisms/calendar.module.scss";
 import AddEventContextProvider from "./organisms/tabs/contexts/addevent.context";
 
-const CalendarSection = () => {
-  const { screen } = useContext(FullScreenContext);
-  return (
-    <>
-      <Head>
-        <link
-          href="https://cdn.syncfusion.com/ej2/bootstrap5.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-      </Head>
-      <section
-        id="calendarSection"
-        className={styles.calendarSection}
-        style={
-          screen.active
-            ? { margin: "0", height: "100vh", width: "100vw" }
-            : { margin: "0 auto" }
-        }
-      >
-        <AddEventContextProvider>
-          <Calendar />
-        </AddEventContextProvider>
-      </section>
-    </>
-  );
-};
+const CalendarSection = () => (
+  <>
+    <Head>
+      <link
+        href="https://cdn.syncfusion.com/ej2/bootstrap5.css"
+        rel="stylesheet"
+      />
+      <link
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        rel="stylesheet"
+      />
+      <title>Mój Kalendarz - koordynator </title>
+    </Head>
+    <section className={styles.calendarSection}>
+      <AddEventContextProvider>
+        <Calendar />
+      </AddEventContextProvider>
+    </section>
+  </>
+);
 
 export default CalendarSection;

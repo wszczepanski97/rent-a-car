@@ -132,6 +132,7 @@ export const Calendar = () => {
     }
     setDisabled(false);
   };
+
   const onPopupClose = (e: PopupCloseEventArgs) => {
     if (e.type === "Editor" && !e.data) {
       resetContextData();
@@ -192,7 +193,8 @@ export const Calendar = () => {
         }}
         timeFormat="HH:mm"
         style={{
-          maxHeight: "calc(100vh - var(--navbar-height) - 120px)",
+          minHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
+          maxHeight: "calc(100vh - var(--navbar-height) - 120px) !important",
           overflowY: "auto",
         }}
         editorTemplate={useCallback(
