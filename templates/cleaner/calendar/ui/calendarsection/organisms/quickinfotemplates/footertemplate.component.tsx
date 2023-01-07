@@ -124,7 +124,6 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
               //@ts-ignore
               onClick={buttonClickActions}
             />
-
             <ButtonComponent
               id="delete"
               cssClass="e-flat"

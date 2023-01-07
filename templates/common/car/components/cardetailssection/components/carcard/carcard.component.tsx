@@ -9,7 +9,7 @@ import CarDescription from "../cardescription";
 import styles from "./carcard.module.scss";
 import CarCardTitle from "./components/carcardtitle";
 
-const CarCard: FC<CarPageProps> = ({ car }) => (
+const CarCard: FC<Pick<CarPageProps, "car">> = ({ car }) => (
   <Card type={CardType.CUSTOM} className={styles.carCard}>
     <CarCardTitle carName={`${car?.Marka} ${car?.Model}`} />
     <div className={styles.carCardInnerWrapper}>

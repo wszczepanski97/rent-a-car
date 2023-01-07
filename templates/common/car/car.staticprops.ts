@@ -23,11 +23,13 @@ export const carPageStaticProps: GetStaticProps<CarPageProps, Params> = async (
       samochodyszczegoly: true,
     },
   });
+  const additionalRentOptions = await prisma.dodatkoweopcje.findMany();
   return {
     props: {
       car: car
         ? { ...JSON.parse(JSON.stringify(car!)), OstatniaAktualizacja: null }
         : null,
+      additionalRentOptions: JSON.parse(JSON.stringify(additionalRentOptions)),
     },
   };
 };

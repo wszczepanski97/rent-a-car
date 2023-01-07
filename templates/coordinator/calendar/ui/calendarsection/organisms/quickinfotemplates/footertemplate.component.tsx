@@ -4,6 +4,7 @@ import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { ScheduleComponent } from "@syncfusion/ej2-react-schedule";
 import { Car, Client, Employee, Service } from "pages/api/coordinator/calendar";
 import { FC, useContext } from "react";
+import { useCalendar } from "templates/coordinator/calendar/swr/use-calendar.swr";
 import { UslugaType } from "../add-event.component";
 import { AddEventContext } from "../tabs/contexts/addevent.context";
 import { WashingType } from "../tabs/tabcomponents/washingtypetab/washingtypetab.component";
@@ -18,6 +19,7 @@ type FooterTemplateProps = {
   employees: Employee[];
   insurances: ubezpieczenia[];
   services: Service[];
+  mutate: () => Promise<any>;
 };
 
 const FooterTemplate: FC<FooterTemplateProps> = ({
@@ -30,6 +32,7 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
   employees,
   insurances,
   services,
+  mutate,
 }) => {
   const {
     setSelectedService,
@@ -51,7 +54,7 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
     setSelectedCarPickupLocation,
   } = useContext(AddEventContext);
 
-  const buttonClickActions = (e: Event) => {
+  const buttonClickActions = async (e: Event) => {
     const quickPopup = closest(e.target as Element, ".e-quick-popup-wrapper");
     const getSlotData = () => {
       let cellDetails = schedule?.getCellDetails(
@@ -68,6 +71,21 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
       const eventDetails = schedule?.activeEventData.event;
       if (eventDetails) {
         schedule?.deleteEvent(eventDetails, "Delete");
+      }
+    } else if ((e.target as Element).id === "cancel") {
+      const eventDetails = schedule?.activeEventData.event;
+      if (eventDetails) {
+        const options = {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            //@ts-ignore
+            IdUslugi: eventDetails.Id as number,
+            type: "CANCEL",
+          }),
+        };
+        await fetch("/api/coordinator/calendar", options);
+        await mutate();
       }
     } else {
       const isCellPopup =
@@ -231,6 +249,18 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
               content="Usuń"
               style={{
                 backgroundColor: "var(--danger-color)",
+                border: 0,
+                color: "var(--light-background-color)",
+              }}
+              //@ts-ignore
+              onClick={buttonClickActions}
+            />
+            <ButtonComponent
+              id="cancel"
+              content="Anuluj"
+              isPrimary={true}
+              style={{
+                backgroundColor: "orange",
                 border: 0,
                 color: "var(--light-background-color)",
               }}

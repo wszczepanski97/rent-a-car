@@ -1,4 +1,4 @@
-import { equal } from "assert";
+import { dodatkoweopcje } from "@prisma/client";
 import { prisma } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -9,7 +9,9 @@ export default async function handler(
   if (req.method === "POST") {
     let usluga;
     if (!req.body.IdSamochody) {
-      return res.status(400).json({ data: "Nie odnaleziono samochodu" });
+      return res
+        .status(400)
+        .json({ data: { error: "Nie odnaleziono samochodu" } });
     }
     try {
       const klient = await prisma.klienci.findFirst({
@@ -17,14 +19,59 @@ export default async function handler(
           IdUzytkownicy: req.body.IdUzytkownicy,
         },
       });
+
       if (!klient) {
-        return res.status(400).json({ data: "Nie odnaleziono klienta" });
+        return res
+          .status(400)
+          .json({ data: { error: "Nie odnaleziono klienta" } });
+      }
+
+      const car = await prisma.samochody.findFirst({
+        where: {
+          IdSamochody: req.body.IdSamochody,
+        },
+        include: {
+          uslugi: true,
+        },
+      });
+      const hasCarAnotherService = car?.uslugi.find(
+        (service) =>
+          new Date(
+            new Date(service.DataOd).getTime() -
+              new Date(service.DataOd).getTimezoneOffset() * 60 * 1000
+          ) <=
+            new Date(
+              new Date(req.body.DataOd).getTime() -
+                new Date(req.body.DataOd).getTimezoneOffset() * 60 * 1000
+            ) &&
+          new Date(
+            new Date(service.DataDo).getTime() -
+              new Date(service.DataDo).getTimezoneOffset() * 60 * 1000
+          ) >=
+            new Date(
+              new Date(req.body.DataDo).getTime() -
+                new Date(req.body.DataDo).getTimezoneOffset() * 60 * 1000
+            )
+      );
+      if (hasCarAnotherService) {
+        return res.status(400).json({
+          data: {
+            error:
+              "Auto jest w tym czasie niedostępne. Prosimy o zaznaczenie innego terminu",
+          },
+        });
       }
       usluga = await prisma.$transaction([
         prisma.uslugi.create({
           data: {
-            DataOd: new Date(req.body.DataOd),
-            DataDo: new Date(req.body.DataDo),
+            DataOd: new Date(
+              new Date(req.body.DataOd).getTime() -
+                new Date(req.body.DataOd).getTimezoneOffset() * 60 * 1000
+            ),
+            DataDo: new Date(
+              new Date(req.body.DataDo).getTime() -
+                new Date(req.body.DataDo).getTimezoneOffset() * 60 * 1000
+            ),
             Opis: req.body.Opis,
             IdPracownicy_Przypisanie: undefined,
             uslugistatus: {
@@ -52,6 +99,15 @@ export default async function handler(
                 ubezpieczenia: {
                   connect: {
                     IdUbezpieczenia: req.body.IdUbezpieczenia,
+                  },
+                },
+                dodatkoweopcje_wypozyczenia: {
+                  createMany: {
+                    data: req.body.dodatkoweOpcje.map(
+                      (option: dodatkoweopcje) => ({
+                        DodatkoweOpcje_Id: option.IdDodatkoweOpcje,
+                      })
+                    ),
                   },
                 },
                 Czy_Odebrac_Auto: false,

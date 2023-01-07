@@ -1,5 +1,5 @@
 import { extend } from "@syncfusion/ej2-base";
-import { Service } from "pages/driver/calendar";
+import { Service } from "pages/api/driver/calendar";
 
 export type Data = {
   Id: number;
@@ -71,8 +71,8 @@ export const getData = (services: Service[]) =>
                     Description: relokacja.uslugi?.Opis,
                     Type: "Relokacja",
                     Typ_Relokacja: relokacja.Typ_Relokacja,
-                    AssignedWorker: `${relokacja.uslugi.pracownicy.uzytkownicy.Imie} ${relokacja.uslugi.pracownicy.uzytkownicy.Nazwisko}`,
-                    Location: `${relokacja.lokalizacje.Miejscowosc}, ${relokacja.lokalizacje.Ulica} ${relokacja.lokalizacje.NumerUlicy}`,
+                    AssignedWorker: `${relokacja.uslugi?.pracownicy?.uzytkownicy.Imie} ${relokacja.uslugi?.pracownicy?.uzytkownicy.Nazwisko}`,
+                    Location: `${relokacja.lokalizacje?.Miejscowosc}, ${relokacja.lokalizacje?.Ulica} ${relokacja.lokalizacje?.NumerUlicy}`,
                     StartTimezone: "Europe/Warsaw",
                     EndTimezone: "Europe/Warsaw",
                     IsReadonly:

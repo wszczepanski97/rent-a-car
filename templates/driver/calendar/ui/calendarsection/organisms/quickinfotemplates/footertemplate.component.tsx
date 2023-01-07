@@ -2,11 +2,10 @@ import { relokacje } from "@prisma/client";
 import { closest } from "@syncfusion/ej2-base";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { ScheduleComponent } from "@syncfusion/ej2-react-schedule";
-import { Car, Service } from "pages/api/coordinator/calendar";
+import { Service } from "pages/api/coordinator/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "../tabs/contexts/addevent.context";
 import { RelocationType } from "../tabs/tabcomponents/relocationtypetab/relocationtypetab.component";
-import { WashingType } from "../tabs/tabcomponents/washingtypetab/washingtypetab.component";
 
 type FooterTemplateProps = {
   schedule: ScheduleComponent | null;
@@ -69,15 +68,16 @@ const FooterTemplate: FC<FooterTemplateProps> = ({
           .find((relokacja: relokacje) => relokacja!.IdUslugi === idService);
         if (foundService) {
           if (foundService.Typ_Relokacja === "Podstawienie") {
-            setPickupEstimationTime(foundService.CzasDojazdu);
-            setSelectedCarPickupLocation(foundService.IdLokalizacje);
+            setPickupEstimationTime(String(foundService.CzasDojazdu));
+            setSelectedCarPickupLocation(foundService.lokalizacje!);
             setSelectedRelocationType(RelocationType.PODSTAWIENIE);
           } else {
-            setDeliveryEstimationTime(foundService.CzasDojazdu);
-            setSelectedCarDeliverLocation(foundService.IdLokalizacje);
+            setDeliveryEstimationTime(String(foundService.CzasDojazdu));
+            setSelectedCarDeliverLocation(foundService.lokalizacje!);
             setSelectedRelocationType(RelocationType.ODBIOR);
           }
-          setSelectedRentId(foundService.IdWypozyczenia);
+          setSelectedRentId(String(foundService.IdWypozyczenia));
+          //@ts-ignore
           setSelectedRent(foundService.wypozyczenia);
           setServiceDescription(
             //@ts-ignore

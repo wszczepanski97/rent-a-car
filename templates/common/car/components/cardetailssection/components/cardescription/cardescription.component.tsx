@@ -14,7 +14,7 @@ import AvailabilityProperty from "./components/cardescriptionrow/components/avai
 import CategoryProperty from "./components/cardescriptionrow/components/categoryproperty";
 import PriceForHourProperty from "./components/cardescriptionrow/components/priceforhourproperty";
 
-const CarDescription: FC<CarPageProps> = ({ car }) => (
+const CarDescription: FC<Pick<CarPageProps, "car">> = ({ car }) => (
   <article className={styles.carDescriptionWrapper}>
     <CarDescriptionHeader />
     <div className={styles.carDescriptionColumnContainer}>

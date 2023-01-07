@@ -8,7 +8,10 @@ import { NextPageWithLayout } from "types/next";
 import { UserRole } from "types/userrole/userrole.type";
 import RentSection from "./components/rentsection";
 
-export const RentPage: NextPageWithLayout<CarPageProps> = ({ car }) => {
+export const RentPage: NextPageWithLayout<CarPageProps> = ({
+  car,
+  additionalRentOptions,
+}) => {
   const { data: session } = useSession();
   const router = useRouter();
   const role: UserRole | undefined = session?.user.role;
@@ -22,7 +25,7 @@ export const RentPage: NextPageWithLayout<CarPageProps> = ({ car }) => {
       <Head>
         <title>Wypożycz auto</title>
       </Head>
-      <RentSection car={car} />
+      <RentSection car={car} additionalRentOptions={additionalRentOptions} />
     </>
   );
 };

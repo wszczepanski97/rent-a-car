@@ -1,10 +1,4 @@
-import {
-  klienci,
-  lokalizacje,
-  relokacje,
-  uzytkownicy,
-  wypozyczenia,
-} from "@prisma/client";
+import { lokalizacje } from "@prisma/client";
 import type { SelectEventArgs } from "@syncfusion/ej2-react-navigations";
 import {
   TabComponent,
@@ -12,6 +6,7 @@ import {
   TabItemsDirective,
 } from "@syncfusion/ej2-react-navigations";
 import dynamic from "next/dynamic";
+import { Service } from "pages/api/driver/calendar";
 import { FC, useContext } from "react";
 import { AddEventContext } from "./tabs/contexts/addevent.context";
 
@@ -41,20 +36,7 @@ const SummaryTab = dynamic(
 
 type AddEventProps = {
   locations: lokalizacje[];
-  rents: (
-    | (wypozyczenia & {
-        relokacje: (relokacje & {
-          wypozyczenia:
-            | (wypozyczenia & {
-                klienci: klienci & {
-                  uzytkownicy: uzytkownicy;
-                };
-              })
-            | null;
-        })[];
-      })
-    | undefined
-  )[];
+  rents: Service[];
 };
 
 export const AddEvent: FC<AddEventProps> = ({ locations, rents }) => {

@@ -449,18 +449,13 @@ export const Calendar = memo(function Calendar() {
         eventRendered={onEventRendered}
         quickInfoTemplates={{
           //@ts-ignore
-          content: (props: Data) => (
-            <ContentTemplate
-              {...props}
-              clients={clients}
-              employees={employees}
-            />
-          ),
+          content: (props: Data) => <ContentTemplate {...props} />,
           //@ts-ignore
           footer: (props: Data) => (
             //@ts-ignore
             <FooterTemplate
               {...props}
+              mutate={mutate}
               schedule={schedule}
               clients={clients}
               employees={employees}

@@ -391,7 +391,20 @@ export default async function handler(
       return res.status(200).json({ data: { usluga } });
     }
   } else if (req.method === "PUT") {
-    if (req.body.type === UslugaType.WYPOŻYCZENIE) {
+    if (req.body.type === "CANCEL") {
+      const { IdUslugi } = req.body;
+      const [usluga] = await prisma.$transaction([
+        prisma.uslugi.update({
+          where: {
+            IdUslugi: IdUslugi,
+          },
+          data: {
+            IdUslugaStatus: 5,
+          },
+        }),
+      ]);
+      return res.status(200).json({ data: usluga });
+    } else if (req.body.type === UslugaType.WYPOŻYCZENIE) {
       const { service, rent, relocations, additionalOptions } = req.body;
       try {
         const uslugaByIdUslugi = await prisma.uslugi.findFirst({

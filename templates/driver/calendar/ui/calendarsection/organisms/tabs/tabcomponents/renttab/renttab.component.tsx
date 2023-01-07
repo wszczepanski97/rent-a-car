@@ -1,3 +1,4 @@
+import { klienci, relokacje, uzytkownicy, wypozyczenia } from "@prisma/client";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { Service } from "pages/api/driver/calendar";
 import { FC, useContext, useRef } from "react";
@@ -44,7 +45,6 @@ const RentTab: FC<RentTabProps> = ({ rents }) => {
           const rentId = e.match(/#[0-9]+/g)[0].replace("#", "");
           if (!rentId) return;
           setSelectedRentId(e);
-          //@ts-ignore
           setSelectedRent(rents.find((rent) => rent?.IdWypozyczenia == rentId));
         }}
         value={

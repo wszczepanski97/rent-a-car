@@ -1,23 +1,43 @@
 import { Client, Employee } from "pages/api/coordinator/calendar";
 import { FC } from "react";
-import { Data } from "../data-helper";
+import { RelocationType } from "templates/driver/calendar/ui/calendarsection/organisms/tabs/tabcomponents/relocationtypetab/relocationtypetab.component";
 
 type ContentTemplateProps = {
-  clients: Client[];
-  employees: Employee[];
   StartTime: Date;
   EndTime: Date;
   AssignedWorker: number | null;
   Client?: number | undefined;
+  AutoryzowanySerwis?: boolean;
+  SamodzielnaNaprawa?: boolean;
+  Warsztat?: boolean;
+  MyjniaBezdotykowa?: boolean;
+  MyjniaAutomatyczna?: boolean;
+  MyjniaPrywatna?: boolean;
+  Description?: string;
+  Car?: string;
+  Typ_Relokacja?: RelocationType;
+  CzasDojazdu?: string;
+  Location?: string;
+  StatusUslugi?: string;
 };
 
 const ContentTemplate: FC<ContentTemplateProps> = ({
-  clients,
-  employees,
+  Client,
   StartTime,
   EndTime,
   AssignedWorker,
-  Client,
+  AutoryzowanySerwis,
+  SamodzielnaNaprawa,
+  Warsztat,
+  MyjniaBezdotykowa,
+  MyjniaAutomatyczna,
+  MyjniaPrywatna,
+  Description,
+  Car,
+  Typ_Relokacja,
+  CzasDojazdu,
+  Location,
+  StatusUslugi,
 }) => {
   const dateOptions: Intl.DateTimeFormatOptions = {
     weekday: "short",
@@ -25,10 +45,6 @@ const ContentTemplate: FC<ContentTemplateProps> = ({
     month: "short",
     day: "numeric",
   };
-  const employeeData = employees.find(
-    (employee) => employee.IdPracownicy === AssignedWorker
-  );
-  const clientData = clients.find((client) => client.IdKlienci === Client);
 
   return (
     <div className="e-popup-content">
@@ -57,23 +73,110 @@ const ContentTemplate: FC<ContentTemplateProps> = ({
           </div>
         </div>
       </div>
-      {employeeData && (
+      {AssignedWorker && (
         <div className="e-resource">
           <div className="e-resource-icon e-icons"></div>
           <div className="e-resource-details e-text-ellipsis">
-            {`${employeeData?.uzytkownicy.Imie} ${employeeData?.uzytkownicy.Nazwisko}`}
+            {AssignedWorker}
           </div>
         </div>
       )}
-      {clientData && (
-        <div className="e-resource">
-          <div
-            className="e-user e-icons"
-            style={{ fontSize: 18, width: 26 }}
-          ></div>
-          <div className="e-resource-details e-text-ellipsis">
-            {clientData?.uzytkownicy.Imie} {clientData?.uzytkownicy.Nazwisko}
+      {Client && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Klient: </span>
+          <div className="e-resource-details e-text-ellipsis">{Client}</div>
+        </div>
+      )}
+      {Car && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Samochód: </span>
+          <div className="e-resource-details e-text-ellipsis">{Car}</div>
+        </div>
+      )}
+      {(AutoryzowanySerwis || SamodzielnaNaprawa || Warsztat) && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Typ naprawy: </span>
+          <span className="e-resource-details e-text-ellipsis">
+            {AutoryzowanySerwis
+              ? "Autoryzowany serwis"
+              : SamodzielnaNaprawa
+              ? "Samodzielna naprawa"
+              : "Warsztat"}
+          </span>
+        </div>
+      )}
+      {(MyjniaBezdotykowa || MyjniaAutomatyczna || MyjniaPrywatna) && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Typ mycia: </span>
+          <span className="e-resource-details e-text-ellipsis">
+            {MyjniaBezdotykowa
+              ? "Myjnia bezdotykowa"
+              : MyjniaAutomatyczna
+              ? "Myjnia automatyczna"
+              : "Myjnia prywatna"}
+          </span>
+        </div>
+      )}
+      {Typ_Relokacja && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Typ relokacji: </span>
+          <span className="e-resource-details e-text-ellipsis">
+            {Typ_Relokacja}
+          </span>
+        </div>
+      )}
+      {CzasDojazdu && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Czas dojazdu : </span>
+          <span className="e-resource-details e-text-ellipsis">
+            {`${CzasDojazdu}h`}
+          </span>
+        </div>
+      )}
+      {Location && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Miejsce dowozu: </span>
+          <span className="e-resource-details e-text-ellipsis">{Location}</span>
+        </div>
+      )}
+      {Description && (
+        <div className="e-description">
+          <div className="e-description-icon e-icons"></div>
+          <div className="e-description-details e-text-ellipsis">
+            {Description}
           </div>
+        </div>
+      )}
+      {StatusUslugi && (
+        <div
+          className="e-resource e-resource-details"
+          style={{ display: "flex", gap: 5 }}
+        >
+          <span style={{ fontWeight: 700 }}>Status usługi: </span>
+          <span className="e-resource-details e-text-ellipsis">
+            {StatusUslugi}
+          </span>
         </div>
       )}
     </div>

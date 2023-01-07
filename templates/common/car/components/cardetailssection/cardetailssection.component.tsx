@@ -3,7 +3,7 @@ import { FC, useContext } from "react";
 import { CarPageProps } from "templates/common/car/types/car.props";
 import CarCard from "./components/carcard";
 
-const CarDetailsSection: FC<CarPageProps> = ({ car }) => {
+const CarDetailsSection: FC<Pick<CarPageProps, "car">> = ({ car }) => {
   const { open } = useContext(SidebarContext);
   return (
     <section

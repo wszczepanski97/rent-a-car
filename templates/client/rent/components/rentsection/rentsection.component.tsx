@@ -4,7 +4,7 @@ import { FC, useContext } from "react";
 import { CarPageProps } from "templates/common/car/types/car.props";
 import RentCard from "./components/rentcard";
 
-const RentSection: FC<CarPageProps> = ({ car }) => {
+const RentSection: FC<CarPageProps> = ({ car, additionalRentOptions }) => {
   const { open } = useContext(SidebarContext);
   const {
     screen: { active },
@@ -19,12 +19,12 @@ const RentSection: FC<CarPageProps> = ({ car }) => {
           : "calc(100vh - var(--navbar-height))",
         display: "flex",
         justifyContent: "center",
-        alignItems: open ? "center" : "inherit",
+        alignItems: "center",
         paddingTop: open ? 80 : 0,
         width: "100%",
       }}
     >
-      <RentCard car={car} />
+      <RentCard car={car} additionalRentOptions={additionalRentOptions} />
     </section>
   );
 };

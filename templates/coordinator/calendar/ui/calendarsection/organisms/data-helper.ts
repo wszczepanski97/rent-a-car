@@ -59,9 +59,19 @@ export const getData = (services: Service[]) => {
               : serviceName === "Naprawa"
               ? "#b52d9c"
               : "#b5a32d",
+          Car: `${service.samochody.Marka} ${service.samochody.Model}`,
           Location: service.relokacje?.[0]?.lokalizacje
             ? `${service.relokacje?.[0].lokalizacje.Miejscowosc}, ${service.relokacje?.[0].lokalizacje.Ulica} ${service.relokacje?.[0].lokalizacje.NumerUlicy}`
             : "",
+          AutoryzowanySerwis: service?.uszkodzenia?.[0]?.AutoryzowanySerwis,
+          SamodzielnaNaprawa: service?.uszkodzenia?.[0]?.SamodzielnaNaprawa,
+          Warsztat: service?.uszkodzenia?.[0]?.Warsztat,
+          MyjniaAutomatyczna: service?.mycie?.[0]?.MyjniaAutomatyczna,
+          MyjniaBezdotykowa: service?.mycie?.[0]?.MyjniaBezdotykowa,
+          MyjniaPrywatna: service?.mycie?.[0]?.MyjniaPrywatna,
+          Typ_Relokacja: service.relokacje?.[0]?.Typ_Relokacja,
+          CzasDojazdu: service.relokacje?.[0]?.CzasDojazdu,
+          StatusUslugi: service.uslugistatus.Status,
           Employee: service.pracownicy?.uzytkownicy
             ? `${service.pracownicy?.uzytkownicy.Imie} ${service.pracownicy?.uzytkownicy.Nazwisko}`
             : "",

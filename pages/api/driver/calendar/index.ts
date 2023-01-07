@@ -20,42 +20,35 @@ export type Driver =
 
 export type Service = wypozyczenia & {
   relokacje: (relokacje & {
+    lokalizacje: lokalizacje | null;
     uslugi:
       | (uslugi & {
+          pracownicy: (pracownicy & { uzytkownicy: uzytkownicy }) | null;
           samochody: samochody;
         })
       | null;
     wypozyczenia:
       | (wypozyczenia & {
-          klienci: klienci & {
-            uzytkownicy: uzytkownicy;
-          };
+          klienci: klienci & { uzytkownicy: uzytkownicy };
           relokacje: (relokacje & {
             uslugi:
               | (uslugi & {
+                  pracownicy: pracownicy | null;
                   samochody: samochody;
                 })
               | null;
             wypozyczenia:
               | (wypozyczenia & {
-                  klienci: klienci & {
-                    uzytkownicy: uzytkownicy;
-                  };
-                  uslugi: uslugi & {
-                    samochody: samochody;
-                  };
+                  klienci: klienci & { uzytkownicy: uzytkownicy };
+                  uslugi: uslugi & { samochody: samochody };
                 })
               | null;
           })[];
-          uslugi: uslugi & {
-            samochody: samochody;
-          };
+          uslugi: uslugi & { samochody: samochody };
         })
       | null;
   })[];
-  uslugi: uslugi & {
-    samochody: samochody;
-  };
+  uslugi: uslugi & { samochody: samochody };
 };
 
 export type Car =
