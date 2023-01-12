@@ -28,6 +28,17 @@ const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
       {
         Header: "Data od",
         accessor: "DataOd",
+        sortType: (a: any, b: any) => {
+          var a1 = new Date(
+            new Date(a.values.DataOd).toLocaleDateString()
+          ).getTime();
+          var b1 = new Date(
+            new Date(b.values.DataOd).toLocaleDateString()
+          ).getTime();
+          if (a1 < b1) return 1;
+          else if (a1 > b1) return -1;
+          else return 0;
+        },
       },
       {
         Header: "Data do",
@@ -66,6 +77,15 @@ const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
         pageIndex: 0,
         pageSize: 4,
         hiddenColumns: ["IdSamochod", "IdUslugi", "IdWypozyczenia"],
+        sortBy:
+          past === true
+            ? []
+            : [
+                {
+                  id: "DataOd",
+                  desc: true,
+                },
+              ],
       },
     },
     useGlobalFilter,

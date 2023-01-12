@@ -42,19 +42,17 @@ model klienci {
 }
 
 model lokalizacje {
-  IdLokalizacje                                         Int         @id @default(autoincrement())
-  Kraj                                                  String      @db.VarChar(50)
-  KodPocztowy                                           String      @db.VarChar(10)
-  Miejscowosc                                           String      @db.VarChar(50)
-  Ulica                                                 String      @db.VarChar(50)
-  NumerUlicy                                            String      @db.VarChar(5)
-  DlugoscGeograficzna                                   String      @db.VarChar(10)
-  SzerokoscGeograficzna                                 String      @db.VarChar(10)
-  klienci                                               klienci[]
-  oddzialy                                              oddzialy[]
-  relokacje                                             relokacje[]
-  samochody_lokalizacjeTosamochody_Aktualna_Lokalizacja samochody[] @relation("lokalizacjeTosamochody_Aktualna_Lokalizacja")
-  samochody_lokalizacjeTosamochody_Domowa_Lokalizacja   samochody[] @relation("lokalizacjeTosamochody_Domowa_Lokalizacja")
+  IdLokalizacje         Int         @id @default(autoincrement())
+  Kraj                  String      @db.VarChar(50)
+  KodPocztowy           String      @db.VarChar(10)
+  Miejscowosc           String      @db.VarChar(50)
+  Ulica                 String      @db.VarChar(50)
+  NumerUlicy            String      @db.VarChar(5)
+  DlugoscGeograficzna   String      @db.VarChar(10)
+  SzerokoscGeograficzna String      @db.VarChar(10)
+  klienci               klienci[]
+  oddzialy              oddzialy[]
+  relokacje             relokacje[]
 
   @@index([IdLokalizacje], map: "Lokalizacje_idx_1")
 }
@@ -121,7 +119,7 @@ model relokacje {
   Typ_Relokacja  relokacje_Typ_Relokacja
   lokalizacje    lokalizacje?            @relation(fields: [IdLokalizacje], references: [IdLokalizacje], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Lokalizacje")
   uslugi         uslugi?                 @relation(fields: [IdUslugi], references: [IdUslugi], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Uslugi")
-  wypozyczenia   wypozyczenia?           @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Cascade, onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
+  wypozyczenia   wypozyczenia?           @relation(fields: [IdWypozyczenia], references: [IdWypozyczenia], onDelete: Restrict, onUpdate: Restrict, map: "Relokacje_Wypozyczenia")
 
   @@index([IdUslugi], map: "Relokacje_Uslugi")
   @@index([IdWypozyczenia], map: "Relokacje_Wypozyczenia")
@@ -160,28 +158,22 @@ model role_uzytkownik {
 }
 
 model samochody {
-  IdSamochody                                             Int                @id @default(autoincrement())
-  Marka                                                   String             @db.VarChar(20)
-  Model                                                   String             @db.VarChar(20)
-  NumerRejestracyjny                                      String             @db.VarChar(20)
-  NumerVIN                                                String             @db.VarChar(20)
-  Kategoria                                               String             @db.VarChar(3)
-  Zdjecia                                                 String?            @db.VarChar(2000)
-  CzyUszkodzony                                           Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
-  Przebieg                                                String             @db.VarChar(45)
-  CzyUmyty                                                Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
-  CenaZaGodzine                                           Int
-  IdSamochodySzczegoly                                    Int
-  Aktualna_Lokalizacja                                    Int
-  Domowa_Lokalizacja                                      Int
-  OstatniaAktualizacja                                    DateTime?          @db.DateTime(0)
-  lokalizacje_lokalizacjeTosamochody_Aktualna_Lokalizacja lokalizacje        @relation("lokalizacjeTosamochody_Aktualna_Lokalizacja", fields: [Aktualna_Lokalizacja], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Aktualna_Lokalizacja")
-  lokalizacje_lokalizacjeTosamochody_Domowa_Lokalizacja   lokalizacje        @relation("lokalizacjeTosamochody_Domowa_Lokalizacja", fields: [Domowa_Lokalizacja], references: [IdLokalizacje], onUpdate: Restrict, map: "Samochody_Domowa_Lokalizacja")
-  samochodyszczegoly                                      samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
-  uslugi                                                  uslugi[]
+  IdSamochody          Int                @id @default(autoincrement())
+  Marka                String             @db.VarChar(20)
+  Model                String             @db.VarChar(20)
+  NumerRejestracyjny   String             @db.VarChar(20)
+  NumerVIN             String             @db.VarChar(20)
+  Kategoria            String             @db.VarChar(3)
+  Zdjecia              String?            @db.VarChar(2000)
+  CzyUszkodzony        Boolean            @default(dbgenerated("b'0'")) @db.Bit(1)
+  Przebieg             String             @db.VarChar(45)
+  CzyUmyty             Boolean            @default(dbgenerated("b'1'")) @db.Bit(1)
+  CenaZaGodzine        Int
+  IdSamochodySzczegoly Int
+  OstatniaAktualizacja DateTime?          @db.DateTime(0)
+  samochodyszczegoly   samochodyszczegoly @relation(fields: [IdSamochodySzczegoly], references: [IdSamochodySzczegoly], onUpdate: Restrict, map: "Samochody_SamochodySzczegoly")
+  uslugi               uslugi[]
 
-  @@index([Aktualna_Lokalizacja], map: "Samochody_Aktualna_Lokalizacja")
-  @@index([Domowa_Lokalizacja], map: "Samochody_Domowa_Lokalizacja")
   @@index([IdSamochodySzczegoly], map: "Samochody_SamochodySzczegoly")
   @@index([IdSamochody, Marka, NumerRejestracyjny, Kategoria, IdSamochodySzczegoly], map: "Samochody_idx_1")
 }

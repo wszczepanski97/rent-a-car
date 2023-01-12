@@ -144,8 +144,16 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
           </h5>
           {resUsluga && (
             <h5>
-              Czas wypożyczenia: {new Date(resUsluga.DataOd).toLocaleString()} -{" "}
-              {new Date(resUsluga.DataDo).toLocaleString()}
+              Czas wypożyczenia:{" "}
+              {new Date(
+                new Date(resUsluga.DataOd).getTime() +
+                  new Date(resUsluga.DataOd).getTimezoneOffset() * 60 * 1000
+              ).toLocaleString()}
+              -
+              {new Date(
+                new Date(resUsluga.DataDo).getTime() +
+                  new Date(resUsluga.DataDo).getTimezoneOffset() * 60 * 1000
+              ).toLocaleString()}
             </h5>
           )}
           <h5>Pamiętaj zeby się nie spóźnić!</h5>
@@ -239,7 +247,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                     <DatePicker
                       id="DataOd"
                       name="DataOd"
-                      dateFormat="dd/MM/yyyy, h:mm aa"
+                      dateFormat="yyyy.MM.dd, h:mm aa"
                       selected={startDate}
                       onChange={(date: Date) => {
                         setStartDate(date);
@@ -264,7 +272,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                     <DatePicker
                       id="DataDo"
                       name="DataDo"
-                      dateFormat="dd/MM/yyyy, h:mm aa"
+                      dateFormat="yyyy.MM.dd, h:mm aa"
                       selected={endDate}
                       onChange={(date: Date) => {
                         setEndDate(date);
