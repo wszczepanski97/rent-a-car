@@ -86,8 +86,3 @@ export default function IndicatorDots(props: IndicatorDotsProps) {
     </div>
   );
 }
-
-IndicatorDots.propTypes = {
-  index: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,
-};

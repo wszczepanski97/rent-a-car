@@ -115,7 +115,6 @@ MyDepartmentCoordinatorPage.getLayout = (page: ReactElement) => (
       <Sidebar />
       <Layout>
         <Navbar />
-        <div className={styles.myDepartmentLayout}>{page}</div>
         {page}
       </Layout>
     </Main>

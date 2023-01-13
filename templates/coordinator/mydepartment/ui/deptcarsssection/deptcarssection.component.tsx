@@ -4,11 +4,7 @@ import Article from "ui/molecules/article";
 import styles from "./deptcarssection.module.scss";
 
 const DeptCarsSection: FC = () => (
-  <section
-    id="deptCarsSection"
-    data-carousel="Samochody"
-    className={styles.deptCarsSection}
-  >
+  <section data-carousel="Samochody" className={styles.deptCarsSection}>
     <Article
       className={styles.infoArticle}
       titleProps={{
