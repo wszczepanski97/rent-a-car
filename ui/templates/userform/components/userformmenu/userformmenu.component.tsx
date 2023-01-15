@@ -8,7 +8,7 @@ import { UserFormContext } from "ui/templates/userform/contexts/userform.context
 import { UserFormContextEnum } from "ui/templates/userform/contexts/userform.enum";
 import UserFormMenuBorder from "./components/userformmenuborder";
 import UserFormMenuButton from "./components/userformmenubutton";
-import styles from "./UserFormmenu.module.scss";
+import styles from "./userformmenu.module.scss";
 
 const UserFormMenu = () => {
   const { menuRef, type, activeDataItem } = useContext(UserFormContext);
