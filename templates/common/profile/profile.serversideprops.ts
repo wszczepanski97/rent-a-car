@@ -13,7 +13,6 @@ export const profileServerSideProps: GetServerSideProps<
     | (klienci & { uzytkownicy: uzytkownicy })
     | (pracownicy & { uzytkownicy: uzytkownicy })
     | null;
-  if (!session?.user.role) return { props: { profile: null } };
   if (session?.user.role === UserRole.CLIENT) {
     foundUser = await prisma.klienci.findFirst({
       where: {
