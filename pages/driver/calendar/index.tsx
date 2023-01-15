@@ -68,7 +68,6 @@ const getServices: GetServerSideProps<CalendarDriverPageProps> = async (
   context
 ) => {
   const session = await getSession(context);
-  console.log(session);
   return {
     props: { ...(await get(session?.user.id)) },
   };
