@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import NextAuth, { User } from "next-auth";
+import NextAuth, { AuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import Error from "next/error";
 
 const prisma = new PrismaClient();
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -77,4 +77,6 @@ export default NextAuth({
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
-});
+};
+
+export default NextAuth(authOptions);

@@ -1,14 +1,20 @@
 import { klienci, pracownicy, uzytkownicy } from "@prisma/client";
 import { prisma } from "db";
+import { unstable_getServerSession } from "next-auth/next";
 import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next/types";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { ProfilePageProps } from "templates/common/profile/profile.props";
 import { UserRole } from "types/userrole/userrole.type";
 
 export const profileServerSideProps: GetServerSideProps<
   ProfilePageProps
 > = async (context) => {
-  const session = await getSession(context);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
   let foundUser:
     | (klienci & { uzytkownicy: uzytkownicy })
     | (pracownicy & { uzytkownicy: uzytkownicy })
