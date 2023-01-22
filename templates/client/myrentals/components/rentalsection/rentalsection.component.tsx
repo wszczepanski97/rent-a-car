@@ -6,6 +6,8 @@ import RentalCard from "./components/rentalcard";
 const RentalSection: FC<RentalSectionProps> = ({
   rentals,
   title,
+  setModalOpen,
+  setDeleteRentDetails,
   past = false,
 }) => {
   const { open } = useContext(SidebarContext);
@@ -16,7 +18,13 @@ const RentalSection: FC<RentalSectionProps> = ({
         paddingTop: open ? 90 : 0,
       }}
     >
-      <RentalCard rentals={rentals} title={title} past={past} />
+      <RentalCard
+        rentals={rentals}
+        title={title}
+        past={past}
+        setModalOpen={setModalOpen}
+        setDeleteRentDetails={setDeleteRentDetails}
+      />
     </section>
   );
 };

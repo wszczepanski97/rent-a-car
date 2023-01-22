@@ -88,8 +88,10 @@ export default async function handler(
               create: {
                 Kwota: req.body.Kwota,
                 KwotaPoRabacie: klient.ProcentRabatu
-                  ? req.body.Kwota -
-                    0.01 * klient.ProcentRabatu * req.body.Kwota
+                  ? Math.floor(
+                      req.body.Kwota -
+                        0.01 * klient.ProcentRabatu * req.body.Kwota
+                    )
                   : req.body.Kwota,
                 klienci: {
                   connect: {

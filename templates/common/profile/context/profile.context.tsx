@@ -6,6 +6,8 @@ export const ProfileContext = createContext<
   | {
       mode: ProfileMode;
       toggleMode: Dispatch<SetStateAction<ProfileMode>>;
+      modalOpen: boolean;
+      setModalOpen: Dispatch<SetStateAction<boolean>>;
       profile: Profile | null;
     }
   | undefined

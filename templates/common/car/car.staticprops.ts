@@ -13,9 +13,6 @@ export const carPageStaticProps: GetStaticProps<CarPageProps, Params> = async (
     },
     include: {
       uslugi: {
-        where: {
-          IdUslugaStatus: 3,
-        },
         include: {
           wypozyczenia: true,
         },

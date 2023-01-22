@@ -6,11 +6,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CarDescriptionRowProperty from "templates/common/car/components/cardetailssection/components/cardescription/components/cardescriptionrowproperty/cardescriptionrowproperty.component";
 import { CarDescriptionRowPropertyEnum } from "templates/common/car/components/cardetailssection/components/cardescription/components/cardescriptionrowproperty/cardescriptionrowproperty.enum";
-import { getNextHalfHourDateForToday } from "templates/coordinator/calendar/ui/calendarsection/organisms/tabs/helpers/date-helper";
+import {
+  getBlockedDates,
+  getBlockedPeriods,
+  getNextHalfHourDate,
+  getNextHalfHourDateForToday,
+} from "templates/coordinator/calendar/ui/calendarsection/organisms/tabs/helpers/date-helper";
 import ServicesGridCardInfo from "templates/driver/dashboard/components/servicesgrid/components/servicesgridcard/components/servicesgridcardinfo/servicesgridcardinfo.component";
 import CarCard from "ui/molecules/carcard";
 import Card from "ui/molecules/card";
 import { CardType } from "ui/molecules/card/cardtype.enum";
+import CarLoading from "./components/carloading/carloading.component";
 import styles from "./rentcard.module.scss";
 import { RentCardProps } from "./rentcard.props";
 import { RentCardSubmitFormType } from "./rentcardsubmitform.type";
@@ -19,9 +25,11 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [resUsluga, setResUsluga] = useState<uslugi>();
   const [success, setSuccess] = useState(false);
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const target = e.target as typeof e.target & RentCardSubmitFormType;
     const body = JSON.stringify({
@@ -43,6 +51,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
     const {
       data: { usluga, error },
     } = await (await fetch("/api/client/rent", options)).json();
+    setLoading(false);
     if (error) {
       setError(error);
     }
@@ -51,24 +60,6 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
       setSuccess(true);
     }
   };
-
-  const timeRangeStartMinDate = useMemo(
-    () => getNextHalfHourDateForToday(new Date()),
-    []
-  );
-  const timeRangeEndMinDate = useMemo(
-    () => getNextHalfHourDateForToday(timeRangeStartMinDate),
-    [timeRangeStartMinDate]
-  );
-
-  const filterPassedTimeStartMinDate = (time: any) =>
-    new Date(time).getTime() >= timeRangeStartMinDate.getTime();
-
-  const filterPassedTimeEndMinDate = (time: any) =>
-    new Date(time).getTime() >= timeRangeEndMinDate.getTime();
-
-  const [startDate, setStartDate] = useState<Date>(timeRangeStartMinDate);
-  const [endDate, setEndDate] = useState<Date>(timeRangeEndMinDate);
 
   const getAccesories = useCallback(
     () =>
@@ -110,6 +101,72 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
     },
     [selectedAdditionalOptions]
   );
+
+  const timeRangeStartMinDate = useMemo(
+    () => getNextHalfHourDateForToday(new Date()),
+    []
+  );
+  const timeRangeEndMinDate = useMemo(
+    () => getNextHalfHourDateForToday(timeRangeStartMinDate),
+    [timeRangeStartMinDate]
+  );
+
+  const filterPassedTimeStartMinDate = (time: any) =>
+    new Date(time).getTime() >= timeRangeStartMinDate.getTime();
+
+  const filterPassedTimeEndMinDate = (time: any) =>
+    new Date(time).getTime() >= timeRangeEndMinDate.getTime();
+
+  const excludeTimes = car?.uslugi
+    .map((usluga) => ({
+      start: usluga.DataOd,
+      end: usluga.DataDo,
+    }))
+    .map(({ start, end }) => getBlockedPeriods(start, end, true))
+    .flat()
+    .sort((a, b) => a.getTime() - b.getTime());
+
+  const excludeDates = getBlockedDates(excludeTimes!);
+
+  const filterStartTimes = (time: Date) => {
+    const isOccupied =
+      !!filterPassedTimeStartMinDate(time) &&
+      !excludeTimes?.find((date) => date.getTime() === time.getTime());
+    return isOccupied;
+  };
+
+  const filterEndTimes = (time: Date) => {
+    const isOccupied =
+      !!filterPassedTimeEndMinDate(time) &&
+      !excludeTimes?.find(
+        (date) => getNextHalfHourDate(date).getTime() === time.getTime()
+      );
+    return isOccupied;
+  };
+
+  const isTimeRangeStartMinDateInExcludeTimes = !!excludeTimes?.find(
+    (excludeTime) => excludeTime.getTime() === timeRangeStartMinDate.getTime()
+  );
+
+  const isTimeRangeEndMinDateInExcludeTimes = !!excludeTimes?.find(
+    (excludeTime) => excludeTime.getTime() === timeRangeEndMinDate.getTime()
+  );
+
+  const [startDate, setStartDate] = useState<Date | null>(
+    isTimeRangeStartMinDateInExcludeTimes ? null : timeRangeStartMinDate
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    isTimeRangeEndMinDateInExcludeTimes ? null : timeRangeEndMinDate
+  );
+
+  if (!!loading)
+    return (
+      <div style={{ width: "100%", height: "100%" }}>
+        <Card type={CardType.CUSTOM} className={styles.carCard}>
+          <CarLoading />
+        </Card>
+      </div>
+    );
 
   return success ? (
     <Card type={CardType.CUSTOM} className={styles.successCard}>
@@ -251,7 +308,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                       selected={startDate}
                       onChange={(date: Date) => {
                         setStartDate(date);
-                        if (date >= endDate) {
+                        if (endDate && date >= endDate) {
                           setError(
                             "Data zakończenia nie moze byc wczesniejsza od daty rozpoczęcia."
                           );
@@ -259,7 +316,8 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                           setError("");
                         }
                       }}
-                      filterTime={filterPassedTimeStartMinDate}
+                      excludeDates={excludeDates}
+                      filterTime={filterStartTimes}
                       selectsStart
                       showTimeSelect
                       startDate={startDate}
@@ -276,7 +334,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                       selected={endDate}
                       onChange={(date: Date) => {
                         setEndDate(date);
-                        if (date <= startDate) {
+                        if (startDate && date <= startDate) {
                           setError(
                             "Data zakończenia nie moze byc wczesniejsza od daty rozpoczęcia."
                           );
@@ -284,7 +342,8 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                           setError("");
                         }
                       }}
-                      filterTime={filterPassedTimeEndMinDate}
+                      excludeDates={excludeDates}
+                      filterTime={filterEndTimes}
                       selectsEnd
                       showTimeSelect
                       startDate={startDate}
@@ -356,16 +415,18 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                   bgColor="var(--primary-color)"
                   color="var(--light-text-color)"
                   value={
-                    Math.abs(endDate.getTime() - startDate.getTime()) / 36e5
+                    startDate && endDate
+                      ? Math.abs(endDate.getTime() - startDate.getTime()) / 36e5
+                      : 0
                   }
                 />
                 <CarDescriptionRowProperty
                   type={CarDescriptionRowPropertyEnum.CIRCLE}
-                  title="Kwota"
+                  title="Kwota w PLN"
                   bgColor="var(--text-color)"
                   color="var(--light-text-color)"
                   value={
-                    car
+                    car && startDate && endDate
                       ? (car.CenaZaGodzine *
                           Math.abs(endDate.getTime() - startDate.getTime())) /
                           36e5 +
@@ -384,7 +445,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
                 required
                 disabled
                 value={
-                  car
+                  car && startDate && endDate
                     ? (car.CenaZaGodzine *
                         Math.abs(endDate.getTime() - startDate.getTime())) /
                       36e5
@@ -396,7 +457,12 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
               <button
                 type="submit"
                 className={styles.submit}
-                disabled={!!error}
+                disabled={
+                  !!error ||
+                  !startDate ||
+                  !endDate ||
+                  startDate.getTime() > endDate.getTime()
+                }
               >
                 Zamów
               </button>

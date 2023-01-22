@@ -1,0 +1,147 @@
+$accent: #f8e013;
+$primary: #202020;
+$white: #ffffff;
+
+.container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  place-items: center;
+  background: $white;
+  .loader {
+    width: 350px;
+    height: 350px;
+
+    .car {
+      transform-origin: center center;
+      animation: car 600ms linear infinite;
+    }
+
+    .wheel {
+      fill: $primary;
+    }
+
+    .back-wheel {
+      transform-origin: 18px 56px;
+      animation: wheel 300ms linear infinite;
+    }
+
+    .front-wheel {
+      transform-origin: 59px 56px;
+      animation: wheel 300ms linear infinite;
+      animation-delay: 200ms;
+    }
+
+    .wheel-details {
+      fill: $white;
+    }
+
+    .line {
+      stroke: $primary;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.6px;
+    }
+
+    .line-1 {
+      stroke-dasharray: 20% 80%;
+      animation: line-1 400ms linear infinite;
+    }
+
+    .line-2 {
+      stroke-dasharray: 10% 90%;
+      animation: line-1 400ms linear infinite;
+      animation-delay: 200ms;
+    }
+
+    .line-floor {
+      stroke-dasharray: 60% 10%;
+      stroke-dashoffset: 65;
+      animation: line-2 800ms linear infinite;
+    }
+
+    .cloud {
+      fill: $primary;
+      opacity: 0.1;
+      animation: cloud 900ms linear infinite;
+    }
+  }
+
+  .loading {
+    font-size: 30px;
+  }
+
+  .loading:after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+    animation: ellipsis steps(4, end) 900ms infinite;
+    content: "\2026"; /* ascii code for the ellipsis character */
+    width: 0px;
+  }
+}
+
+@keyframes wheel {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes line-1 {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -80;
+  }
+}
+
+@keyframes line-2 {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -56;
+  }
+}
+
+@keyframes car {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-1deg) translateY(1px);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes cloud {
+  from {
+    transform: translateX(40%);
+  }
+
+  to {
+    transform: translateX(-90%);
+  }
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}

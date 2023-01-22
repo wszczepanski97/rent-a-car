@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FC, useCallback, useMemo, useState } from "react";
 import {
   Column,
@@ -13,11 +12,12 @@ import { Rental } from "types/rental/rental.type";
 import Photo from "ui/atoms/photo";
 import styles from "./rentaltable.module.scss";
 
-const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
-  rentals,
-  past,
-}) => {
-  const router = useRouter();
+const RentalTable: FC<
+  Pick<
+    RentalSectionProps,
+    "rentals" | "past" | "setModalOpen" | "setDeleteRentDetails"
+  >
+> = ({ rentals, past, setModalOpen, setDeleteRentDetails }) => {
   const columns = useMemo<Column<Rental>[]>(
     () => [
       { Header: "", accessor: "IdSamochod" },
@@ -175,17 +175,12 @@ const RentalTable: FC<Pick<RentalSectionProps, "rentals" | "past">> = ({
                   <td style={{ textAlign: "right" }}>
                     <button
                       className={styles.deleteRentButton}
-                      onClick={async () => {
-                        const response = await fetch(`/api/client/rent`, {
-                          method: "DELETE",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({
-                            IdWypozyczenia: row.values.IdWypozyczenia,
-                            IdUslugi: row.values.IdUslugi,
-                          }),
+                      onClick={() => {
+                        setModalOpen(true);
+                        setDeleteRentDetails({
+                          IdWypozyczenia: row.values.IdWypozyczenia,
+                          IdUslugi: row.values.IdUslugi,
                         });
-                        router.replace("/client/myrentals");
-                        return await response.json();
                       }}
                     >
                       Usuń wypożyczenie

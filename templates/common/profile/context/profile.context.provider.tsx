@@ -8,7 +8,8 @@ export const ProfileContextProvider: FC<ProfileContextProviderProps> = ({
   children,
 }) => {
   const [mode, toggleMode] = useState(ProfileMode.DEFAULT);
-  const value = { mode, toggleMode, profile };
+  const [modalOpen, setModalOpen] = useState(false);
+  const value = { mode, toggleMode, modalOpen, setModalOpen, profile };
   return (
     <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
   );

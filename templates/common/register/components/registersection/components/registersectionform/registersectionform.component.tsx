@@ -60,7 +60,7 @@ const RegisterSectionForm: FC<RegisterPageProps> = ({
         </UserFormInputGroup>
         <UserFormInputGroup>
           <UserFormSelect
-            name="Lokalizacja"
+            name="Lokalizacja oddziału"
             options={allLocations.map((location) => (
               <option
                 key={location.IdLokalizacje}

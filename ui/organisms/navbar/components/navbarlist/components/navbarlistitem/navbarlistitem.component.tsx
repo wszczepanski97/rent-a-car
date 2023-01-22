@@ -21,7 +21,7 @@ const NavbarListItem: FC<NavbarListItemProps> = ({
     } else {
       setActive(false);
     }
-  }, [href]);
+  });
 
   return (
     <li
