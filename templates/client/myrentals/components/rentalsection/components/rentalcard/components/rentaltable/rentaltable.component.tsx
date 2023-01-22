@@ -177,7 +177,7 @@ const RentalTable: FC<
                       className={styles.deleteRentButton}
                       onClick={() => {
                         setModalOpen(true);
-                        setDeleteRentDetails({
+                        setDeleteRentDetails?.({
                           IdWypozyczenia: row.values.IdWypozyczenia,
                           IdUslugi: row.values.IdUslugi,
                         });
