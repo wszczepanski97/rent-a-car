@@ -6,7 +6,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { Email, Imię, Login, Hasło, Lokalizacja, role, ...rest } = req.body;
+    const {
+      Email,
+      Imię,
+      Login,
+      Hasło,
+      role,
+      ["Lokalizacja oddziału"]: Lokalizacja,
+      ...rest
+    } = req.body;
     try {
       if (role === "KLIENT") {
         const klientByEmail = await prisma.klienci.findFirst({

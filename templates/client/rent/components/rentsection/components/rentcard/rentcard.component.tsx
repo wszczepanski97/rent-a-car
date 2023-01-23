@@ -16,7 +16,7 @@ import ServicesGridCardInfo from "templates/driver/dashboard/components/services
 import CarCard from "ui/molecules/carcard";
 import Card from "ui/molecules/card";
 import { CardType } from "ui/molecules/card/cardtype.enum";
-import CarLoading from "./components/carloading/carloading.component";
+import CarLoading from "ui/organisms/carloading/carloading.component";
 import styles from "./rentcard.module.scss";
 import { RentCardProps } from "./rentcard.props";
 import { RentCardSubmitFormType } from "./rentcardsubmitform.type";
@@ -163,7 +163,7 @@ const RentCard: FC<RentCardProps> = ({ car, additionalRentOptions }) => {
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <Card type={CardType.CUSTOM} className={styles.carCard}>
-          <CarLoading />
+          <CarLoading message="Twoje wypożyczenie jest przetwarzane" />
         </Card>
       </div>
     );

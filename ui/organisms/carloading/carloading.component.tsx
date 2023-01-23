@@ -1,8 +1,15 @@
 import classnames from "classnames";
+import { FC } from "react";
 import styles from "./carloading.module.scss";
-const CarLoading = () => {
+
+type CarLoadingProps = {
+  message: string;
+  height?: string;
+};
+
+const CarLoading: FC<CarLoadingProps> = ({ message, height = "80vh" }) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ height }}>
       <svg
         className={styles.loader}
         xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +83,7 @@ const CarLoading = () => {
           d="M71,26.15a3.37,3.37,0,0,0-3.29-2.65,2.11,2.11,0,0,0-.36,0,5,5,0,0,0-9.73,1.32,3.75,3.75,0,0,0-.82-.09,3.83,3.83,0,0,0-.08,7.65H70.87A3.13,3.13,0,0,0,71,26.15Z"
         />
       </svg>
-      <h3 className={styles.loading}>Twoje wypożyczenie jest przetwarzane</h3>
+      <h3 className={styles.loading}>{message}</h3>
     </div>
   );
 };
