@@ -72,5 +72,7 @@ export const myRentalsServerSideProps: GetServerSideProps = async (context) => {
         .map(parseRentals)
     )
   );
-  return { props: { pastrentals, futurerentals } };
+  return {
+    props: { pastrentals, futurerentals, userId, clientRentals, session },
+  };
 };
