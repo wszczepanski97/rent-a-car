@@ -1,7 +1,6 @@
 import { klienci, pracownicy, uzytkownicy } from "@prisma/client";
 import { prisma } from "db";
 import { unstable_getServerSession } from "next-auth/next";
-import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next/types";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { ProfilePageProps } from "templates/common/profile/profile.props";

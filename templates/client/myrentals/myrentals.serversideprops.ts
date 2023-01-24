@@ -1,6 +1,7 @@
 import { prisma } from "db";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
 import { GetServerSideProps } from "next/types";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { Rental } from "types/rental/rental.type";
 
 const parseRentals: (element: any) => Rental = ({
@@ -25,7 +26,11 @@ const parseRentals: (element: any) => Rental = ({
 });
 
 export const myRentalsServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
   const userId = await prisma.klienci.findFirst({
     where: {
       IdUzytkownicy: session?.user.id,

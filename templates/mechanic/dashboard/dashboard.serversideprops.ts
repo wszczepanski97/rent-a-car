@@ -1,5 +1,4 @@
 import { unstable_getServerSession } from "next-auth/next";
-import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next/types";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { get } from "pages/api/repair";

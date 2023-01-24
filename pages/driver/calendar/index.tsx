@@ -1,8 +1,9 @@
 import { lokalizacje } from "@prisma/client";
 import { SidebarContextProvider } from "contexts/sidebar.context";
 import type { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
 import Head from "next/head";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { Car, Driver, get, Service } from "pages/api/driver/calendar";
 import { ReactElement } from "react";
 import { SWRConfig } from "swr";
@@ -67,7 +68,11 @@ CalendarDriverPage.getLayout = (page: ReactElement) => (
 const getServices: GetServerSideProps<CalendarDriverPageProps> = async (
   context
 ) => {
-  const session = await getSession(context);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
   return {
     props: { ...(await get(session?.user.id)) },
   };
